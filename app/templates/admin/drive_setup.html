@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% block title %}Integrasi Google Drive OAuth 2.0 | Dashboard Admin{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1040px; margin-top: 1.5rem;">
+  
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <div>
+      <h2 style="font-size: 1.75rem; color: #fff;">Integrasi Google Drive API (OAuth 2.0)</h2>
+      <p style="color: var(--text-secondary); font-size: 0.88rem;">
+        Konfigurasi sambungan awan selamat untuk akaun storan rasmi Jabatan Digital Negara
+      </p>
+    </div>
+    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline btn-sm">
+      <i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard
+    </a>
+  </div>
+
+  <!-- Status Sambungan Utama -->
+  <div class="glass-card" style="margin-bottom: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem;">
+      
+      <div>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+          <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(212, 175, 55, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; color: var(--gold-light);">
+            <i class="fa-brands fa-google-drive"></i>
+          </div>
+          <div>
+            <h3 style="color: #fff; font-size: 1.25rem;">Akaun Storan: {{ target_account }}</h3>
+            <div style="font-size: 0.82rem; color: var(--text-secondary);">
+              Root Folder ID: <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; color: var(--gold-light);">{{ root_folder_id }}</code>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1rem;">
+          {% if is_connected %}
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); padding: 8px 16px; border-radius: var(--radius-md); color: #34d399; font-weight: 600;">
+              <i class="fa-solid fa-circle-check"></i> DISAMBUNGKAN MELALUI OAUTH 2.0 ({{ connected_email }})
+            </div>
+            {% if root_access_ok %}
+              <div style="margin-top: 8px; font-size: 0.82rem; color: #34d399;">
+                <i class="fa-solid fa-check-double"></i> Akses disahkan ke Root Folder Google Drive!
+              </div>
+            {% else %}
+              <div style="margin-top: 8px; font-size: 0.82rem; color: #fbbf24;">
+                <i class="fa-solid fa-triangle-exclamation"></i> {{ root_access_msg }}
+              </div>
+            {% endif %}
+          {% else %}
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); padding: 8px 16px; border-radius: var(--radius-md); color: #fbbf24; font-weight: 600;">
+              <i class="fa-solid fa-triangle-exclamation"></i> BELUM DIHUBUNGKAN &bull; Sila lakukan kebenaran OAuth
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Tindakan Butang Sambungan -->
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-end;">
+        {% if not is_connected %}
+          <a href="{{ url_for('auth_drive.authorize') }}" class="btn btn-gold" id="btn-oauth-connect">
+            <i class="fa-solid fa-key"></i> Sambungkan Google Drive (OAuth 2.0)
+          </a>
+        {% else %}
+          <div style="display: flex; gap: 8px;">
+            <form action="{{ url_for('admin.backup_now') }}" method="POST">
+              <button type="submit" class="btn btn-gold btn-sm" id="btn-backup-drive">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Sandar Data (JSON) ke Drive
+              </button>
+            </form>
+            <form action="{{ url_for('auth_drive.disconnect') }}" method="POST" onsubmit="return confirm('Adakah anda pasti ingin memutuskan sambungan token Google Drive?');">
+              <button type="submit" class="btn btn-danger btn-sm">
+                <i class="fa-solid fa-link-slash"></i> Putuskan Sambungan
+              </button>
+            </form>
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Status 6 Folder Utama yang Dirancang -->
+  <div class="glass-card" style="margin-bottom: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+      <div>
+        <h3 style="color: #fff; font-size: 1.15rem;"><i class="fa-solid fa-folder-tree" style="color: var(--gold-primary);"></i> Struktur 6 Folder Utama di Google Drive</h3>
+        <p style="color: var(--text-secondary); font-size: 0.8rem;">Sistem menyemak dan mencipta HANYA folder yang belum wujud secara automatik tanpa duplikasi.</p>
+      </div>
+      {% if is_connected %}
+        <span class="badge-status badge-synced"><i class="fa-solid fa-circle-check"></i> Semakan Aktif</span>
+      {% else %}
+        <span class="badge-status badge-pending">Menunggu Sambungan</span>
+      {% endif %}
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+      {% for name in subfolders_required %}
+        {% set folder_id = folder_mapping.get(name) %}
+        <div style="background: rgba(14, 23, 47, 0.7); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem; display: flex; align-items: center; gap: 12px;">
+          <div style="width: 38px; height: 38px; border-radius: 8px; background: rgba(212, 175, 55, 0.12); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--gold-light);">
+            <i class="fa-regular fa-folder-open"></i>
+          </div>
+          <div style="flex-grow: 1; overflow: hidden;">
+            <div style="font-weight: 700; font-size: 0.9rem; color: #fff;">{{ name }}</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+              {% if folder_id %}
+                ID: <span style="color: #38bdf8;">{{ folder_id }}</span>
+              {% else %}
+                <span style="color: var(--gold-light);">Sedia dicipta automatik apabila bersambung</span>
+              {% endif %}
+            </div>
+          </div>
+          <div>
+            {% if folder_id %}
+              <span class="badge-status badge-synced" title="Folder Sah Wujud di Google Drive"><i class="fa-solid fa-check"></i> Sah</span>
+            {% else %}
+              <span class="badge-status badge-pending">Menunggu</span>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Panduan Konfigurasi Google Cloud Console -->
+  <div class="glass-card">
+    <div style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+      <h3 style="color: #fff; font-size: 1.25rem;">
+        <i class="fa-solid fa-graduation-cap" style="color: var(--gold-primary);"></i> Panduan Langkah-demi-Langkah Menyediakan OAuth Client ID di Google Cloud Console
+      </h3>
+      <p style="color: var(--text-secondary); font-size: 0.85rem;">
+        Ikuti 5 langkah mudah ini untuk membolehkan integrasi OAuth 2.0 berfungsi tanpa mendedahkan kata laluan Google:
+      </p>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+      
+      <!-- Langkah 1 -->
+      <div style="background: rgba(14, 23, 47, 0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-md); padding: 1.25rem;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <span style="width: 28px; height: 28px; border-radius: 50%; background: var(--gold-gradient); color: #070d1e; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem;">1</span>
+          <h4 style="color: #fff; font-size: 1rem;">Buka Google Cloud Console & Cipta Projek</h4>
+        </div>
+        <p style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.6; margin-left: 38px;">
+          Layari <a href="https://console.cloud.google.com/" target="_blank" style="color: #38bdf8;">https://console.cloud.google.com/</a> menggunakan akaun <strong>dmojdn@gmail.com</strong> (atau akaun pentadbir). Klik menu projek di bahagian atas dan klik <strong>"New Project"</strong>. Namakan projek contohnya: <code>Titipan-Kenangan-JDN</code>.
+        </p>
+      </div>
+
+      <!-- Langkah 2 -->
+      <div style="background: rgba(14, 23, 47, 0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-md); padding: 1.25rem;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <span style="width: 28px; height: 28px; border-radius: 50%; background: var(--gold-gradient); color: #070d1e; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem;">2</span>
+          <h4 style="color: #fff; font-size: 1rem;">Dayakan Google Drive API</h4>
+        </div>
+        <p style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.6; margin-left: 38px;">
+          Pergi ke <strong>APIs & Services &gt; Library</strong>. Cari perkataan <strong>"Google Drive API"</strong>, klik padanya, dan tekan butang <strong>"ENABLE"</strong> (Dayakan).
+        </p>
+      </div>
+
+      <!-- Langkah 3 -->
+      <div style="background: rgba(14, 23, 47, 0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-md); padding: 1.25rem;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <span style="width: 28px; height: 28px; border-radius: 50%; background: var(--gold-gradient); color: #070d1e; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem;">3</span>
+          <h4 style="color: #fff; font-size: 1rem;">Konfigurasi OAuth Consent Screen</h4>
+        </div>
+        <div style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.6; margin-left: 38px;">
+          Pergi ke <strong>APIs & Services &gt; OAuth consent screen</strong>:
+          <ul style="margin-top: 6px; padding-left: 20px;">
+            <li>Pilih <strong>External</strong> &rarr; Klik <strong>Create</strong>.</li>
+            <li>Nama Aplikasi: <code>Titipan Kenangan KP JDN</code></li>
+            <li>User support email & Developer contact: <code>dmojdn@gmail.com</code></li>
+            <li>Pada bahagian <strong>Test Users</strong>: Masukkan <code>dmojdn@gmail.com</code> sebagai penguji yang dibenarkan.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Langkah 4 -->
+      <div style="background: rgba(14, 23, 47, 0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-md); padding: 1.25rem;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <span style="width: 28px; height: 28px; border-radius: 50%; background: var(--gold-gradient); color: #070d1e; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem;">4</span>
+          <h4 style="color: #fff; font-size: 1rem;">Cipta OAuth Client ID</h4>
+        </div>
+        <div style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.6; margin-left: 38px;">
+          Pergi ke <strong>APIs & Services &gt; Credentials &gt; Create Credentials &gt; OAuth client ID</strong>:
+          <ul style="margin-top: 6px; padding-left: 20px;">
+            <li>Application type: <strong>Web application</strong></li>
+            <li>Name: <code>Web Client Titipan Kenangan</code></li>
+            <li><strong>Authorized redirect URIs</strong> (Sangat Penting): Tambah URI ini:<br>
+              <code style="background: rgba(0,0,0,0.4); padding: 4px 10px; border-radius: 4px; color: var(--gold-light); display: inline-block; margin-top: 4px;">{{ redirect_uri }}</code>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Langkah 5 -->
+      <div style="background: rgba(14, 23, 47, 0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-md); padding: 1.25rem;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <span style="width: 28px; height: 28px; border-radius: 50%; background: var(--gold-gradient); color: #070d1e; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem;">5</span>
+          <h4 style="color: #fff; font-size: 1rem;">Salin Kunci ke Fail .env Projek</h4>
+        </div>
+        <div style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.6; margin-left: 38px;">
+          Buka fail <code>.env</code> di direktori akar projek anda, dan masukkan nilai yang diperoleh:
+          <pre style="background: #000; padding: 10px; border-radius: 6px; margin-top: 6px; color: var(--gold-light); font-size: 0.82rem; overflow-x: auto;">
+GOOGLE_CLIENT_ID=xxxxxxxxxx.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=GOCSPX-xxxxxxxxxxxxxxxx
+GOOGLE_REDIRECT_URI={{ redirect_uri }}
+GOOGLE_DRIVE_ROOT_FOLDER_ID={{ root_folder_id }}
+          </pre>
+          Selepas menyimpan fail <code>.env</code>, klik butang <strong>"Sambungkan Google Drive (OAuth 2.0)"</strong> di bahagian atas untuk melengkapkan pengesahan!
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

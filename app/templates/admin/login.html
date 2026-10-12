@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Log Masuk Pentadbir | Titipan Kenangan KP JDN{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 460px; margin: 4rem auto;">
+  <div class="glass-card">
+    
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <div style="width: 60px; height: 60px; margin: 0 auto 1rem; border-radius: 16px; background: var(--gold-gradient); display: flex; align-items: center; justify-content: center; color: #070d1e; font-size: 1.75rem; box-shadow: 0 0 20px var(--gold-glow);">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h2 style="font-size: 1.5rem; color: #fff;">Akses Pentadbir</h2>
+      <p style="font-size: 0.85rem; color: var(--text-secondary);">Masukkan kata laluan untuk menguruskan kiriman dan integrasi Google Drive</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('admin.login', next=request.args.get('next')) }}">
+      <div class="form-group" style="margin-bottom: 1.5rem;">
+        <label class="form-label" for="password">
+          <i class="fa-solid fa-key"></i> Kata Laluan Pentadbir
+        </label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan kata laluan pentadbir" required autofocus>
+        <span class="helper-text">Kata laluan lalai ditetapkan di fail .env (Lalai: admin123)</span>
+      </div>
+
+      <button type="submit" class="btn btn-gold" style="width: 100%; padding: 12px;" id="btn-admin-login">
+        <i class="fa-solid fa-right-to-bracket"></i> Log Masuk Dashboard
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1rem;">
+      <a href="{{ url_for('public.index') }}" style="color: var(--text-secondary); font-size: 0.82rem; text-decoration: none;">
+        <i class="fa-solid fa-arrow-left"></i> Kembali ke Portal Warga
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: titipan-kenangan-kp-jdn
+    runtime: python
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: gunicorn wsgi:app --timeout 180 --workers 2
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.8
+      - key: FLASK_DEBUG
+        value: "False"
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: GOOGLE_DRIVE_ROOT_FOLDER_ID
+        value: 1HIEuEkoEoiHHcEuqh-zj7AE-aFzepXUH
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_REDIRECT_URI
+        sync: false

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Butiran Kiriman #{{ submission.id }} | Dashboard Admin{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 900px; margin-top: 2rem;">
+  
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline btn-sm">
+      <i class="fa-solid fa-arrow-left"></i> Kembali ke Senarai Kiriman
+    </a>
+
+    <form action="{{ url_for('admin.padam_kiriman', submission_id=submission.id) }}" method="POST" onsubmit="return confirm('Adakah anda pasti ingin memadamkan kiriman ini? Fail media tempatan juga akan dipadamkan.');">
+      <button type="submit" class="btn btn-danger btn-sm">
+        <i class="fa-solid fa-trash"></i> Padam Kiriman Ini
+      </button>
+    </form>
+  </div>
+
+  <div class="glass-card">
+    <div style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 1.25rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+      <div>
+        <span class="badge-campaign" style="margin-bottom: 8px;">Kiriman #{{ submission.id }}</span>
+        <h2 style="font-size: 1.75rem; color: #fff; margin-bottom: 4px;">{{ submission.nama }}</h2>
+        <div style="color: var(--gold-light); font-size: 0.95rem;">
+          <i class="fa-solid fa-sitemap"></i> {{ submission.bahagian }}
+          {% if submission.jawatan %} &bull; {{ submission.jawatan }}{% endif %}
+        </div>
+      </div>
+      <div style="text-align: right;">
+        <div style="font-size: 0.8rem; color: var(--text-secondary);">Tarikh Dihantar:</div>
+        <div style="font-size: 0.92rem; font-weight: 600; color: #fff;">
+          {{ submission.created_at.strftime('%d %B %Y, %I:%M %p') if submission.created_at else '-' }}
+        </div>
+        {% if submission.ip_address %}
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">IP: {{ submission.ip_address }}</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Teks Ucapan -->
+    <div style="margin-bottom: 2rem;">
+      <h3 style="font-size: 1.1rem; color: var(--gold-light); margin-bottom: 0.75rem;">
+        <i class="fa-solid fa-quote-left"></i> Titipan Ucapan Penuh
+      </h3>
+      <div style="background: rgba(14, 23, 47, 0.85); border-left: 4px solid var(--gold-primary); border-radius: var(--radius-sm); padding: 1.5rem; font-size: 1.05rem; line-height: 1.8; color: #f1f5f9; white-space: pre-wrap;">{{ submission.ucapan }}</div>
+    </div>
+
+    <!-- Media Bahagian -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; border-top: 1px solid var(--border-subtle); padding-top: 1.5rem;">
+      
+      <!-- Paparan Gambar -->
+      <div style="background: rgba(14, 23, 47, 0.6); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h4 style="font-size: 1rem; color: #fff;"><i class="fa-regular fa-image" style="color: var(--gold-light);"></i> Gambar Kenangan</h4>
+          {% if submission.image_sync_status == 'synced' %}
+            <span class="badge-status badge-synced"><i class="fa-solid fa-cloud-check"></i> Google Drive</span>
+          {% elif submission.image_filename %}
+            <span class="badge-status badge-pending"><i class="fa-solid fa-clock"></i> Simpan Tempatan</span>
+          {% else %}
+            <span class="badge-status badge-none">Tiada Gambar</span>
+          {% endif %}
+        </div>
+
+        {% if submission.image_filename %}
+          <div style="text-align: center; margin-bottom: 1rem;">
+            <!-- Jika fail tempatan wujud -->
+            <img src="{{ url_for('static', filename='../uploads/images/' + submission.image_filename) }}" alt="Gambar Kenangan" style="max-width: 100%; max-height: 280px; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.1); object-fit: contain;">
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 8px;">
+            Fail: <code>{{ submission.image_filename }}</code>
+          </div>
+          {% if submission.image_drive_link %}
+            <a href="{{ submission.image_drive_link }}" target="_blank" class="btn btn-outline btn-sm" style="width: 100%;">
+              <i class="fa-brands fa-google-drive"></i> Buka di Drive (02 GAMBAR KENANGAN)
+            </a>
+          {% endif %}
+        {% else %}
+          <p style="color: var(--text-muted); font-size: 0.85rem; font-style: italic;">Pengirim tidak melampirkan gambar.</p>
+        {% endif %}
+      </div>
+
+      <!-- Paparan Video -->
+      <div style="background: rgba(14, 23, 47, 0.6); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h4 style="font-size: 1rem; color: #fff;"><i class="fa-solid fa-video" style="color: #f43f5e;"></i> Video Kenangan</h4>
+          {% if submission.video_sync_status == 'synced' %}
+            <span class="badge-status badge-synced"><i class="fa-solid fa-cloud-check"></i> Google Drive</span>
+          {% elif submission.video_filename %}
+            <span class="badge-status badge-pending"><i class="fa-solid fa-clock"></i> Simpan Tempatan</span>
+          {% else %}
+            <span class="badge-status badge-none">Tiada Video</span>
+          {% endif %}
+        </div>
+
+        {% if submission.video_filename %}
+          <div style="margin-bottom: 1rem; text-align: center;">
+            <video controls style="max-width: 100%; max-height: 240px; border-radius: var(--radius-sm); background: #000;">
+              <source src="{{ url_for('static', filename='../uploads/videos/' + submission.video_filename) }}" type="video/mp4">
+              Pelayar web anda tidak menyokong pemain video HTML5.
+            </video>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 8px;">
+            Fail: <code>{{ submission.video_filename }}</code>
+          </div>
+          {% if submission.video_drive_link %}
+            <a href="{{ submission.video_drive_link }}" target="_blank" class="btn btn-outline btn-sm" style="width: 100%;">
+              <i class="fa-brands fa-google-drive"></i> Buka di Drive (03 VIDEO KENANGAN)
+            </a>
+          {% endif %}
+        {% else %}
+          <p style="color: var(--text-muted); font-size: 0.85rem; font-style: italic;">Pengirim tidak melampirkan fail video.</p>
+        {% endif %}
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
