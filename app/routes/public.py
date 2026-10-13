@@ -49,13 +49,24 @@ def hantar_ucapan():
     if bahagian == "Lain-lain / Rakan Strategik" and bahagian_custom:
         bahagian = f"Lain-lain ({bahagian_custom})"
 
-    # Validasi input wajib
-    if not nama or not bahagian or not ucapan:
-        flash("Sila lengkapkan Nama, Bahagian, dan Titipan Ucapan anda.", "danger")
+    # Validasi input wajib (Nama dan Bahagian sentiasa wajib)
+    if not nama or not bahagian:
+        flash("Sila lengkapkan Nama dan Bahagian / Agensi anda.", "danger")
         return redirect(url_for("public.index"))
 
-    # Pengurusan Fail Gambar
+    # Semak lampiran fail gambar & video
     image_file = request.files.get("gambar")
+    has_image = bool(image_file and image_file.filename and image_file.filename.strip())
+
+    video_file = request.files.get("video")
+    has_video = bool(video_file and video_file.filename and video_file.filename.strip())
+
+    has_ucapan = bool(ucapan)
+
+    # Validasi sekurang-kurangnya satu pilihan disertakan: Teks, Gambar, atau Video
+    if not has_ucapan and not has_image and not has_video:
+        flash("Sila sertakan sekurang-kurangnya salah satu pilihan: Teks Ucapan, Gambar Kenangan, atau Video Ucapan (anda juga boleh memilih ketiga-tiganya).", "warning")
+        return redirect(url_for("public.index"))
     saved_image_name = None
     saved_image_path = None
     image_sync_status = "none"
@@ -99,7 +110,7 @@ def hantar_ucapan():
         nama=nama,
         bahagian=bahagian,
         jawatan=jawatan or None,
-        ucapan=ucapan,
+        ucapan=ucapan or "",
         image_filename=saved_image_name,
         image_local_path=saved_image_path,
         image_sync_status=image_sync_status,

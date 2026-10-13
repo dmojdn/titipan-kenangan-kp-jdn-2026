@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
  * Mengira detik hari, jam, minit, dan saat menjelang persaraan KP JDN
  */
 function initCountdown() {
+  // Sasaran: 23 Oktober 2026, 00:00:00 Waktu Malaysia (GMT+8)
   const targetDate = new Date("2026-10-23T00:00:00+08:00").getTime();
 
   function update() {

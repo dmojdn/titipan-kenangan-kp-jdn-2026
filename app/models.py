@@ -10,7 +10,7 @@ class Submission(db.Model):
     nama = db.Column(db.String(150), nullable=False)
     bahagian = db.Column(db.String(150), nullable=False)
     jawatan = db.Column(db.String(150), nullable=True)
-    ucapan = db.Column(db.Text, nullable=False)
+    ucapan = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     status = db.Column(db.String(20), default="active")  # active, archived, reviewed
 

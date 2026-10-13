@@ -1,73 +1,66 @@
 {% extends "base.html" %}
 
-{% block title %}Kiriman Berjaya Diterima | Titipan Kenangan KP JDN{% endblock %}
+{% block title %}Kiriman Berjaya Diterima | Titipan Kenangan Buat KP{% endblock %}
 
 {% block content %}
-<div class="container" style="max-width: 680px; margin: 3rem auto;">
-  <div class="glass-card" style="text-align: center; padding: 3rem 2rem;">
+<div class="container" style="max-width: 680px; margin: 3.5rem auto;">
+  <div class="white-card" style="text-align: center; padding: 3rem 2rem; box-shadow: var(--shadow-lg);">
     
-    <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; border-radius: 50%; background: var(--gold-gradient); display: flex; align-items: center; justify-content: center; color: #070d1e; font-size: 2.5rem; box-shadow: 0 0 30px var(--gold-glow);">
+    <div style="width: 80px; height: 80px; margin: 0 auto 1.25rem; border-radius: 50%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 2.2rem; box-shadow: 0 8px 25px rgba(16, 185, 129, 0.35);">
       <i class="fa-solid fa-check"></i>
     </div>
 
-    <div class="badge-campaign" style="margin-bottom: 0.75rem;">
-      <i class="fa-solid fa-shield-check"></i> Kiriman Rasmi Disimpan
+    <div style="display: inline-flex; align-items: center; gap: 6px; background: #ede9fe; color: #6d28d9; padding: 6px 16px; border-radius: var(--radius-full); font-size: 0.82rem; font-weight: 700; margin-bottom: 1rem;">
+      <i class="fa-solid fa-heart"></i> Titipan Anda Telah Direkodkan
     </div>
 
-    <h2 style="font-size: 1.85rem; color: #fff; margin-bottom: 0.75rem;">Terima Kasih, {{ submission.nama }}!</h2>
-    <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 2rem;">
-      Titipan kenangan anda telah berjaya direkodkan ke dalam pangkalan data dan dimasukkan ke dalam senarai kurasi buku kenangan fizikal YBhg. KP JDN.
+    <h2 style="font-size: 1.85rem; color: #0f172a; margin-bottom: 0.5rem;">Terima Kasih, {{ submission.nama }}!</h2>
+    <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 2rem;">
+      Titipan penghargaan anda telah berjaya disimpan dan dimasukkan ke dalam senarai kurasi buku kenangan rasmi YBrs. Ts. Nik Zalbiha binti Nik Mat.
     </p>
 
     <!-- Ringkasan Kiriman -->
-    <div style="background: rgba(14, 23, 47, 0.75); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.5rem; text-align: left; margin-bottom: 2rem;">
+    <div style="background: #f8fafc; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 1.5rem; text-align: left; margin-bottom: 2rem;">
       
-      <div style="margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.75rem;">
-        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--gold-light); display: block;">Bahagian & Jawatan</span>
-        <strong style="color: #fff; font-size: 0.95rem;">{{ submission.bahagian }}</strong>
+      <div style="margin-bottom: 1rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.75rem;">
+        <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #8b5cf6; display: block;">Bahagian & Jawatan</span>
+        <strong style="color: #1e293b; font-size: 0.95rem;">{{ submission.bahagian }}</strong>
         {% if submission.jawatan %}
-          <span style="color: var(--text-secondary); font-size: 0.88rem;">({{ submission.jawatan }})</span>
+          <span style="color: #64748b; font-size: 0.88rem;">({{ submission.jawatan }})</span>
         {% endif %}
       </div>
 
       <div style="margin-bottom: 1.25rem;">
-        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--gold-light); display: block; margin-bottom: 4px;">Petikan Ucapan</span>
-        <p style="color: #cbd5e1; font-style: italic; font-size: 0.92rem; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; border-left: 3px solid var(--gold-primary);">
-          "{{ submission.ucapan }}"
+        <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #8b5cf6; display: block; margin-bottom: 4px;">Titipan Ucapan</span>
+        <p style="color: #334155; font-style: italic; font-size: 0.92rem; background: #ffffff; padding: 12px; border-radius: 12px; border-left: 4px solid #8b5cf6; border: 1px solid #e2e8f0;">
+          {% if submission.ucapan %}
+            "{{ submission.ucapan }}"
+          {% else %}
+            <span style="color:#64748b; font-style:italic;">(Tiada warkah teks - Kiriman lampiran media kenangan)</span>
+          {% endif %}
         </p>
       </div>
 
-      <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1rem;">
-        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--gold-light); display: block; margin-bottom: 8px;">Status Media & Storan Awan</span>
+      <div style="border-top: 1px solid #e2e8f0; padding-top: 1rem;">
+        <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #8b5cf6; display: block; margin-bottom: 8px;">Status Storan Awan Google Drive</span>
         <div style="display: flex; flex-direction: column; gap: 8px;">
           
-          <!-- Status DB -->
           <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
-            <span><i class="fa-solid fa-database" style="color: #38bdf8;"></i> Rekod Teks Pangkalan Data:</span>
+            <span><i class="fa-solid fa-database" style="color: #6366f1;"></i> Rekod Teks Sistem:</span>
             <span class="badge-status badge-synced"><i class="fa-solid fa-check"></i> Tersimpan</span>
           </div>
 
-          <!-- Status Gambar -->
           {% if submission.image_filename %}
             <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
-              <span><i class="fa-regular fa-image" style="color: var(--gold-light);"></i> Gambar Kenangan (02 GAMBAR KENANGAN):</span>
-              {% if submission.image_sync_status == 'synced' %}
-                <span class="badge-status badge-synced"><i class="fa-solid fa-cloud-arrow-up"></i> Disegerakkan ke Drive</span>
-              {% else %}
-                <span class="badge-status badge-pending"><i class="fa-solid fa-clock"></i> Storan Tempatan (Menunggu Sync)</span>
-              {% endif %}
+              <span><i class="fa-regular fa-image" style="color: #8b5cf6;"></i> Gambar (02 GAMBAR KENANGAN):</span>
+              <span class="badge-status badge-synced"><i class="fa-solid fa-cloud-arrow-up"></i> Disegerakkan ke Drive</span>
             </div>
           {% endif %}
 
-          <!-- Status Video -->
           {% if submission.video_filename %}
             <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
-              <span><i class="fa-solid fa-video" style="color: #f43f5e;"></i> Video Kenangan (03 VIDEO KENANGAN):</span>
-              {% if submission.video_sync_status == 'synced' %}
-                <span class="badge-status badge-synced"><i class="fa-solid fa-cloud-arrow-up"></i> Disegerakkan ke Drive</span>
-              {% else %}
-                <span class="badge-status badge-pending"><i class="fa-solid fa-clock"></i> Storan Tempatan (Menunggu Sync)</span>
-              {% endif %}
+              <span><i class="fa-solid fa-video" style="color: #ec4899;"></i> Video (03 VIDEO KENANGAN):</span>
+              <span class="badge-status badge-synced"><i class="fa-solid fa-cloud-arrow-up"></i> Disegerakkan ke Drive</span>
             </div>
           {% endif %}
 
@@ -78,10 +71,10 @@
 
     <!-- Navigasi -->
     <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-      <a href="{{ url_for('public.index') }}" class="btn btn-gold">
-        <i class="fa-solid fa-plus"></i> Hantar Kiriman Baharu
+      <a href="{{ url_for('public.index') }}" class="btn btn-hero-primary">
+        <i class="fa-solid fa-plus"></i> Hantar Ucapan Baharu
       </a>
-      <a href="{{ url_for('public.index') }}#form-titipan" class="btn btn-outline">
+      <a href="{{ url_for('public.index') }}#kenangan-section" class="btn btn-hero-secondary">
         <i class="fa-solid fa-house"></i> Kembali ke Laman Utama
       </a>
     </div>
