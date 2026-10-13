@@ -3,7 +3,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Auto-dismiss alerts after 6 seconds
+  // Auto-dismiss alerts selepas 6 saat
   const alerts = document.querySelectorAll('.alert');
   alerts.forEach(alert => {
     setTimeout(() => {
@@ -13,45 +13,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 6000);
   });
 
-  // Setup drag and drop for upload dropzones
-  setupDropzone('dropzone-gambar', 'gambar');
-  setupDropzone('dropzone-video', 'video');
+  // Mulakan pemasa detik (Countdown ke 23 Oktober 2026)
+  initCountdown();
 });
 
-function setupDropzone(dropzoneId, inputId) {
-  const dropzone = document.getElementById(dropzoneId);
-  const input = document.getElementById(inputId);
-  if (!dropzone || !input) return;
+/**
+ * COUNTDOWN TIMER KE 23 OKTOBER 2026
+ * Mengira detik hari, jam, minit, dan saat menjelang persaraan KP JDN
+ */
+function initCountdown() {
+  const targetDate = new Date("2026-10-23T00:00:00+08:00").getTime();
 
-  ['dragenter', 'dragover'].forEach(eventName => {
-    dropzone.addEventListener(eventName, (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      dropzone.style.borderColor = 'var(--gold-primary)';
-      dropzone.style.background = 'rgba(212, 175, 55, 0.1)';
-    }, false);
-  });
+  function update() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
 
-  ['dragleave', 'drop'].forEach(eventName => {
-    dropzone.addEventListener(eventName, (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      dropzone.style.borderColor = 'rgba(212, 175, 55, 0.35)';
-      dropzone.style.background = 'rgba(14, 23, 47, 0.6)';
-    }, false);
-  });
+    const elDays = document.getElementById("cd-days");
+    const elHours = document.getElementById("cd-hours");
+    const elMinutes = document.getElementById("cd-minutes");
+    const elSeconds = document.getElementById("cd-seconds");
+    const elNav = document.getElementById("nav-countdown-text");
 
-  dropzone.addEventListener('drop', (e) => {
-    const dt = e.dataTransfer;
-    const files = dt.files;
-    if (files.length > 0) {
-      input.files = files;
-      // Trigger appropriate preview
-      if (inputId === 'gambar') {
-        previewImage(input);
-      } else if (inputId === 'video') {
-        previewVideo(input);
-      }
+    if (distance <= 0) {
+      if (elDays) elDays.innerText = "00";
+      if (elHours) elHours.innerText = "00";
+      if (elMinutes) elMinutes.innerText = "00";
+      if (elSeconds) elSeconds.innerText = "00";
+      if (elNav) elNav.innerText = "Hari Persaraan Telah Tiba";
+      return;
     }
-  });
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    const pad = (n) => String(n).padStart(2, "0");
+
+    if (elDays) elDays.innerText = pad(days);
+    if (elHours) elHours.innerText = pad(hours);
+    if (elMinutes) elMinutes.innerText = pad(minutes);
+    if (elSeconds) elSeconds.innerText = pad(seconds);
+
+    if (elNav) {
+      elNav.innerText = `${days}h ${pad(hours)}j ${pad(minutes)}m`;
+    }
+  }
+
+  update();
+  setInterval(update, 1000);
 }
