@@ -132,6 +132,483 @@
 </section>
 
 <!-- ====================================================================
+     SEKSYEN 34 TAHUN MENABUR BAKTI: PENCAPAIAN & LEGASI KP JDN
+     ==================================================================== -->
+<section class="pencapaian-showcase-section" id="pencapaian-legasi">
+  <div class="container">
+    
+    <!-- Header Pencapaian -->
+    <div class="pencapaian-header">
+      <div class="pencapaian-badge-pill">
+        <i class="fa-solid fa-medal"></i> 34 Tahun Menabur Bakti (1992 – 2026)
+      </div>
+      <h2 class="pencapaian-title">
+        Pencapaian &amp; <span>Legasi Kegemilangan</span>
+      </h2>
+      <p class="pencapaian-desc">
+        Menjejaki 34 tahun dedikasi kepimpinan, pengiktirafan kebangsaan, anugerah teknologi dan legasi transformasi digital YBrs. Ts. Nik Zalbiha binti Nik Mat dalam memacu kemajuan ICT sektor awam Malaysia.
+      </p>
+    </div>
+
+    <!-- Navigasi Tab Interaktif -->
+    <div class="pencapaian-nav-tabs">
+      <button type="button" class="pencapaian-tab-btn active" onclick="switchPencapaianTab('tab-anugerah', this)">
+        <i class="fa-solid fa-trophy"></i> Anugerah &amp; Pengiktirafan
+      </button>
+      <button type="button" class="pencapaian-tab-btn" onclick="switchPencapaianTab('tab-timeline', this)">
+        <i class="fa-solid fa-timeline"></i> Garis Masa Kerjaya (1992 – 2026)
+      </button>
+      <button type="button" class="pencapaian-tab-btn" onclick="switchPencapaianTab('tab-legasi', this)">
+        <i class="fa-solid fa-cubes-stacked"></i> 4 Teras Legasi Digital
+      </button>
+    </div>
+
+    <!-- ========================================================
+         TAB 1: ANUGERAH & PENGIKTIRAFAN (6 BERGAMBAR + LENCANA)
+         ======================================================== -->
+    <div class="pencapaian-panel active" id="tab-anugerah">
+      <div class="anugerah-grid">
+
+        <!-- 1. Johan Mangku Negara (J.M.N.) - BERGAMBAR -->
+        <div class="anugerah-card">
+          <div class="anugerah-media-wrap" onclick="openPencapaianModal('{{ url_for('static', filename='images/pencapaian/anugerah_jmn_2026.jpg') }}', 'Darjah Kebesaran Johan Mangku Negara (J.M.N.) - 1 Jun 2026')">
+            <img src="{{ url_for('static', filename='images/pencapaian/anugerah_jmn_2026.jpg') }}" alt="Johan Mangku Negara (J.M.N.)">
+            <span class="anugerah-category-tag tag-kebangsaan">Kebangsaan</span>
+            <span class="anugerah-zoom-badge"><i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Poster</span>
+          </div>
+          <div class="anugerah-card-body">
+            <div class="anugerah-tarikh-row">
+              <i class="fa-regular fa-calendar-check"></i> 1 Jun 2026
+            </div>
+            <h3 class="anugerah-nama">Johan Mangku Negara (J.M.N.)</h3>
+            <div class="anugerah-pemberi">
+              <i class="fa-solid fa-crown" style="color: #eab308;"></i> Darjah Kebesaran Persekutuan
+            </div>
+            <p class="anugerah-keterangan">
+              Penganugerahan sempena Sambutan Ulang Tahun Hari Keputeraan Rasmi KDYMM Seri Paduka Baginda Yang di-Pertuan Agong Sultan Ibrahim.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2. Pelantikan Ketua Pengarah JDN - BERGAMBAR -->
+        <div class="anugerah-card">
+          <div class="anugerah-media-wrap" onclick="openPencapaianModal('{{ url_for('static', filename='images/pencapaian/pelantikan_kp_jdn_2025.jpg') }}', 'Pelantikan Ketua Pengarah Jabatan Digital Negara - 5 Jun 2025')">
+            <img src="{{ url_for('static', filename='images/pencapaian/pelantikan_kp_jdn_2025.jpg') }}" alt="Pelantikan Ketua Pengarah JDN">
+            <span class="anugerah-category-tag tag-kepimpinan">Kemuncak Kepimpinan</span>
+            <span class="anugerah-zoom-badge"><i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Poster</span>
+          </div>
+          <div class="anugerah-card-body">
+            <div class="anugerah-tarikh-row">
+              <i class="fa-regular fa-calendar-check"></i> 5 Jun 2025
+            </div>
+            <h3 class="anugerah-nama">Pelantikan Ketua Pengarah JDN</h3>
+            <div class="anugerah-pemberi">
+              <i class="fa-solid fa-building-columns" style="color: #0284c7;"></i> Jabatan Digital Negara
+            </div>
+            <p class="anugerah-keterangan">
+              Kemuncak kepimpinan perkhidmatan menerajui Jabatan Digital Negara bagi memacu agenda pendigitalan perkhidmatan awam dan AI negara.
+            </p>
+          </div>
+        </div>
+
+        <!-- 3. Woman in Tech Leadership Award - BERGAMBAR -->
+        <div class="anugerah-card">
+          <div class="anugerah-media-wrap" onclick="openPencapaianModal('{{ url_for('static', filename='images/pencapaian/woman_in_tech_2026.jpg') }}', 'Woman in Tech Leadership Award - 13 Mei 2026')">
+            <img src="{{ url_for('static', filename='images/pencapaian/woman_in_tech_2026.jpg') }}" alt="Woman in Tech Leadership Award">
+            <span class="anugerah-category-tag tag-antarabangsa">Teknologi &amp; Industri</span>
+            <span class="anugerah-zoom-badge"><i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Poster</span>
+          </div>
+          <div class="anugerah-card-body">
+            <div class="anugerah-tarikh-row">
+              <i class="fa-regular fa-calendar-check"></i> 13 Mei 2026
+            </div>
+            <h3 class="anugerah-nama">Woman in Tech Leadership Award</h3>
+            <div class="anugerah-pemberi">
+              <i class="fa-solid fa-award" style="color: #9333ea;"></i> DCCI 2026 Malaysia
+            </div>
+            <p class="anugerah-keterangan">
+              Diterima sempena DCCI 2026 Malaysia di Pusat Konvensyen Kuala Lumpur (KLCC) atas kepimpinan wanita terunggul dalam inovasi teknologi digital.
+            </p>
+          </div>
+        </div>
+
+        <!-- 4. Digital Government Leadership Award (MIMOS) - BERGAMBAR -->
+        <div class="anugerah-card">
+          <div class="anugerah-media-wrap" onclick="openPencapaianModal('{{ url_for('static', filename='images/pencapaian/anugerah_mimos_2026.jpg') }}', 'Digital Government Leadership Award - 29 September 2026')">
+            <img src="{{ url_for('static', filename='images/pencapaian/anugerah_mimos_2026.jpg') }}" alt="Digital Government Leadership Award">
+            <span class="anugerah-category-tag tag-inovasi">Kepimpinan Digital</span>
+            <span class="anugerah-zoom-badge"><i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Foto</span>
+          </div>
+          <div class="anugerah-card-body">
+            <div class="anugerah-tarikh-row">
+              <i class="fa-regular fa-calendar-check"></i> 29 September 2026
+            </div>
+            <h3 class="anugerah-nama">Digital Government Leadership Award</h3>
+            <div class="anugerah-pemberi">
+              <i class="fa-solid fa-microchip" style="color: #059669;"></i> MIMOS
+            </div>
+            <p class="anugerah-keterangan">
+              Pengiktirafan kecemerlangan dalam memacu kerajaan digital, kepimpinan inovatif dan pemodenan aplikasi strategik merentas sektor awam.
+            </p>
+          </div>
+        </div>
+
+        <!-- 5. Darjah Kebesaran Negeri Kelantan (P.S.K.) - BERGAMBAR -->
+        <div class="anugerah-card">
+          <div class="anugerah-media-wrap" onclick="openPencapaianModal('{{ url_for('static', filename='images/pencapaian/darjah_kelantan_psk_2025.jpg') }}', 'Darjah Kebesaran Setia Mahkota Kelantan Yang Amat Terbilang (P.S.K.) - 29 September 2025')">
+            <img src="{{ url_for('static', filename='images/pencapaian/darjah_kelantan_psk_2025.jpg') }}" alt="Darjah Kebesaran P.S.K. Kelantan">
+            <span class="anugerah-category-tag tag-negeri">Kebesaran Negeri</span>
+            <span class="anugerah-zoom-badge"><i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Poster</span>
+          </div>
+          <div class="anugerah-card-body">
+            <div class="anugerah-tarikh-row">
+              <i class="fa-regular fa-calendar-check"></i> 29 September 2025
+            </div>
+            <h3 class="anugerah-nama">Paduka Setia Mahkota Kelantan (P.S.K.)</h3>
+            <div class="anugerah-pemberi">
+              <i class="fa-solid fa-crown" style="color: #b91c1c;"></i> D.Y.M.M. Sultan Kelantan
+            </div>
+            <p class="anugerah-keterangan">
+              Ahli Yang Ketiga (Paduka) bagi Darjah Kebesaran Setia Mahkota Kelantan Yang Amat Terbilang sempena Ulang Tahun Hari Keputeraan Ke-56 Sultan Kelantan.
+            </p>
+          </div>
+        </div>
+
+        <!-- 6. Anugerah Khas Khidmat Cemerlang (JPM) - BERGAMBAR -->
+        <div class="anugerah-card">
+          <div class="anugerah-media-wrap" onclick="openPencapaianModal('{{ url_for('static', filename='images/pencapaian/anugerah_apc_2015.jpg') }}', 'Anugerah Khas Khidmat Cemerlang Jabatan Perdana Menteri - 2015')">
+            <img src="{{ url_for('static', filename='images/pencapaian/anugerah_apc_2015.jpg') }}" alt="Anugerah Khas Khidmat Cemerlang JPM">
+            <span class="anugerah-category-tag tag-cemerlang">Khidmat Cemerlang</span>
+            <span class="anugerah-zoom-badge"><i class="fa-solid fa-magnifying-glass-plus"></i> Lihat Foto</span>
+          </div>
+          <div class="anugerah-card-body">
+            <div class="anugerah-tarikh-row">
+              <i class="fa-regular fa-calendar-check"></i> Tahun 2015
+            </div>
+            <h3 class="anugerah-nama">Anugerah Khas Khidmat Cemerlang</h3>
+            <div class="anugerah-pemberi">
+              <i class="fa-solid fa-star" style="color: #d97706;"></i> Jabatan Perdana Menteri
+            </div>
+            <p class="anugerah-keterangan">
+              Penganugerahan perkhidmatan cemerlang berprestij tinggi di Jabatan Perdana Menteri (JPM) yang disampaikan oleh Ketua Setiausaha Negara (KSN).
+            </p>
+          </div>
+        </div>
+
+        <!-- 7. The DPI 50 List 2026 - LENCANA DIRAJA -->
+        <div class="anugerah-card card-medallion-style">
+          <div class="medallion-header">
+            <div class="medallion-icon-wrap">
+              <i class="fa-solid fa-earth-asia"></i>
+            </div>
+            <span class="anugerah-category-tag tag-antarabangsa">Antarabangsa</span>
+          </div>
+          <div class="anugerah-card-body">
+            <div class="anugerah-tarikh-row">
+              <i class="fa-regular fa-calendar-check"></i> Tahun 2026
+            </div>
+            <h3 class="anugerah-nama">The DPI 50 List 2026</h3>
+            <div class="anugerah-pemberi">
+              <i class="fa-solid fa-globe" style="color: #6366f1;"></i> Pengiktirafan Global
+            </div>
+            <p class="anugerah-keterangan">
+              Tersenarai antara 50 pemimpin sektor awam yang diiktiraf di peringkat antarabangsa atas peranan penting dalam Digital Public Infrastructure.
+            </p>
+          </div>
+        </div>
+
+        <!-- 8. Bentara Setia Mahkota Kelantan (Al-Ibrahim IV) - LENCANA DIRAJA -->
+        <div class="anugerah-card card-medallion-style">
+          <div class="medallion-header">
+            <div class="medallion-icon-wrap">
+              <i class="fa-solid fa-crown"></i>
+            </div>
+            <span class="anugerah-category-tag tag-negeri">Kebesaran Negeri</span>
+          </div>
+          <div class="anugerah-card-body">
+            <div class="anugerah-tarikh-row">
+              <i class="fa-regular fa-calendar-check"></i> Tahun 2015
+            </div>
+            <h3 class="anugerah-nama">Bentara Setia Mahkota Kelantan</h3>
+            <div class="anugerah-pemberi">
+              <i class="fa-solid fa-shield-halved" style="color: #dc2626;"></i> Al-Ibrahim IV &bull; Kelantan
+            </div>
+            <p class="anugerah-keterangan">
+              Pengurniaan Darjah Kebesaran Negeri Kelantan Al-Ibrahim IV atas jasa bakti dan kesetiaan yang dicurahkan.
+            </p>
+          </div>
+        </div>
+
+        <!-- 9. Anugerah Inovasi Jabatan Perdana Menteri - LENCANA DIRAJA -->
+        <div class="anugerah-card card-medallion-style">
+          <div class="medallion-header">
+            <div class="medallion-icon-wrap">
+              <i class="fa-solid fa-lightbulb"></i>
+            </div>
+            <span class="anugerah-category-tag tag-inovasi">Inovasi</span>
+          </div>
+          <div class="anugerah-card-body">
+            <div class="anugerah-tarikh-row">
+              <i class="fa-regular fa-calendar-check"></i> Tahun 2016
+            </div>
+            <h3 class="anugerah-nama">Anugerah Inovasi JPM</h3>
+            <div class="anugerah-pemberi">
+              <i class="fa-solid fa-landmark" style="color: #059669;"></i> Jabatan Perdana Menteri
+            </div>
+            <p class="anugerah-keterangan">
+              Pengiktirafan inisiatif dan cetusan idea inovasi berimpak besar dalam pengurusan sistem teknologi sektor awam.
+            </p>
+          </div>
+        </div>
+
+        <!-- 10. Anugerah Kanchan, Tirana (Ikon Unggul) - LENCANA DIRAJA -->
+        <div class="anugerah-card card-medallion-style">
+          <div class="medallion-header">
+            <div class="medallion-icon-wrap">
+              <i class="fa-solid fa-gem"></i>
+            </div>
+            <span class="anugerah-category-tag tag-kepimpinan">Ikon Unggul</span>
+          </div>
+          <div class="anugerah-card-body">
+            <div class="anugerah-tarikh-row">
+              <i class="fa-regular fa-calendar-check"></i> Tahun 2019
+            </div>
+            <h3 class="anugerah-nama">Anugerah Kanchan, Tirana</h3>
+            <div class="anugerah-pemberi">
+              <i class="fa-solid fa-certificate" style="color: #7c3aed;"></i> MAMPU &bull; Ikon Unggul Bahagian
+            </div>
+            <p class="anugerah-keterangan">
+              Anugerah penghormatan sebagai Ikon Unggul Bahagian atas dedikasi dan inspirasi kepimpinan kepada warga kerja.
+            </p>
+          </div>
+        </div>
+
+        <!-- 11. Anugerah Pekerja & Pegawai Contoh - LENCANA DIRAJA -->
+        <div class="anugerah-card card-medallion-style">
+          <div class="medallion-header">
+            <div class="medallion-icon-wrap">
+              <i class="fa-solid fa-medal"></i>
+            </div>
+            <span class="anugerah-category-tag tag-cemerlang">Pegawai Contoh</span>
+          </div>
+          <div class="anugerah-card-body">
+            <div class="anugerah-tarikh-row">
+              <i class="fa-regular fa-calendar-check"></i> 2003, 2009, 2012
+            </div>
+            <h3 class="anugerah-nama">Pekerja &amp; Pegawai Contoh</h3>
+            <div class="anugerah-pemberi">
+              <i class="fa-solid fa-award" style="color: #d97706;"></i> MINDEF &amp; MAMPU
+            </div>
+            <p class="anugerah-keterangan">
+              Penerima Pekerja Contoh Awam MINDEF (2003), serta Pegawai Contoh MAMPU berturut-turut pada Februari 2009, Ogos 2009, dan Ogos 2012.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================================
+         TAB 2: GARIS MASA PENGALAMAN KERJA (1992 – 2026)
+         ======================================================== -->
+    <div class="pencapaian-panel" id="tab-timeline">
+      <div class="timeline-track-wrap">
+
+        <!-- 1. Ketua Pengarah JDN (2025 - Kini) -->
+        <div class="timeline-row-item highlight-kp">
+          <div class="timeline-marker-pin"></div>
+          <div class="timeline-card-box">
+            <span class="timeline-date-badge"><i class="fa-solid fa-crown"></i> Jun 2025 – Kini</span>
+            <h4 class="timeline-job-title">Ketua Pengarah</h4>
+            <div class="timeline-dept-text">
+              <i class="fa-solid fa-building-columns" style="color: #7c3aed;"></i> Jabatan Digital Negara (JDN)
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Ketua Perunding ICT (2024 - 2025) -->
+        <div class="timeline-row-item">
+          <div class="timeline-marker-pin"></div>
+          <div class="timeline-card-box">
+            <span class="timeline-date-badge"><i class="fa-regular fa-clock"></i> Februari 2024 – Jun 2025</span>
+            <h4 class="timeline-job-title">Ketua Perunding ICT (Pembangunan Sistem)</h4>
+            <div class="timeline-dept-text">
+              <i class="fa-solid fa-building" style="color: #4f46e5;"></i> Bahagian Perundingan ICT, MAMPU
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Perunding ICT (2023 - 2024) -->
+        <div class="timeline-row-item">
+          <div class="timeline-marker-pin"></div>
+          <div class="timeline-card-box">
+            <span class="timeline-date-badge"><i class="fa-regular fa-clock"></i> Januari 2023 – Februari 2024</span>
+            <h4 class="timeline-job-title">Perunding ICT</h4>
+            <div class="timeline-dept-text">
+              <i class="fa-solid fa-building" style="color: #4f46e5;"></i> Bahagian Perundingan ICT, MAMPU
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Pakar Bidang Khusus SME (2020 - 2023) -->
+        <div class="timeline-row-item">
+          <div class="timeline-marker-pin"></div>
+          <div class="timeline-card-box">
+            <span class="timeline-date-badge"><i class="fa-regular fa-clock"></i> Mac 2020 – Januari 2023</span>
+            <h4 class="timeline-job-title">Pakar Bidang Khusus (SME)</h4>
+            <div class="timeline-dept-text">
+              <i class="fa-solid fa-laptop-code" style="color: #4f46e5;"></i> Unit Pembangunan Sistem, Bahagian Perundingan ICT, MAMPU
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Ketua Penolong Pengarah (2018 - 2020) -->
+        <div class="timeline-row-item">
+          <div class="timeline-marker-pin"></div>
+          <div class="timeline-card-box">
+            <span class="timeline-date-badge"><i class="fa-regular fa-clock"></i> Januari 2018 – Februari 2020</span>
+            <h4 class="timeline-job-title">Ketua Penolong Pengarah, Perunding Pembangunan Sistem</h4>
+            <div class="timeline-dept-text">
+              <i class="fa-solid fa-building" style="color: #4f46e5;"></i> Bahagian Perundingan ICT, MAMPU
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Pasukan Teras ICT (2008 - 2018) -->
+        <div class="timeline-row-item">
+          <div class="timeline-marker-pin"></div>
+          <div class="timeline-card-box">
+            <span class="timeline-date-badge"><i class="fa-regular fa-clock"></i> Julai 2008 – Januari 2018</span>
+            <h4 class="timeline-job-title">Pasukan Projek Proof-of-Concept</h4>
+            <div class="timeline-dept-text">
+              <i class="fa-solid fa-network-wired" style="color: #4f46e5;"></i> Pasukan Teras ICT, MAMPU
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. Penganalisis Sistem MINDEF (2006 - 2008) -->
+        <div class="timeline-row-item">
+          <div class="timeline-marker-pin"></div>
+          <div class="timeline-card-box">
+            <span class="timeline-date-badge"><i class="fa-regular fa-clock"></i> Jun 2006 – Julai 2008</span>
+            <h4 class="timeline-job-title">Penganalisis Sistem</h4>
+            <div class="timeline-dept-text">
+              <i class="fa-solid fa-shield" style="color: #4f46e5;"></i> Bahagian Pengurusan Maklumat, Kementerian Pertahanan Malaysia
+            </div>
+          </div>
+        </div>
+
+        <!-- 8. Cuti Belajar Sarjana (2004 - 2006) -->
+        <div class="timeline-row-item">
+          <div class="timeline-marker-pin"></div>
+          <div class="timeline-card-box">
+            <span class="timeline-date-badge"><i class="fa-solid fa-graduation-cap"></i> November 2004 – Mei 2006</span>
+            <h4 class="timeline-job-title">Cuti Belajar Ijazah Sarjana</h4>
+            <div class="timeline-dept-text">
+              <i class="fa-solid fa-book-open" style="color: #64748b;"></i> Peningkatan Kesarjanaan &amp; Kepakaran Akademik
+            </div>
+          </div>
+        </div>
+
+        <!-- 9. Penganalisis Sistem MINDEF (1999 - 2004) -->
+        <div class="timeline-row-item">
+          <div class="timeline-marker-pin"></div>
+          <div class="timeline-card-box">
+            <span class="timeline-date-badge"><i class="fa-regular fa-clock"></i> Ogos 1999 – Oktober 2004</span>
+            <h4 class="timeline-job-title">Penganalisis Sistem</h4>
+            <div class="timeline-dept-text">
+              <i class="fa-solid fa-shield" style="color: #4f46e5;"></i> Bahagian Teknologi Maklumat, Kementerian Pertahanan
+            </div>
+          </div>
+        </div>
+
+        <!-- 10. Penganalisis Sistem Imigresen (1992 - 1999) -->
+        <div class="timeline-row-item">
+          <div class="timeline-marker-pin"></div>
+          <div class="timeline-card-box">
+            <span class="timeline-date-badge"><i class="fa-solid fa-seedling"></i> Jun 1992 – Julai 1999</span>
+            <h4 class="timeline-job-title">Penganalisis Sistem (Titik Permulaan Khidmat Bakti)</h4>
+            <div class="timeline-dept-text">
+              <i class="fa-solid fa-passport" style="color: #4f46e5;"></i> Bahagian Sistem Maklumat dan Rekod, Jabatan Imigresen
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================================
+         TAB 3: 4 TERAS LEGASI TRANSFORMASI DIGITAL
+         ======================================================== -->
+    <div class="pencapaian-panel" id="tab-legasi">
+      <div class="legasi-pillars-grid">
+
+        <!-- Teras 1: DDMS 2.0 -->
+        <div class="legasi-pillar-card" style="--pillar-color: #6366f1; --pillar-bg: #eef2ff;">
+          <div class="pillar-icon-box">
+            <i class="fa-solid fa-folder-tree"></i>
+          </div>
+          <span class="pillar-tag">Pengurusan Rekod</span>
+          <h4 class="pillar-title">DDMS 2.0</h4>
+          <p class="pillar-summary">
+            Memperkasa sistem pengurusan dokumen digital kerajaan secara bersepadu serta memperluas penggunaannya secara menyeluruh merentas kementerian dan agensi.
+          </p>
+        </div>
+
+        <!-- Teras 2: MyGDX 2.0 -->
+        <div class="legasi-pillar-card" style="--pillar-color: #0284c7; --pillar-bg: #f0f9ff;">
+          <div class="pillar-icon-box">
+            <i class="fa-solid fa-network-wired"></i>
+          </div>
+          <span class="pillar-tag">Integrasi Maklumat</span>
+          <h4 class="pillar-title">MyGDX 2.0</h4>
+          <p class="pillar-summary">
+            Mengukuhkan ekosistem perkongsian data selamat antara agensi bagi mempercepat penyampaian perkhidmatan digital rakyat yang lebih cekap dan responsif.
+          </p>
+        </div>
+
+        <!-- Teras 3: PPDSA -->
+        <div class="legasi-pillar-card" style="--pillar-color: #059669; --pillar-bg: #ecfdf5;">
+          <div class="pillar-icon-box">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <span class="pillar-tag">Tadbir Urus Data</span>
+          <h4 class="pillar-title">PPDSA</h4>
+          <p class="pillar-summary">
+            Memacu tadbir urus dan pendigitalan data sektor awam secara teratur, beretika serta mematuhi piawaian keselamatan maklumat peringkat kebangsaan.
+          </p>
+        </div>
+
+        <!-- Teras 4: Modal Insan ICT -->
+        <div class="legasi-pillar-card" style="--pillar-color: #d97706; --pillar-bg: #fffbeb;">
+          <div class="pillar-icon-box">
+            <i class="fa-solid fa-user-graduate"></i>
+          </div>
+          <span class="pillar-tag">Pembangunan Modal Insan</span>
+          <h4 class="pillar-title">Kepakaran ICT</h4>
+          <p class="pillar-summary">
+            Memperkukuh pembangunan bakat, kepimpinan digital serta kepakaran teknologi penjawat awam demi kelestarian masa depan digital kerajaan.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Modal Lightbox Zum Gambar Pencapaian -->
+<div id="pencapaianLightbox" class="pencapaian-lightbox-modal" onclick="closePencapaianModal(event)">
+  <div class="pencapaian-lightbox-content" onclick="event.stopPropagation()">
+    <button type="button" class="pencapaian-lightbox-close" onclick="closePencapaianModal(event)" aria-label="Tutup">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <img id="pencapaianLightboxImg" src="" alt="Pratonton Gambar Pencapaian" class="pencapaian-lightbox-img">
+    <div id="pencapaianLightboxCaption" class="pencapaian-lightbox-caption"></div>
+  </div>
+</div>
+
+<!-- ====================================================================
      MAIN CONTENT (DUAL LAYOUT: BORANG & PAPARAN UCAPAN)
      ==================================================================== -->
 <section class="content-section" id="form-titipan">
@@ -520,5 +997,46 @@
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan & Menyegerakkan Titipan...';
     return true;
   }
+
+  // ==========================================
+  // FUNGSI TAB & LIGHTBOX PENCAPAIAN KP
+  // ==========================================
+  function switchPencapaianTab(tabId, btn) {
+    document.querySelectorAll('.pencapaian-tab-btn').forEach(function(b) {
+      b.classList.remove('active');
+    });
+    document.querySelectorAll('.pencapaian-panel').forEach(function(p) {
+      p.classList.remove('active');
+    });
+    if (btn) btn.classList.add('active');
+    var target = document.getElementById(tabId);
+    if (target) target.classList.add('active');
+  }
+
+  function openPencapaianModal(imgSrc, title) {
+    var modal = document.getElementById('pencapaianLightbox');
+    var img = document.getElementById('pencapaianLightboxImg');
+    var caption = document.getElementById('pencapaianLightboxCaption');
+    if (modal && img && caption) {
+      img.src = imgSrc;
+      caption.innerText = title;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closePencapaianModal(event) {
+    var modal = document.getElementById('pencapaianLightbox');
+    if (modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closePencapaianModal();
+    }
+  });
 </script>
 {% endblock %}
