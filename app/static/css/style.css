@@ -2392,3 +2392,566 @@ textarea.form-control-custom {
     font-size: 0.92rem !important;
   }
 }
+
+/* ====================================================================
+   SEKSYEN 34 TAHUN MENABUR BAKTI: PENCAPAIAN & LEGASI KP JDN
+   ==================================================================== */
+.pencapaian-showcase-section {
+  padding: 4.5rem 0 5rem;
+  background: linear-gradient(180deg, #f8fafc 0%, #edf4fc 50%, #f1f5f9 100%);
+  position: relative;
+  border-top: 1px solid #e2e8f0;
+}
+
+.pencapaian-header {
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto 3rem;
+  padding: 0 1rem;
+}
+
+.pencapaian-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #92400e;
+  border: 1px solid #fcd34d;
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+}
+
+.pencapaian-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.35rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.25;
+  margin-bottom: 0.85rem;
+  letter-spacing: -0.02em;
+}
+
+.pencapaian-title span {
+  background: linear-gradient(135deg, #7c3aed 0%, #4338ca 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.pencapaian-desc {
+  font-size: 1.05rem;
+  color: #475569;
+  line-height: 1.65;
+}
+
+/* Tabs Navigasi */
+.pencapaian-nav-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 2.75rem;
+  flex-wrap: wrap;
+  padding: 0 1rem;
+}
+
+.pencapaian-tab-btn {
+  padding: 11px 24px;
+  border-radius: 9999px;
+  border: 1.5px solid #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+}
+
+.pencapaian-tab-btn:hover {
+  border-color: #818cf8;
+  color: #4f46e5;
+  transform: translateY(-2px);
+}
+
+.pencapaian-tab-btn.active {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #ffffff;
+  border-color: #4f46e5;
+  box-shadow: 0 8px 20px -3px rgba(79, 70, 229, 0.35);
+}
+
+.pencapaian-tab-btn.active i {
+  color: #fde047;
+}
+
+/* Tab Panels */
+.pencapaian-panel {
+  display: none;
+}
+
+.pencapaian-panel.active {
+  display: block;
+  animation: fadeInPencapaian 0.4s ease forwards;
+}
+
+@keyframes fadeInPencapaian {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- TAB 1: GRID ANUGERAH & PENGIKTIRAFAN --- */
+.anugerah-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.75rem;
+}
+
+/* Kad Anugerah Bergambar */
+.anugerah-card {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.anugerah-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 35px -8px rgba(79, 70, 229, 0.15);
+  border-color: #c7d2fe;
+}
+
+.anugerah-media-wrap {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+  background: #f1f5f9;
+  cursor: pointer;
+}
+
+.anugerah-media-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.45s ease;
+}
+
+.anugerah-card:hover .anugerah-media-wrap img {
+  transform: scale(1.05);
+}
+
+.anugerah-zoom-badge {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(6px);
+  color: #ffffff;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+.anugerah-category-tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.tag-kebangsaan { background: #1e1b4b; color: #fde047; border: 1px solid #eab308; }
+.tag-kepimpinan { background: #0369a1; color: #ffffff; }
+.tag-negeri { background: #991b1b; color: #fef08a; border: 1px solid #facc15; }
+.tag-antarabangsa { background: #6b21a8; color: #ffffff; }
+.tag-inovasi { background: #047857; color: #ffffff; }
+.tag-cemerlang { background: #b45309; color: #ffffff; }
+
+.anugerah-card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.anugerah-tarikh-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.83rem;
+  color: #6366f1;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.anugerah-nama {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.35;
+  margin-bottom: 0.45rem;
+}
+
+.anugerah-pemberi {
+  font-size: 0.88rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.anugerah-keterangan {
+  font-size: 0.92rem;
+  color: #334155;
+  line-height: 1.55;
+  margin-top: auto;
+}
+
+/* Kad Anugerah Lencana Diraja (Tiada Gambar) */
+.anugerah-card.card-medallion-style {
+  background: linear-gradient(145deg, #ffffff 0%, #fdfbf7 100%);
+  border: 1.5px solid #fde68a;
+  box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.08);
+  position: relative;
+}
+
+.anugerah-card.card-medallion-style:hover {
+  border-color: #f59e0b;
+  box-shadow: 0 18px 35px -8px rgba(245, 158, 11, 0.2);
+}
+
+.medallion-header {
+  padding: 1.75rem 1.5rem 1rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.medallion-icon-wrap {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 1.5px solid #fcd34d;
+  color: #b45309;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  box-shadow: 0 6px 14px rgba(245, 158, 11, 0.18);
+}
+
+.anugerah-card.card-medallion-style .anugerah-card-body {
+  padding-top: 0;
+}
+
+/* --- TAB 2: GARIS MASA PENGALAMAN KERJA (1992 - 2026) --- */
+.timeline-track-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  padding: 1.5rem 0 1rem;
+}
+
+.timeline-track-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 28px;
+  width: 3px;
+  background: linear-gradient(180deg, #6366f1 0%, #a855f7 50%, #e2e8f0 100%);
+  border-radius: 9999px;
+}
+
+.timeline-row-item {
+  position: relative;
+  padding-left: 70px;
+  margin-bottom: 2.25rem;
+}
+
+.timeline-row-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-marker-pin {
+  position: absolute;
+  left: 17px;
+  top: 4px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 4px solid #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+  z-index: 2;
+  transition: all 0.25s ease;
+}
+
+.timeline-row-item.highlight-kp .timeline-marker-pin {
+  border-color: #f59e0b;
+  background: #fde047;
+  box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.25);
+  width: 28px;
+  height: 28px;
+  left: 15.5px;
+}
+
+.timeline-row-item:hover .timeline-marker-pin {
+  transform: scale(1.2);
+}
+
+.timeline-card-box {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  padding: 1.35rem 1.6rem;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  transition: all 0.25s ease;
+}
+
+.timeline-row-item:hover .timeline-card-box {
+  border-color: #c7d2fe;
+  box-shadow: 0 10px 24px -4px rgba(79, 70, 229, 0.1);
+  transform: translateX(4px);
+}
+
+.timeline-row-item.highlight-kp .timeline-card-box {
+  background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+  border: 1.5px solid #c084fc;
+  box-shadow: 0 8px 24px -4px rgba(168, 85, 247, 0.16);
+}
+
+.timeline-date-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #4f46e5;
+  background: #eef2ff;
+  padding: 3px 12px;
+  border-radius: 9999px;
+  margin-bottom: 0.6rem;
+}
+
+.timeline-row-item.highlight-kp .timeline-date-badge {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.timeline-job-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 0.35rem;
+}
+
+.timeline-dept-text {
+  font-size: 0.92rem;
+  color: #64748b;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* --- TAB 3: 4 TERAS LEGASI TRANSFORMASI DIGITAL --- */
+.legasi-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 1.6rem;
+}
+
+.legasi-pillar-card {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  padding: 2rem 1.75rem;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.legasi-pillar-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--pillar-color, #6366f1);
+}
+
+.legasi-pillar-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 36px -6px rgba(15, 23, 42, 0.08);
+}
+
+.pillar-icon-box {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: var(--pillar-bg, #eef2ff);
+  color: var(--pillar-color, #4f46e5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.pillar-tag {
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 0.35rem;
+}
+
+.pillar-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 0.75rem;
+}
+
+.pillar-summary {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.6;
+}
+
+/* Modal Lightbox Gambar Pencapaian */
+.pencapaian-lightbox-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(8px);
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: modalFadeIn 0.25s ease;
+}
+
+.pencapaian-lightbox-modal.active {
+  display: flex;
+}
+
+.pencapaian-lightbox-content {
+  position: relative;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pencapaian-lightbox-img {
+  max-width: 100%;
+  max-height: 76vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.pencapaian-lightbox-caption {
+  margin-top: 1rem;
+  color: #ffffff;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.pencapaian-lightbox-close {
+  position: absolute;
+  top: -45px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.pencapaian-lightbox-close:hover {
+  background: #ef4444;
+  transform: rotate(90deg);
+}
+
+/* Responsiveness Pencapaian */
+@media (max-width: 768px) {
+  .pencapaian-title {
+    font-size: 1.85rem;
+  }
+  .pencapaian-desc {
+    font-size: 0.95rem;
+  }
+  .anugerah-grid {
+    grid-template-columns: 1fr;
+  }
+  .timeline-track-wrap::before {
+    left: 20px;
+  }
+  .timeline-marker-pin {
+    left: 10px;
+    width: 22px;
+    height: 22px;
+  }
+  .timeline-row-item.highlight-kp .timeline-marker-pin {
+    left: 9px;
+    width: 24px;
+    height: 24px;
+  }
+  .timeline-row-item {
+    padding-left: 50px;
+  }
+  .timeline-card-box {
+    padding: 1.1rem 1.25rem;
+  }
+  .timeline-job-title {
+    font-size: 1.05rem;
+  }
+}
