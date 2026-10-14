@@ -13,6 +13,7 @@ class Submission(db.Model):
     ucapan = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     status = db.Column(db.String(20), default="active")  # active, archived, reviewed
+    data_type = db.Column(db.String(20), default="official")  # 'test' atau 'official' (pengasingan selamat)
 
     # Fail Gambar
     image_filename = db.Column(db.String(255), nullable=True)
@@ -39,6 +40,7 @@ class Submission(db.Model):
             "ucapan": self.ucapan,
             "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S") if self.created_at else None,
             "status": self.status,
+            "data_type": self.data_type or "official",
             "image": {
                 "filename": self.image_filename,
                 "sync_status": self.image_sync_status,

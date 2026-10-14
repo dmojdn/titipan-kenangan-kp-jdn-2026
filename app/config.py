@@ -37,12 +37,12 @@ class Config:
     GOOGLE_TOKEN_FILE = BASE_DIR / (os.getenv("GOOGLE_TOKEN_FILE") or "token.json").strip()
     GOOGLE_CREDENTIALS_FILE = BASE_DIR / "credentials.json"
 
-    # 6 Folder Utama yang dirancang di Google Drive
+    # 6 Folder Utama Rasmi Arkib di Google Drive
     DRIVE_SUBFOLDERS = [
-        "01 UCAPAN & DATA",
+        "01 TEKS UCAPAN",
         "02 GAMBAR KENANGAN",
         "03 VIDEO KENANGAN",
-        "04 BUKU KENANGAN",
-        "05 GALERI VIDEO UNTUK KP",
-        "06 BACKUP LENGKAP"
+        "04 DATABASE BACKUP",
+        "05 MANIFEST & LAPORAN BACKUP",
+        "06 PDF BUKU KENANGAN"
     ]
