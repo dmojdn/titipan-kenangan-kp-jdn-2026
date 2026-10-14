@@ -4,7 +4,7 @@
    Exact match to the official retirement tribute UI design
    ==================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Courgette&family=Alex+Brush&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400;1,600&display=swap');
 
 :root {
   /* Color Palette */
@@ -44,10 +44,17 @@
   --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-* {
+* , *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 body {
@@ -74,22 +81,26 @@ h1, h2, h3, h4, .font-heading {
 
 .container {
   width: 100%;
-  max-width: 1220px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 1.25rem;
+  padding: 0 clamp(1rem, 2.5vw, 2.8rem);
+  box-sizing: border-box;
 }
 
 /* ====================================================================
-   NAVBAR (HEADER)
+   NAVBAR (HEADER) - RESPONSIVE DESKTOP & MOBILE
    ==================================================================== */
 .site-header {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   position: sticky;
   top: 0;
-  z-index: 60;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  z-index: 100;
+  width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.05);
+  transition: all 0.3s ease;
 }
 
 .nav-wrap {
@@ -97,6 +108,8 @@ h1, h2, h3, h4, .font-heading {
   justify-content: space-between;
   align-items: center;
   height: 72px;
+  position: relative;
+  width: 100%;
 }
 
 .brand-link {
@@ -104,35 +117,94 @@ h1, h2, h3, h4, .font-heading {
   align-items: center;
   gap: 12px;
   text-decoration: none;
+  min-width: 0;
+  flex-shrink: 1;
 }
 
-.brand-heart-icon {
-  width: 42px;
-  height: 42px;
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #f59e0b 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  font-size: 1.25rem;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+.brand-rose-icon {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(244, 114, 182, 0.45));
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  flex-shrink: 0;
+}
+
+.brand-link:hover .brand-rose-icon {
+  transform: scale(1.12) rotate(6deg);
+}
+
+.brand-text {
+  min-width: 0;
 }
 
 .brand-text h1 {
-  font-size: 1.15rem;
+  font-size: clamp(0.95rem, 2.8vw, 1.15rem);
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 1.2;
   color: #1e1b4b;
+  white-space: nowrap;
 }
 
 .brand-text span {
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   font-weight: 700;
   color: #64748b;
   display: block;
+  white-space: nowrap;
+  margin-top: 1px;
+}
+
+/* Butang Hamburger Mobile */
+.nav-mobile-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 40px;
+  height: 38px;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 9px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+  z-index: 102;
+}
+
+.nav-mobile-toggle:hover {
+  background: #f8fafc;
+  border-color: #c4b5fd;
+}
+
+.hamburger-bar {
+  display: block;
+  width: 100%;
+  height: 2.5px;
+  background: #4338ca;
+  border-radius: 9999px;
+  transition: all 0.25s ease;
+}
+
+.nav-mobile-toggle.active .hamburger-bar:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.nav-mobile-toggle.active .hamburger-bar:nth-child(2) {
+  opacity: 0;
+}
+.nav-mobile-toggle.active .hamburger-bar:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Container Menu Navigasi */
+.nav-menu-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
 }
 
 .nav-links {
@@ -153,6 +225,7 @@ h1, h2, h3, h4, .font-heading {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
 }
 
 .nav-item-link:hover {
@@ -168,7 +241,20 @@ h1, h2, h3, h4, .font-heading {
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+}
+
+.nav-admin-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+
+.nav-admin-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(30, 27, 75, 0.35);
 }
 
 .nav-icon-btn {
@@ -192,23 +278,623 @@ h1, h2, h3, h4, .font-heading {
   background: rgba(124, 58, 237, 0.05);
 }
 
-.lang-selector {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--border-light);
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #334155;
-  background: #ffffff;
-  cursor: pointer;
+/* Navigasi Mobile Responsif Breakpoint (<= 860px) */
+@media (max-width: 860px) {
+  .nav-wrap {
+    height: 64px;
+  }
+  .brand-rose-icon {
+    width: 38px;
+    height: 38px;
+  }
+  .nav-mobile-toggle {
+    display: flex;
+  }
+  .nav-menu-container {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 2px solid #e2e8f0;
+    box-shadow: 0 16px 36px rgba(99, 102, 241, 0.14);
+    padding: 1.25rem 1.4rem 1.5rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    display: none;
+    z-index: 99;
+  }
+  .nav-menu-container.nav-open {
+    display: flex;
+    animation: slideDownMenu 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes slideDownMenu {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+  .nav-item-link {
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 14px;
+    font-size: 0.94rem;
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+  }
+  .nav-item-link.active {
+    background: linear-gradient(135deg, #ede9fe 0%, #e0e7ff 100%);
+    border-color: #c4b5fd;
+    color: #4338ca;
+    font-weight: 700;
+  }
+  .nav-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #f1f5f9;
+  }
+  .nav-admin-link {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 16px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .brand-text h1 {
+    font-size: 0.92rem;
+  }
+  .brand-text span {
+    font-size: 0.55rem;
+    letter-spacing: 0.08em;
+  }
 }
 
 /* ====================================================================
-   HERO BANNER SECTION
+   HERO MASTER SECTION — SEBIJI MACAM CONTOH RUJUKAN (PANORAMIC TRIBUTE)
    ==================================================================== */
+.hero-master-section {
+  position: relative;
+  width: 100%;
+  min-height: 450px; /* Ditambah sedikit ke bawah supaya nametag 'NIK ZALBIHA' nampak penuh & kemas */
+  margin-top: -72px; /* Latar belakang hero bermula dari atas, telus di sebalik header */
+  padding-top: 72px;
+  background: #dbeafe;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Master Scenic Artwork Backdrop */
+.hero-master-art-backdrop {
+  position: absolute;
+  inset: 0;
+  background-image: url('../images/hero_banner_sebijik.jpg');
+  background-size: cover;
+  background-position: 58% top;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+/* Floating particles overlay */
+.hero-backdrop-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.hero-floating-particles .particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particleFloat 6s ease-in-out infinite alternate;
+}
+.p-1 { width: 7px; height: 7px; background: rgba(255, 255, 255, 0.85); box-shadow: 0 0 8px #fff; top: 20%; left: 25%; animation-delay: 0s; }
+.p-2 { width: 10px; height: 10px; background: rgba(244, 114, 182, 0.65); box-shadow: 0 0 12px #f472b6; top: 40%; right: 28%; animation-delay: 1.5s; }
+.p-3 { width: 5px; height: 5px; background: rgba(147, 197, 253, 0.9); box-shadow: 0 0 8px #93c5fd; top: 15%; right: 15%; animation-delay: 3s; }
+.p-4 { width: 8px; height: 8px; background: rgba(253, 224, 71, 0.75); box-shadow: 0 0 10px #fde047; top: 35%; left: 45%; animation-delay: 2s; }
+.p-5 { width: 6px; height: 6px; background: rgba(192, 132, 252, 0.8); box-shadow: 0 0 8px #c084fc; top: 55%; left: 18%; animation-delay: 4s; }
+.p-6 { width: 8px; height: 8px; background: rgba(255, 255, 255, 0.75); box-shadow: 0 0 8px #fff; top: 60%; right: 40%; animation-delay: 2.5s; }
+
+@keyframes particleFloat {
+  0% { transform: translateY(0px) scale(0.9); opacity: 0.4; }
+  50% { opacity: 0.9; }
+  100% { transform: translateY(-16px) scale(1.15); opacity: 0.6; }
+}
+
+
+
+/* FLOATING SLENDER GLASS RIBBON COUNTDOWN — ULTRA-LEBAR, SEAMLESS, TIDAK MENUTUPI TUDUNG */
+.hero-halo-countdown-wrapper {
+  position: absolute;
+  top: 84px;
+  left: 58%;
+  transform: translateX(-50%);
+  z-index: 25;
+  width: auto;
+  max-width: 92%;
+}
+
+.halo-countdown-ribbon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 5px 20px 5px 14px;
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 18px rgba(99, 102, 241, 0.12), 0 1px 3px rgba(0, 0, 0, 0.04);
+  white-space: nowrap;
+}
+
+.halo-cd-badge-side {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(237, 233, 254, 0.9);
+  color: #4f46e5;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.halo-cd-divider {
+  width: 1px;
+  height: 18px;
+  background: rgba(199, 210, 254, 0.85);
+}
+
+.halo-cd-numbers-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cd-inline-unit {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+}
+
+.cd-inline-unit .cd-num {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: #1e1b4b;
+  line-height: 1;
+  background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cd-inline-unit .cd-tag {
+  font-size: 0.58rem;
+  font-weight: 800;
+  color: #64748b;
+  letter-spacing: 0.05em;
+}
+
+.cd-inline-sep {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #94a3b8;
+  animation: blinkColon 1s infinite;
+  margin: 0 1px;
+}
+
+.halo-cd-date-side {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Content Container & Grid */
+.hero-main-container {
+  position: relative;
+  z-index: 10;
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem 2.8rem 0;
+  height: 100%;
+}
+
+.hero-stage-grid {
+  display: grid;
+  grid-template-columns: 42% 32% 26%;
+  align-items: center;
+  min-height: 350px;
+}
+
+/* Kolom Kiri: Teks & Butang Tindakan */
+.hero-left-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 10;
+  max-width: 390px;
+}
+
+.hero-title-group {
+  margin-bottom: 0.4rem;
+}
+
+.hero-cursive-greet {
+  font-family: 'Alex Brush', cursive;
+  font-size: clamp(2.7rem, 3.6vw, 4.1rem);
+  font-weight: 400;
+  color: #142a53;
+  line-height: 1.02;
+  margin: 0 0 0.1rem 0;
+  transform: rotate(-1.5deg);
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.85);
+}
+
+.hero-name-primary {
+  font-family: 'Outfit', 'Georgia', serif;
+  font-size: clamp(1.55rem, 2.15vw, 2.3rem);
+  font-weight: 800;
+  color: #101c36;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin: 0;
+  text-shadow: 0 1px 4px rgba(255, 255, 255, 0.7);
+}
+
+.hero-lead-appreciation {
+  font-size: 0.91rem;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.48;
+  margin-bottom: 0.4rem;
+  max-width: 390px;
+  text-shadow: 0 1px 4px rgba(255, 255, 255, 0.8);
+}
+
+.hero-sub-invitation {
+  font-size: 0.82rem;
+  color: #334155;
+  line-height: 1.48;
+  margin-bottom: 1rem;
+  max-width: 390px;
+  text-shadow: 0 1px 4px rgba(255, 255, 255, 0.8);
+}
+
+/* BUTANG LEBIH COMPACT & TIDAK MENGHALANG TULISAN BELAKANG */
+.hero-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.75rem;
+  flex-wrap: nowrap;
+}
+
+.btn-hero-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #818cf8 0%, #6366f1 50%, #4f46e5 100%);
+  color: #ffffff;
+  font-size: 0.81rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.32);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.btn-hero-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.45);
+  color: #ffffff;
+}
+
+.btn-hero-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 15px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  color: #1e293b;
+  font-size: 0.80rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.06);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.btn-hero-secondary:hover {
+  background: #ffffff;
+  color: #4f46e5;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(79, 70, 229, 0.14);
+}
+
+.btn-hero-upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 15px;
+  background: linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #8b5cf6 100%);
+  color: #ffffff;
+  font-size: 0.80rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 3px 12px rgba(236, 72, 153, 0.35);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.btn-hero-upload:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 18px rgba(236, 72, 153, 0.5);
+  color: #ffffff;
+}
+
+.btn-hero-upload .btn-icon-upload {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
+.quote-card-left {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'Alex Brush', cursive;
+  font-size: 1.35rem;
+  color: #273449;
+  line-height: 1.2;
+  margin-top: 0.35rem;
+  transform: rotate(-1.5deg);
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);
+}
+
+/* ====================================================================
+   MASKOT ROBOT CUTE 3D (STATIK, BESAR, BAWAH PETIKAN HINGGA GARISAN OMBAK)
+   ==================================================================== */
+.hero-right-column {
+  /* Dibiarkan lapang sepenuhnya supaya tulisan mutiara & lukisan latar belakang terpapar jelas */
+  pointer-events: none;
+}
+
+.hero-standalone-robot {
+  position: absolute;
+  right: 25px;
+  bottom: -4px; /* Kaki robot mencecah kemas di atas garisan ombak */
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  animation: none; /* Statik sepenuhnya */
+}
+
+.standalone-robot-img {
+  height: clamp(190px, 22vw, 245px); /* Besar memanjang dari bawah petikan hingga ke garisan ombak */
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 28px rgba(99, 102, 241, 0.35)) drop-shadow(0 4px 12px rgba(244, 114, 182, 0.28));
+  display: block;
+}
+
+/* Organic Wave Transition (Hujung Header Banner Berombak Lembut) */
+.hero-organic-waves {
+  position: relative;
+  width: 100%;
+  line-height: 0;
+  z-index: 10;
+  margin-top: -24px;
+}
+
+.organic-waves-svg {
+  display: block;
+  width: 100%;
+  height: 52px;
+}
+
+.wave-layer-glow {
+  fill: rgba(255, 255, 255, 0.55);
+}
+
+.wave-layer-mist {
+  fill: rgba(219, 234, 254, 0.65);
+}
+
+.wave-layer-white {
+  fill: var(--bg-body, #edf3fa);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1100px) {
+  .hero-main-container {
+    padding: 1.4rem 1.4rem 0;
+  }
+  .standalone-robot-img {
+    width: 85px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-master-section {
+    min-height: 450px !important;
+    padding-top: 55px !important;
+    margin-top: -64px !important;
+    position: relative !important;
+    overflow: hidden !important;
+  }
+  .hero-master-art-backdrop {
+    background-image: url('../images/hero_banner_sebijik.jpg') !important;
+    background-position: 28% top !important;
+    background-size: cover !important;
+    opacity: 1 !important;
+  }
+  .hero-main-container {
+    padding: 0.1rem 0.85rem 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .hero-stage-grid {
+    display: grid !important;
+    grid-template-columns: 53% 47% !important;
+    align-items: center !important;
+    min-height: 350px !important;
+    width: 100% !important;
+    padding-bottom: 0.5rem !important;
+  }
+  .hero-left-column {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    background: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    z-index: 10 !important;
+  }
+  .hero-title-group {
+    margin-bottom: 0.15rem !important;
+  }
+  .hero-cursive-greet {
+    font-size: 1.68rem !important;
+    line-height: 1 !important;
+    margin-bottom: 2px !important;
+    color: #142a53 !important;
+    transform: none !important;
+    text-shadow: 0 1px 4px rgba(255, 255, 255, 0.98), 0 0 10px #ffffff !important;
+  }
+  .hero-name-primary {
+    font-size: 0.94rem !important;
+    line-height: 1.15 !important;
+    color: #0f172a !important;
+    font-weight: 800 !important;
+    max-width: 175px !important;
+    word-break: break-word !important;
+    margin-bottom: 0.25rem !important;
+    text-shadow: 0 1px 4px rgba(255, 255, 255, 0.98), 0 0 8px #ffffff !important;
+  }
+  .hero-lead-appreciation {
+    font-size: 0.67rem !important;
+    line-height: 1.35 !important;
+    margin: 0.2rem 0 !important;
+    color: #1e293b !important;
+    max-width: 170px !important;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.98), 0 0 6px #ffffff !important;
+  }
+  .hero-sub-invitation {
+    display: none !important;
+  }
+  .hero-action-buttons {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 5px !important;
+    width: 100% !important;
+    max-width: 165px !important;
+    margin-top: 0.35rem !important;
+    margin-bottom: 0.3rem !important;
+  }
+  .btn-hero-primary, .btn-hero-secondary {
+    width: 100% !important;
+    padding: 6px 10px !important;
+    font-size: 0.68rem !important;
+    border-radius: var(--radius-full) !important;
+    text-align: center !important;
+    justify-content: center !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12) !important;
+  }
+  .quote-card-left {
+    display: none !important;
+  }
+  .hero-center-column {
+    display: block !important;
+  }
+  .hero-right-column {
+    display: none !important;
+  }
+  .hero-standalone-robot {
+    display: none !important;
+  }
+  .hero-halo-countdown-wrapper {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin: 0 auto 6px !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    z-index: 25 !important;
+  }
+  .halo-countdown-ribbon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    padding: 3px 8px !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    border-radius: var(--radius-full) !important;
+    white-space: nowrap !important;
+    box-shadow: 0 2px 10px rgba(99, 102, 241, 0.15) !important;
+  }
+  .halo-cd-badge-side {
+    padding: 2px 6px !important;
+    font-size: 0.58rem !important;
+  }
+  .halo-cd-date-side {
+    display: none !important;
+  }
+  .halo-cd-divider:last-of-type {
+    display: none !important;
+  }
+  .cd-inline-unit .cd-num {
+    font-size: 0.88rem !important;
+  }
+  .cd-inline-unit .cd-tag {
+    font-size: 0.46rem !important;
+  }
+  .brand-text h1 {
+    font-size: 0.98rem !important;
+  }
+  .brand-text span {
+    font-size: 0.56rem !important;
+    letter-spacing: 0.08em !important;
+  }
+}
+
 .hero-wrapper {
   background: linear-gradient(180deg, #dbeafe 0%, #ebf4fc 60%, #edf3fa 100%);
   position: relative;
@@ -613,14 +1299,78 @@ h1, h2, h3, h4, .font-heading {
    MAIN CONTENT DUAL-SECTION (BORANG & PAPARAN)
    ==================================================================== */
 .content-section {
-  padding: 2rem 0 4rem;
+  padding: 0.25rem 0 3.5rem;
+  margin-top: -20px;
+  position: relative;
+  z-index: 15;
 }
 
 .dual-layout {
   display: grid;
-  grid-template-columns: 420px 1fr;
-  gap: 24px;
+  grid-template-columns: minmax(320px, 410px) minmax(0, 1fr);
+  gap: clamp(16px, 1.8vw, 24px);
   align-items: start;
+  width: 100%;
+  max-width: 100%;
+}
+
+.dual-layout > * {
+  min-width: 0;
+  width: 100%;
+}
+
+/* ====================================================================
+   KOTAK DENGAN BENTUK BEROMBAK LEMBUT DI ATAS
+   ==================================================================== */
+.wavy-card-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  filter: drop-shadow(0 6px 18px rgba(99, 102, 241, 0.08));
+  transition: transform 0.25s ease, filter 0.25s ease;
+  width: 100%;
+}
+
+.wavy-card-container:hover {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 12px 26px rgba(99, 102, 241, 0.13));
+}
+
+.box-wave-top-cap {
+  width: 100%;
+  height: 22px;
+  line-height: 0;
+  margin-bottom: -1px;
+  z-index: 3;
+  position: relative;
+}
+
+.box-wave-svg {
+  width: 100%;
+  height: 22px;
+  display: block;
+}
+
+/* Kotak Titip Ucapan: Isi Putih Bersih (#ffffff) dengan Garisan Ombak Ungu Lembut */
+.wave-cap-body-white {
+  fill: #ffffff;
+}
+
+.wave-cap-stroke-purple {
+  stroke: #c4b5fd;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+/* Kotak Paparan Ucapan: Isi Biru Muda (#f0f7ff) dengan Garisan Ombak Pink Lembut */
+.wave-cap-body-blue {
+  fill: #f0f7ff;
+}
+
+.wave-cap-stroke-pink {
+  stroke: #fbcfe8;
+  stroke-width: 1.8;
+  stroke-linecap: round;
 }
 
 /* Common Card */
@@ -630,6 +1380,13 @@ h1, h2, h3, h4, .font-heading {
   padding: 1.75rem;
   box-shadow: var(--shadow-md);
   border: 1px solid rgba(226, 232, 240, 0.7);
+}
+
+.wavy-card-integrated {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-top: none !important;
+  box-shadow: none !important;
 }
 
 /* Card Header */
@@ -934,44 +1691,154 @@ textarea.form-control-custom {
 /* ====================================================================
    PAPARAN UCAPAN (CARDS GRID)
    ==================================================================== */
+.compact-card {
+  padding: 1.25rem 1.4rem;
+}
+
 .quotes-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
+  gap: 12px;
+}
+
+.quotes-grid-row4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(8px, 1vw, 14px);
+  width: 100%;
 }
 
 .quote-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: var(--radius-lg);
-  padding: 1.25rem;
+  padding: 0.85rem 1.05rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transition: var(--transition);
   box-shadow: var(--shadow-sm);
   position: relative;
+  min-height: 110px;
+}
+
+.quote-card-row4 {
+  position: relative;
+  padding: clamp(0.85rem, 1.1vw, 1.15rem);
+  min-height: clamp(140px, 13vw, 160px);
+  border-radius: 18px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quote-card-row4:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.quote-card-row4 .quote-mark {
+  color: #6366f1;
+  font-size: clamp(1.35rem, 1.6vw, 1.65rem);
+  font-weight: 800;
+  font-family: serif;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.quote-card-row4 .quote-body {
+  font-size: clamp(0.75rem, 0.8vw, 0.85rem);
+  color: #334155;
+  line-height: 1.48;
+  margin-bottom: 0.6rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quote-card-row4 .quote-footer {
+  border-top: none;
+  padding-top: 0;
+  margin-top: auto;
+  display: block;
+}
+
+.quote-card-row4 .quote-author {
+  font-size: clamp(0.78rem, 0.85vw, 0.9rem);
+  font-weight: 700;
+  color: #1e1b4b;
+  line-height: 1.2;
+}
+
+.quote-card-row4 .quote-dept {
+  font-size: clamp(0.66rem, 0.72vw, 0.76rem);
+  color: #64748b;
+  line-height: 1.3;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quote-card-row4 .quote-time {
+  font-size: clamp(0.64rem, 0.68vw, 0.72rem);
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.card-decor-icon {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+}
+.decor-tr {
+  top: 12px;
+  right: 12px;
+}
+.decor-mr {
+  top: 40%;
+  right: 8px;
+}
+.decor-br {
+  bottom: 10px;
+  right: 10px;
+}
+.decor-br2 {
+  bottom: 24px;
+  right: 10px;
 }
 
 .quote-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: #cbd5e1;
   box-shadow: var(--shadow-md);
 }
 
 .quote-mark {
   color: #8b5cf6;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   line-height: 1;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .quote-body {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: #334155;
-  line-height: 1.5;
-  margin-bottom: 1rem;
+  line-height: 1.42;
+  margin-bottom: 0.6rem;
   flex-grow: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .quote-footer {
@@ -979,17 +1846,17 @@ textarea.form-control-custom {
   justify-content: space-between;
   align-items: flex-end;
   border-top: 1px solid #f1f5f9;
-  padding-top: 8px;
+  padding-top: 6px;
 }
 
 .quote-author {
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: #1e1b4b;
 }
 
 .quote-dept {
-  font-size: 0.72rem;
+  font-size: 0.70rem;
   color: #64748b;
 }
 
@@ -1004,26 +1871,59 @@ textarea.form-control-custom {
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
-  margin-top: 1rem;
+  gap: 10px;
+  margin-top: 0.65rem;
 }
 
 .gallery-thumb-wrap {
   border-radius: var(--radius-md);
   overflow: hidden;
   position: relative;
-  aspect-ratio: 4/3;
+  aspect-ratio: 16/10;
   box-shadow: var(--shadow-sm);
 }
 
-.gallery-thumb-wrap img {
+.gallery-thumb-wrap img,
+.gallery-thumb-wrap video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: var(--transition);
 }
 
-.gallery-thumb-wrap:hover img {
+.gallery-video-placeholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #0f172a;
+}
+
+.video-overlay-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(236, 72, 153, 0.9);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  transition: var(--transition);
+}
+
+.gallery-thumb-wrap:hover .video-overlay-badge {
+  transform: translate(-50%, -50%) scale(1.15);
+  background: #ec4899;
+}
+
+.gallery-thumb-wrap:hover img,
+.gallery-thumb-wrap:hover video {
   transform: scale(1.05);
 }
 
@@ -1052,27 +1952,96 @@ textarea.form-control-custom {
    FOOTER (CURVED NAVY BANNER)
    ==================================================================== */
 .site-footer {
-  background: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
+  background: linear-gradient(180deg, #151a36 0%, #0c1122 100%);
   color: #ffffff;
-  padding: 2.5rem 0;
+  padding: 2.2rem 0 1.8rem;
   margin-top: auto;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
+  overflow: hidden;
 }
 
-.footer-content {
+.site-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(192, 132, 252, 0.6), rgba(251, 191, 36, 0.6), rgba(192, 132, 252, 0.6), transparent);
+}
+
+.footer-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Quote Memanjang As Footer */
+.footer-quote-wide {
+  width: 100%;
+  text-align: center;
+  padding: 1.1rem 2rem;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 60px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-quote-text {
+  font-family: 'Courgette', 'Playfair Display', cursive, serif;
+  font-size: 1.5rem;
+  color: #f8fafc;
+  line-height: 1.5;
+  letter-spacing: 0.025em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.footer-heart {
+  color: #fb7185;
+  margin-left: 4px;
+  display: inline-block;
+  filter: drop-shadow(0 0 6px rgba(251, 113, 133, 0.6));
+  animation: footerHeartPulse 2.5s infinite ease-in-out;
+}
+
+@keyframes footerHeartPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.footer-divider-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  margin-bottom: 1.25rem;
+}
+
+.footer-bottom-grid {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
-.footer-cursive {
-  font-family: 'Alex Brush', cursive;
-  font-size: 2rem;
-  color: #ffffff;
-  line-height: 1;
+.footer-salutation {
+  font-size: 0.95rem;
+  color: #cbd5e1;
+  letter-spacing: 0.01em;
+}
+
+.footer-salutation strong {
+  color: #fef08a;
+  font-weight: 700;
 }
 
 .footer-badges {
@@ -1096,6 +2065,35 @@ textarea.form-control-custom {
 
 .footer-badge-item strong {
   color: #ffffff;
+}
+
+.footer-badge-sub {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.footer-meta-text {
+  font-size: 0.8rem;
+  color: #64748b;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 768px) {
+  .footer-quote-wide {
+    border-radius: 20px;
+    padding: 0.9rem 1.2rem;
+  }
+  .footer-quote-text {
+    font-size: 1.2rem;
+  }
+  .footer-bottom-grid {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  .footer-badges {
+    justify-content: center;
+  }
 }
 
 /* Alerts */
@@ -1145,8 +2143,41 @@ textarea.form-control-custom {
   border: 1px solid #fde68a;
 }
 
-/* Responsive */
+/* ====================================================================
+   SISTEM RESPONSIVE BREAKPOINTS LENGKAP (320px - 1440px+)
+   Adaptif Sempurna Pada Semua Saiz Skrin Telefon, Tablet & Komputer
+   ==================================================================== */
+
+/* --- 1. LAPTOP & DESKTOP KECIL (<= 1200px) --- */
+@media (max-width: 1200px) {
+  .quotes-grid-row4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .dual-layout {
+    gap: 18px;
+  }
+}
+
+/* --- 2. TABLET LANDSCAPE & KOMPUTER RIBA (<= 1024px) --- */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+  .gallery-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+/* --- 3. TABLET & SKRIN SEDERHANA (<= 992px) --- */
 @media (max-width: 992px) {
+  .dual-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 20px;
+  }
+  .dual-layout > * {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
   .hero-grid {
     grid-template-columns: 1fr;
     text-align: center;
@@ -1158,26 +2189,206 @@ textarea.form-control-custom {
     margin-left: auto;
     margin-right: auto;
   }
-  .dual-layout {
-    grid-template-columns: 1fr;
+  .titip-page-grid {
+    grid-template-columns: 1fr !important;
   }
-  .gallery-grid {
-    grid-template-columns: repeat(3, 1fr);
+  #form-titipan-page {
+    position: static !important;
   }
 }
 
-@media (max-width: 640px) {
-  .quotes-grid {
-    grid-template-columns: 1fr;
+/* --- 4. TABLET PORTRAIT & TELEFON BESAR (<= 768px) --- */
+@media (max-width: 768px) {
+  /* Container & Layout */
+  .container {
+    padding: 0 0.85rem;
   }
+
+  /* Carousel Kad Ucapan Natural & Responsif */
+  .quotes-grid-row4 {
+    display: flex !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    gap: 12px !important;
+    padding: 6px 2px 14px !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .quote-card-row4 {
+    flex: 0 0 88% !important;
+    max-width: 88% !important;
+    scroll-snap-align: center !important;
+    min-height: 140px !important;
+    min-width: 0 !important;
+  }
+
+  /* Galeri Media */
   .gallery-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
   }
-  .footer-content {
-    flex-direction: column;
-    text-align: center;
+
+  /* Footer 100% Lebar Viewport & Tiada Kawasan Kosong */
+  .site-footer {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 1.8rem 0 1.5rem !important;
+    box-sizing: border-box !important;
+  }
+  .footer-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .footer-quote-wide {
+    width: 100% !important;
+    border-radius: 20px !important;
+    padding: 0.9rem 1.1rem !important;
+    margin-bottom: 1.2rem !important;
+  }
+  .footer-quote-text {
+    font-size: clamp(1rem, 3.2vw, 1.35rem) !important;
+  }
+  .footer-bottom-grid {
+    flex-direction: column !important;
+    text-align: center !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    width: 100% !important;
   }
   .footer-badges {
-    justify-content: center;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 1rem !important;
+  }
+  .footer-salutation {
+    font-size: 0.90rem !important;
+  }
+}
+
+/* --- 5. TELEFON MODEN & STANDARD (<= 640px) --- */
+@media (max-width: 640px) {
+  .quotes-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .white-card {
+    padding: 1.25rem 1rem !important;
+    border-radius: 18px !important;
+  }
+  .compact-card {
+    padding: 1.15rem 0.9rem !important;
+  }
+
+  /* Form & Chips Selector */
+  .choice-chips-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+  .choice-chip {
+    padding: 8px 4px !important;
+  }
+  .choice-chip-icon {
+    font-size: 1.1rem !important;
+    margin-bottom: 2px !important;
+  }
+  .choice-chip-text {
+    font-size: 0.72rem !important;
+  }
+  .choice-chip input[type="checkbox"] {
+    width: 14px !important;
+    height: 14px !important;
+    top: 4px !important;
+    right: 4px !important;
+  }
+
+  .btn-submit-sparkle {
+    font-size: 0.92rem !important;
+    padding: 12px 16px !important;
+  }
+
+  /* Countdown Ribbon Compact */
+  .halo-countdown-ribbon {
+    gap: 6px !important;
+    padding: 4px 10px !important;
+  }
+  .halo-cd-badge-side {
+    padding: 2px 7px !important;
+    font-size: 0.62rem !important;
+  }
+  .cd-inline-unit .cd-num {
+    font-size: 1.02rem !important;
+  }
+  .cd-inline-unit .cd-tag {
+    font-size: 0.52rem !important;
+  }
+  .halo-cd-date-side {
+    display: none !important;
+  }
+  .halo-cd-divider:last-of-type {
+    display: none !important;
+  }
+}
+
+/* --- 6. TELEFON KECIL & ANDROID COMPACT (<= 390px) --- */
+@media (max-width: 390px) {
+  .container {
+    padding: 0 0.65rem !important;
+  }
+  .hero-stage-grid {
+    grid-template-columns: 55% 45% !important;
+  }
+  .hero-cursive-greet {
+    font-size: 1.58rem !important;
+  }
+  .hero-name-primary {
+    font-size: 0.88rem !important;
+    max-width: 155px !important;
+  }
+  .hero-lead-appreciation {
+    font-size: 0.64rem !important;
+    max-width: 150px !important;
+  }
+  .btn-hero-primary, .btn-hero-secondary {
+    font-size: 0.64rem !important;
+    padding: 5px 8px !important;
+  }
+  .card-header-flex {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+  }
+  .btn-link-action {
+    align-self: flex-start !important;
+    margin-top: 2px !important;
+  }
+  .footer-badges {
+    flex-direction: column !important;
+    gap: 0.65rem !important;
+  }
+}
+
+/* --- 7. TELEFON ULTRA-KECIL (<= 330px) --- */
+@media (max-width: 330px) {
+  .choice-chips-grid {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+  }
+  .choice-chip {
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    padding: 8px 12px !important;
+    text-align: left !important;
+  }
+  .choice-chip input[type="checkbox"] {
+    position: static !important;
+    order: 3 !important;
+    margin-left: auto !important;
+  }
+  .halo-countdown-ribbon {
+    padding: 3px 8px !important;
+  }
+  .cd-inline-unit .cd-num {
+    font-size: 0.92rem !important;
   }
 }
