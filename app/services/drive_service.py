@@ -1,8 +1,12 @@
 import os
 import json
 import logging
+import socket
 from pathlib import Path
 from datetime import datetime
+
+# Elakkan sambungan socket terputus pramatang semasa muat naik
+socket.setdefaulttimeout(120)
 try:
     from google.oauth2.credentials import Credentials
     from google.auth.transport.requests import Request
@@ -53,7 +57,14 @@ class DriveService:
                 creds = Credentials.from_authorized_user_file(str(self.token_path), SCOPES)
             except Exception as e:
                 logger.error(f"Ralat membaca token.json: {e}")
-                return None
+                creds = None
+        elif os.getenv("GOOGLE_TOKEN_JSON"):
+            try:
+                token_data = json.loads(os.getenv("GOOGLE_TOKEN_JSON"))
+                creds = Credentials.from_authorized_user_info(token_data, SCOPES)
+            except Exception as e:
+                logger.error(f"Ralat membaca GOOGLE_TOKEN_JSON daripada env: {e}")
+                creds = None
 
         if creds and creds.expired and creds.refresh_token:
             try:
@@ -252,11 +263,14 @@ class DriveService:
             "parents": [folder_id]
         }
 
-        # Muat naik dengan sokongan resumable untuk fail besar
+        # Muat naik: Hanya guna resumable untuk fail video / fail besar melebihi 10MB
+        file_size = local_path.stat().st_size if local_path.exists() else 0
+        is_large_file = file_size > (10 * 1024 * 1024)
+
         media = MediaFileUpload(
             str(local_path),
             mimetype=mime_type,
-            resumable=True
+            resumable=is_large_file
         )
 
         drive_file = service.files().create(
