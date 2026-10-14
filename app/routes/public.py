@@ -1,7 +1,8 @@
 import os
 import uuid
+from datetime import datetime
 from pathlib import Path
-from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
+from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app, send_from_directory, session
 from werkzeug.utils import secure_filename
 from app.models import db, Submission, SystemLog
 from app.services.drive_service import drive_service
@@ -26,33 +27,131 @@ BAHAGIAN_JDN = [
 def allowed_file(filename, allowed_extensions):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in allowed_extensions
 
+@public_bp.app_template_filter("time_ago")
+def time_ago_filter(dt):
+    if not dt:
+        return "Baru sahaja"
+    diff = datetime.now() - dt
+    seconds = int(diff.total_seconds())
+    if seconds < 60:
+        return "Baru sahaja"
+    elif seconds < 3600:
+        mins = max(1, seconds // 60)
+        return f"{mins} minit yang lalu"
+    elif seconds < 86400:
+        hrs = max(1, seconds // 3600)
+        return f"{hrs} jam yang lalu"
+    elif seconds < 86400 * 7:
+        days = max(1, seconds // 86400)
+        return f"{days} hari yang lalu"
+    else:
+        return dt.strftime("%d %b")
+
 @public_bp.route("/")
 def index():
-    # Ambil 6 ucapan terkini yang diluluskan/aktif untuk paparan inspirasi
-    recent_submissions = Submission.query.filter_by(status="active").order_by(Submission.created_at.desc()).limit(6).all()
-    total_submissions = Submission.query.filter_by(status="active").count()
+    # 1. Semua ucapan dalam bentuk teks yang terkini (hanya data rasmi)
+    recent_text_submissions = (
+        Submission.query.filter_by(status="active", data_type="official")
+        .filter(Submission.ucapan.isnot(None), Submission.ucapan != "")
+        .order_by(Submission.created_at.desc())
+        .limit(4)
+        .all()
+    )
+
+    # 2. Semua ucapan yang dikirim melalui foto dan video yang terkini (hanya data rasmi)
+    recent_media_submissions = (
+        Submission.query.filter_by(status="active", data_type="official")
+        .filter((Submission.image_filename.isnot(None)) | (Submission.video_filename.isnot(None)))
+        .order_by(Submission.created_at.desc())
+        .limit(8)
+        .all()
+    )
+
+    total_submissions = Submission.query.filter_by(status="active", data_type="official").count()
+    total_ucapan = (
+        Submission.query.filter_by(status="active", data_type="official")
+        .filter(Submission.ucapan.isnot(None), Submission.ucapan != "")
+        .count()
+    )
+    total_media = (
+        Submission.query.filter_by(status="active", data_type="official")
+        .filter((Submission.image_filename.isnot(None)) | (Submission.video_filename.isnot(None)))
+        .count()
+    )
+
     return render_template(
         "index.html",
         bahagian_list=BAHAGIAN_JDN,
-        recent_submissions=recent_submissions,
-        total_submissions=total_submissions
+        recent_text_submissions=recent_text_submissions,
+        recent_media_submissions=recent_media_submissions,
+        total_submissions=total_submissions,
+        total_ucapan=total_ucapan,
+        total_media=total_media,
+        active_page="home"
     )
+
+@public_bp.route("/titip-ucapan")
+def titip_ucapan():
+    """Halaman khusus Titip Ucapan & himpunan semua ucapan teks terkini (hanya data rasmi)."""
+    all_text_submissions = (
+        Submission.query.filter_by(status="active", data_type="official")
+        .filter(Submission.ucapan.isnot(None), Submission.ucapan != "")
+        .order_by(Submission.created_at.desc())
+        .all()
+    )
+    total_submissions = Submission.query.filter_by(status="active", data_type="official").count()
+    return render_template(
+        "titip_ucapan.html",
+        bahagian_list=BAHAGIAN_JDN,
+        all_text_submissions=all_text_submissions,
+        total_submissions=total_submissions,
+        active_page="titip_ucapan"
+    )
+
+@public_bp.route("/kenangan")
+def kenangan():
+    """Halaman khusus Galeri Kenangan (semua foto & video terkini rasmi)."""
+    all_media_submissions = (
+        Submission.query.filter_by(status="active", data_type="official")
+        .filter((Submission.image_filename.isnot(None)) | (Submission.video_filename.isnot(None)))
+        .order_by(Submission.created_at.desc())
+        .all()
+    )
+    total_media = len(all_media_submissions)
+    return render_template(
+        "kenangan.html",
+        all_media_submissions=all_media_submissions,
+        total_media=total_media,
+        active_page="kenangan"
+    )
+
+@public_bp.route("/uploads/images/<filename>")
+def serve_image(filename):
+    return send_from_directory(current_app.config["UPLOAD_IMAGES_FOLDER"], filename)
+
+@public_bp.route("/uploads/videos/<filename>")
+def serve_video(filename):
+    return send_from_directory(current_app.config["UPLOAD_VIDEOS_FOLDER"], filename)
+
+@public_bp.route("/uploads/qrcodes/<filename>")
+def serve_qrcode(filename):
+    qr_dir = Path(current_app.config["UPLOAD_FOLDER"]) / "qrcodes"
+    return send_from_directory(qr_dir, filename)
 
 @public_bp.route("/hantar", methods=["POST"])
 def hantar_ucapan():
     nama = request.form.get("nama", "").strip()
     bahagian = request.form.get("bahagian", "").strip()
-    bahagian_custom = request.form.get("bahagian_custom", "").strip()
     jawatan = request.form.get("jawatan", "").strip()
     ucapan = request.form.get("ucapan", "").strip()
 
-    if bahagian == "Lain-lain / Rakan Strategik" and bahagian_custom:
-        bahagian = f"Lain-lain ({bahagian_custom})"
-
-    # Validasi input wajib (Nama dan Bahagian sentiasa wajib)
-    if not nama or not bahagian:
-        flash("Sila lengkapkan Nama dan Bahagian / Agensi anda.", "danger")
+    # Validasi input wajib: Hanya Nama yang wajib diisi (Bahagian adalah pilihan)
+    if not nama:
+        flash("Sila lengkapkan Nama anda.", "danger")
         return redirect(url_for("public.index"))
+
+    if not bahagian:
+        bahagian = "-"
 
     # Semak lampiran fail gambar & video
     image_file = request.files.get("gambar")
@@ -105,12 +204,14 @@ def hantar_ucapan():
             flash("Format fail video tidak disokong. Sila muat naik MP4, MOV, atau WebM.", "warning")
             return redirect(url_for("public.index"))
 
-    # Simpan ke pangkalan data tempatan dahulu
+    # Simpan ke pangkalan data tempatan dahulu sebagai data rasmi
     submission = Submission(
         nama=nama,
         bahagian=bahagian,
         jawatan=jawatan or None,
         ucapan=ucapan or "",
+        status="active",
+        data_type="official",
         image_filename=saved_image_name,
         image_local_path=saved_image_path,
         image_sync_status=image_sync_status,
@@ -140,7 +241,7 @@ def hantar_ucapan():
                 submission.image_sync_status = "failed"
                 current_app.logger.error(f"Gagal memuat naik gambar ke Drive: {e}")
 
-        # 2. Muat naik video ke "03 VIDEO KENANGAN"
+        # 2. Muat naik video ke "03 VIDEO KENANGAN" & Jana QR Code
         if saved_video_path and video_sync_status == "pending":
             try:
                 fid, flink = drive_service.upload_file(
@@ -151,6 +252,14 @@ def hantar_ucapan():
                 submission.video_drive_file_id = fid
                 submission.video_drive_link = flink
                 submission.video_sync_status = "synced"
+
+                # Tetapkan kebenaran Viewer dan jana QR code secara automatik
+                try:
+                    from app.services.video_qr_service import video_qr_service
+                    video_qr_service.ensure_viewer_permission(fid)
+                    video_qr_service.generate_qr_code(submission.id, fid)
+                except Exception as qr_err:
+                    current_app.logger.warning(f"Gagal menjana QR/Viewer untuk video {fid}: {qr_err}")
             except Exception as e:
                 submission.video_sync_status = "failed"
                 current_app.logger.error(f"Gagal memuat naik video ke Drive: {e}")
@@ -158,6 +267,127 @@ def hantar_ucapan():
         db.session.commit()
 
     return redirect(url_for("public.kejayaan", submission_id=submission.id))
+
+@public_bp.route("/upload-media-pengarah", methods=["POST"])
+def upload_media_pengarah():
+    # Hanya pentadbir yang boleh muat naik media pengarah (akses khas)
+    if not session.get("is_admin"):
+        flash("Akses terhad: Sila log masuk pentadbir terlebih dahulu untuk memuat naik media pengarah.", "warning")
+        return redirect(url_for("admin.login"))
+
+    files = request.files.getlist("media_files")
+    
+    # Juga semak jika dihantar melalui input tunggal
+    if not files or all(not f or f.filename == "" for f in files):
+        gambar = request.files.get("gambar")
+        video = request.files.get("video")
+        files = [f for f in [gambar, video] if f and f.filename]
+
+    valid_files = [f for f in files if f and f.filename and f.filename.strip()]
+
+    if not valid_files:
+        flash("Sila pilih sekurang-kurangnya satu fail gambar atau video pengarah untuk dimuat naik.", "warning")
+        return redirect(request.referrer or url_for("public.kenangan"))
+
+    uploaded_count = 0
+    drive_ready = drive_service.is_connected()
+
+    for file in valid_files:
+        filename = file.filename
+        orig_name = secure_filename(filename)
+        if not orig_name:
+            orig_name = f"media_{datetime_prefix()}"
+        ext = orig_name.rsplit(".", 1)[1].lower() if "." in orig_name else ""
+
+        is_image = allowed_file(filename, current_app.config["ALLOWED_IMAGE_EXTENSIONS"])
+        is_video = allowed_file(filename, current_app.config["ALLOWED_VIDEO_EXTENSIONS"])
+
+        if not is_image and not is_video:
+            continue
+
+        saved_image_name = None
+        saved_image_path = None
+        image_sync_status = "none"
+        saved_video_name = None
+        saved_video_path = None
+        video_sync_status = "none"
+
+        if is_image:
+            unique_name = f"KP_IMG_{datetime_prefix()}_{uuid.uuid4().hex[:6]}.{ext}"
+            dest_path = current_app.config["UPLOAD_IMAGES_FOLDER"] / unique_name
+            file.save(str(dest_path))
+            saved_image_name = unique_name
+            saved_image_path = str(dest_path)
+            image_sync_status = "pending"
+        elif is_video:
+            unique_name = f"KP_VID_{datetime_prefix()}_{uuid.uuid4().hex[:6]}.{ext}"
+            dest_path = current_app.config["UPLOAD_VIDEOS_FOLDER"] / unique_name
+            file.save(str(dest_path))
+            saved_video_name = unique_name
+            saved_video_path = str(dest_path)
+            video_sync_status = "pending"
+
+        # Simpan ke pangkalan data atas nama Jabatan Digital Negara sahaja (tanpa nama individu)
+        submission = Submission(
+            nama="Jabatan Digital Negara",
+            bahagian="Jabatan Digital Negara",
+            jawatan=None,
+            ucapan="",
+            image_filename=saved_image_name,
+            image_local_path=saved_image_path,
+            image_sync_status=image_sync_status,
+            video_filename=saved_video_name,
+            video_local_path=saved_video_path,
+            video_sync_status=video_sync_status,
+            ip_address=request.remote_addr,
+            status="active",
+            data_type="official"
+        )
+        db.session.add(submission)
+        db.session.commit()
+        uploaded_count += 1
+
+        # Muat naik ke Google Drive jika sambungan aktif
+        if drive_ready:
+            try:
+                if saved_image_path and image_sync_status == "pending":
+                    fid, flink = drive_service.upload_file(
+                        local_path=saved_image_path,
+                        target_subfolder_name="02 GAMBAR KENANGAN",
+                        custom_name=f"[PENGARAH JDN] {saved_image_name}"
+                    )
+                    submission.image_drive_file_id = fid
+                    submission.image_drive_link = flink
+                    submission.image_sync_status = "synced"
+
+                if saved_video_path and video_sync_status == "pending":
+                    fid, flink = drive_service.upload_file(
+                        local_path=saved_video_path,
+                        target_subfolder_name="03 VIDEO KENANGAN",
+                        custom_name=f"[PENGARAH JDN] {saved_video_name}"
+                    )
+                    submission.video_drive_file_id = fid
+                    submission.video_drive_link = flink
+                    submission.video_sync_status = "synced"
+
+                    # Tetapkan Viewer dan jana QR code
+                    try:
+                        from app.services.video_qr_service import video_qr_service
+                        video_qr_service.ensure_viewer_permission(fid)
+                        video_qr_service.generate_qr_code(submission.id, fid)
+                    except Exception as qr_err:
+                        current_app.logger.warning(f"Gagal menjana QR media pengarah: {qr_err}")
+
+                db.session.commit()
+            except Exception as e:
+                current_app.logger.error(f"Gagal memuat naik ke Drive: {e}")
+
+    if uploaded_count > 0:
+        flash(f"Alhamdulillah! Sebanyak {uploaded_count} fail foto/video pengarah telah berjaya dimuat naik atas nama Jabatan Digital Negara.", "success")
+    else:
+        flash("Format fail tidak disokong. Sila pilih gambar (JPG, PNG, WebP) atau video (MP4, MOV, WebM).", "warning")
+
+    return redirect(request.referrer or url_for("public.kenangan"))
 
 @public_bp.route("/kejayaan/<int:submission_id>")
 def kejayaan(submission_id):
