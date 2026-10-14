@@ -21,3 +21,6 @@ services:
         sync: false
       - key: GOOGLE_REDIRECT_URI
         sync: false
+      - key: GOOGLE_TOKEN_JSON
+        sync: false
+
