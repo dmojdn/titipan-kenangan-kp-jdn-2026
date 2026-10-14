@@ -5,109 +5,130 @@
 {% block content %}
 
 <!-- ====================================================================
-     HERO BANNER SECTION
+     HERO MASTER SECTION — DREAMY PASTEL DIGITAL FAREWELL (FULL-WIDTH SEAMLESS)
      ==================================================================== -->
-<section class="hero-wrapper">
-  <div class="container">
-    <div class="hero-grid">
-      
-      <!-- Hero Left: Calligraphy, Title, Paragraph & CTAs -->
-      <div>
-        <div class="hero-cursive">Selamat Bersara,</div>
-        <h1 class="hero-name">
-          YBrs. Ts. Nik Zalbiha
-          <span style="display:block; font-size:0.62em; font-weight:700; color:#4f46e5; margin-top:4px;">binti Nik Mat</span>
-        </h1>
-        <div style="font-size: 1.12rem; font-weight: 700; color: #4338ca; margin-bottom: 0.85rem; letter-spacing: -0.01em;">
-          Ketua Pengarah, Jabatan Digital Negara
-        </div>
-        
-        <p class="hero-desc">
-          Terima kasih atas segala jasa, kepimpinan berwawasan, bimbingan dan inspirasi yang tidak ternilai dalam memacu agenda pendigitalan negara.
-        </p>
-        <p class="hero-subdesc">
-          Di sini, kami menjemput seluruh warga untuk menitipkan ucapan, doa dan kenangan indah buat YBrs. Ts. Nik Zalbiha sempena persaraan ini.
-        </p>
+<section class="hero-master-section" id="hero-utama">
+  <!-- Master Scenic Backdrop (SEBIJI MACAM GAMBAR CONTOH RUJUKAN) -->
+  <div class="hero-master-art-backdrop"></div>
 
-        <!-- COUNTDOWN DETIK PERSARAAN (23 OKTOBER 2026) -->
-        <div class="countdown-card" id="countdown-wrapper">
-          <div class="countdown-card-header">
-            <span class="countdown-badge-pulse">
-              <span class="pulse-dot"></span> DETIK PERSARAAN
-            </span>
-            <span class="countdown-target-date">
-              <i class="fa-regular fa-calendar-check" style="color: #6366f1;"></i> 23 Oktober 2026
-            </span>
-          </div>
+  <!-- Ambient floating particles overlay -->
+  <div class="hero-backdrop-layer">
 
-          <div class="countdown-digits-grid">
-            <div class="countdown-digit-box">
-              <span class="countdown-num" id="cd-days">--</span>
-              <span class="countdown-label">HARI</span>
-            </div>
-            <div class="countdown-separator">:</div>
-            <div class="countdown-digit-box">
-              <span class="countdown-num" id="cd-hours">--</span>
-              <span class="countdown-label">JAM</span>
-            </div>
-            <div class="countdown-separator">:</div>
-            <div class="countdown-digit-box">
-              <span class="countdown-num" id="cd-minutes">--</span>
-              <span class="countdown-label">MINIT</span>
-            </div>
-            <div class="countdown-separator">:</div>
-            <div class="countdown-digit-box">
-              <span class="countdown-num" id="cd-seconds">--</span>
-              <span class="countdown-label">SAAT</span>
-            </div>
-          </div>
-          
-          <div class="countdown-caption">
-            <i class="fa-solid fa-hourglass-half" style="color: #6366f1;"></i> Menjelang Majlis Persaraan &amp; Sanjungan Budi YBrs. Ts. Nik Zalbiha
-          </div>
-        </div>
-
-        <div class="hero-cta-group">
-          <a href="#form-titipan" class="btn btn-hero-primary" id="btn-cta-titip">
-            <i class="fa-solid fa-paper-plane"></i> Titip Ucapan Sekarang &rarr;
-          </a>
-          <a href="#kenangan-section" class="btn btn-hero-secondary" id="btn-cta-video">
-            <i class="fa-solid fa-heart" style="color: #ec4899;"></i> Sorotan Kenangan Warga
-          </a>
-        </div>
-
-        <!-- Sticky Handwritten Quote (Left) -->
-        <div style="margin-top: 1rem;">
-          <span class="quote-sticky">
-            "Jejak kepimpinan sentiasa menjadi inspirasi ... &hearts;"
-          </span>
-        </div>
-      </div>
-
-      <!-- Hero Right: Official Scenic Art with Putrajaya & AI Robot Mascot -->
-      <div class="hero-art-box">
-        
-        <!-- Top Calligraphy Quote (Right) -->
-        <div style="position: absolute; top: -25px; right: 0; max-width: 290px; text-align: right; z-index: 5;">
-          <span class="quote-sticky" style="font-size: 1.15rem; color: #475569;">
-            "Seseorang pemimpin mungkin pergi dari jawatan, namun sentiasa kekal di hati warga ... &hearts;"
-          </span>
-        </div>
-
-        <!-- Scenic Hero Art: Putrajaya + YBrs. Ts. Nik Zalbiha + Cute AI Robot Holding Heart -->
-        <img src="{{ url_for('static', filename='images/hero_nik_zalbiha_art.jpg') }}" alt="YBrs. Ts. Nik Zalbiha binti Nik Mat - Ketua Pengarah JDN" class="hero-art-img">
-
-        <!-- Bottom Handwritten Quote -->
-        <div style="position: absolute; bottom: -12px; left: 10px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); padding: 6px 16px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid rgba(255,255,255,0.9); z-index: 5;">
-          <span class="quote-sticky" style="font-size: 1.1rem; color: #334155;">
-            "Terima kasih telah memimpin dengan hati &hearts;"
-          </span>
-        </div>
-
-      </div>
-
+    <div class="hero-floating-particles" aria-hidden="true">
+      <span class="particle p-1"></span>
+      <span class="particle p-2"></span>
+      <span class="particle p-3"></span>
+      <span class="particle p-4"></span>
+      <span class="particle p-5"></span>
+      <span class="particle p-6"></span>
     </div>
   </div>
+
+  <!-- FLOATING SLENDER GLASS RIBBON COUNTDOWN — TEPAT DI LANGIT ATAS KEPALA (ULTRA-LEBAR, MEMANJANG, TIDAK MENUTUPI TUDUNG) -->
+  <div class="hero-halo-countdown-wrapper" id="countdown-wrapper">
+    <div class="halo-countdown-ribbon">
+      <div class="halo-cd-badge-side">
+        <span class="pulse-dot"></span>
+        <span class="badge-label">DETIK PERSARAAN</span>
+      </div>
+
+      <div class="halo-cd-divider"></div>
+
+      <div class="halo-cd-numbers-inline">
+        <div class="cd-inline-unit">
+          <span class="cd-num" id="cd-days">--</span>
+          <span class="cd-tag">HARI</span>
+        </div>
+        <span class="cd-inline-sep">:</span>
+        <div class="cd-inline-unit">
+          <span class="cd-num" id="cd-hours">--</span>
+          <span class="cd-tag">JAM</span>
+        </div>
+        <span class="cd-inline-sep">:</span>
+        <div class="cd-inline-unit">
+          <span class="cd-num" id="cd-minutes">--</span>
+          <span class="cd-tag">MINIT</span>
+        </div>
+        <span class="cd-inline-sep">:</span>
+        <div class="cd-inline-unit">
+          <span class="cd-num" id="cd-seconds">--</span>
+          <span class="cd-tag">SAAT</span>
+        </div>
+      </div>
+
+      <div class="halo-cd-divider"></div>
+
+      <div class="halo-cd-date-side">
+        <i class="fa-regular fa-calendar-check" style="color: #6366f1;"></i>
+        <span>22 Oktober 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-main-container">
+    <div class="hero-stage-grid">
+      <!-- ====================================================
+           KOLOM KIRI: TIPOGRAFI & BUTANG SEBIJI MACAM CONTOH
+           ==================================================== -->
+      <div class="hero-left-column">
+        <div class="hero-title-group">
+          <h1 class="hero-cursive-greet">Selamat Bersara,</h1>
+          <h2 class="hero-name-primary">YBrs. Ts. Nik Zalbiha binti Nik Mat</h2>
+        </div>
+
+        <p class="hero-lead-appreciation">
+          Terima kasih atas segala jasa, kepimpinan,<br>bimbingan dan inspirasi yang tidak ternilai.
+        </p>
+
+        <p class="hero-sub-invitation">
+          Di sini, kami menjemput seluruh warga untuk menitipkan ucapan, doa dan kenangan buat YBrs. Ts. Nik Zalbiha binti Nik Mat sempena persaraan ini.
+        </p>
+
+        <div class="hero-action-buttons">
+          <a href="#form-titipan" class="btn-hero-primary" id="btn-hero-titip-ucapan">
+            <span class="btn-icon-wrapper"><i class="fa-solid fa-envelope"></i></span>
+            <span class="btn-label">Titip Ucapan Sekarang</span>
+            <i class="fa-solid fa-arrow-right-long btn-arrow-icon"></i>
+          </a>
+          <a href="#kenangan-section" class="btn-hero-secondary" id="btn-hero-tonton-video">
+            <span class="btn-icon-play"><i class="fa-solid fa-circle-play"></i></span>
+            <span class="btn-label">Tonton Video Ucapan</span>
+          </a>
+        </div>
+
+        <!-- Sentimental Quote Box Kiri -->
+        <div class="hero-quote-card quote-card-left">
+          <p class="quote-content">“Jejak kepimpinan sentiasa menjadi inspirasi ... ♡”</p>
+        </div>
+      </div>
+
+      <!-- SPACER UNTUK FOCAL POINT TS. NIK ZALBIHA (TENGAH) -->
+      <div class="hero-center-column" aria-hidden="true"></div>
+
+      <!-- RUANG KANAN: KEKALKAN BERSIH DAN JELAS UNTUK TULISAN & ILUSTRASI LATAR BELAKANG -->
+      <div class="hero-right-column" aria-hidden="true"></div>
+
+    </div>
+
+    <!-- MASKOT ROBOT CUTE 3D (STATIK, BESAR, BAWAH PETIKAN HINGGA HUJUNG GARISAN OMBAK) -->
+    <div class="hero-standalone-robot" id="robot-mascot">
+      <img src="{{ url_for('static', filename='images/robot_cute.png') }}" alt="Robot AI Cilik" class="standalone-robot-img">
+    </div>
+
+  </div>
+
+  <!-- Organic Wave to connect to cards below (Hujung Header Banner Berombak Lembut) -->
+  <div class="hero-organic-waves" aria-hidden="true">
+    <svg class="organic-waves-svg" viewBox="0 0 1440 68" preserveAspectRatio="none">
+      <!-- Lapisan Ombak Belakang (Kilauan Cahaya Semi-Telus) -->
+      <path class="wave-layer-glow" d="M0,26 C280,54 500,8 740,36 C980,64 1220,14 1440,30 L1440,68 L0,68 Z"></path>
+      <!-- Lapisan Ombak Tengah (Pastel Lavender-Blue Lembut) -->
+      <path class="wave-layer-mist" d="M0,38 C220,14 480,48 740,22 C1000,52 1240,18 1440,42 L1440,68 L0,68 Z"></path>
+      <!-- Lapisan Ombak Hadapan (Aliran Utama Menuju Kandungan) -->
+      <path class="wave-layer-white" d="M0,22 C240,52 480,20 720,44 C960,16 1200,48 1440,30 L1440,68 L0,68 Z"></path>
+    </svg>
+  </div>
+
 </section>
 
 <!-- ====================================================================
@@ -120,7 +141,15 @@
       <!-- ==========================================
            LEFT COLUMN: BORANG TITIP UCAPAN ANDA
            ========================================== -->
-      <div class="white-card">
+      <div class="wavy-card-container" id="wrap-titip-ucapan">
+        <!-- Bentuk Berombak Lembut di Atas Kotak Titip Ucapan -->
+        <div class="box-wave-top-cap" aria-hidden="true">
+          <svg viewBox="0 0 500 24" preserveAspectRatio="none" class="box-wave-svg">
+            <path d="M0,24 C130,4 270,24 400,8 C450,2 480,12 500,8 L500,24 L0,24 Z" class="wave-cap-body-white"></path>
+            <path d="M0,24 C130,4 270,24 400,8 C450,2 480,12 500,8" fill="none" class="wave-cap-stroke-purple"></path>
+          </svg>
+        </div>
+        <div class="white-card wavy-card-integrated">
         
         <div class="card-header-flex">
           <div class="card-title-group">
@@ -129,11 +158,8 @@
             </div>
             <div class="card-title-text">
               <h2>Titip Ucapan Anda</h2>
-              <p>Sampaikan ucapan, doa dan penghargaan buat YBrs. Ts. Nik Zalbiha.</p>
+              <p>Sampaikan ucapan, doa dan penghargaan buat YBrs. Ts. Nik Zalbiha binti Nik Mat.</p>
             </div>
-          </div>
-          <div style="font-size: 1.5rem; color: #f472b6;">
-            <i class="fa-solid fa-envelope-open-text"></i>
           </div>
         </div>
 
@@ -147,32 +173,11 @@
             </div>
           </div>
 
-          <!-- Bahagian / Agensi -->
+          <!-- Bahagian / Agensi (Input Teks & Tidak Wajib) -->
           <div class="form-group-custom">
             <div class="input-icon-wrap">
               <i class="fa-regular fa-building field-icon"></i>
-              <select id="bahagian" name="bahagian" class="form-control-custom" required onchange="toggleCustomBahagian(this.value)">
-                <option value="" disabled selected>Bahagian / Agensi *</option>
-                {% for b in bahagian_list %}
-                  <option value="{{ b }}">{{ b }}</option>
-                {% endfor %}
-              </select>
-            </div>
-          </div>
-
-          <!-- Medan Khas jika Lain-lain -->
-          <div class="form-group-custom" id="custom-bahagian-group" style="display: none;">
-            <div class="input-icon-wrap">
-              <i class="fa-solid fa-sitemap field-icon"></i>
-              <input type="text" id="bahagian_custom" name="bahagian_custom" class="form-control-custom" placeholder="Nyatakan bahagian atau agensi anda">
-            </div>
-          </div>
-
-          <!-- Jawatan / Gred -->
-          <div class="form-group-custom">
-            <div class="input-icon-wrap">
-              <i class="fa-solid fa-id-badge field-icon"></i>
-              <input type="text" id="jawatan" name="jawatan" class="form-control-custom" placeholder="Jawatan / Gred (Pilihan)">
+              <input type="text" id="bahagian" name="bahagian" class="form-control-custom" placeholder="Bahagian / Agensi">
             </div>
           </div>
 
@@ -184,7 +189,6 @@
               <span class="choice-selector-title">
                 <i class="fa-solid fa-sliders" style="color: #6366f1;"></i> Pilihan Bentuk Titipan:
               </span>
-              <span class="choice-selector-hint">Boleh pilih 1, 2, atau kesemuanya</span>
             </div>
             
             <div class="choice-chips-grid">
@@ -194,7 +198,6 @@
                 <input type="checkbox" id="opt-teks" checked onchange="handleOptionToggle('teks', this.checked)">
                 <i class="fa-solid fa-pen-nib choice-chip-icon" style="color: #6366f1;"></i>
                 <span class="choice-chip-text">Teks Ucapan</span>
-                <span class="choice-chip-sub">Warkah Hati</span>
               </label>
 
               <!-- Pilihan 2: Gambar -->
@@ -202,7 +205,6 @@
                 <input type="checkbox" id="opt-gambar" onchange="handleOptionToggle('gambar', this.checked)">
                 <i class="fa-regular fa-image choice-chip-icon" style="color: #8b5cf6;"></i>
                 <span class="choice-chip-text">Gambar</span>
-                <span class="choice-chip-sub">Foto Kenangan</span>
               </label>
 
               <!-- Pilihan 3: Video -->
@@ -210,7 +212,6 @@
                 <input type="checkbox" id="opt-video" onchange="handleOptionToggle('video', this.checked)">
                 <i class="fa-solid fa-video choice-chip-icon" style="color: #ec4899;"></i>
                 <span class="choice-chip-text">Video</span>
-                <span class="choice-chip-sub">Rakaman Suara</span>
               </label>
 
             </div>
@@ -234,7 +235,7 @@
                 <div class="media-box-label">
                   <i class="fa-regular fa-image" style="color: #8b5cf6;"></i> Lampirkan Gambar Kenangan
                 </div>
-                <div class="media-box-help">JPG, PNG, WebP (Maks 15MB)</div>
+                <div class="media-box-help">JPG, PNG</div>
               </div>
               <input type="file" id="gambar" name="gambar" class="media-input-custom" accept="image/png, image/jpeg, image/webp" onchange="handleFileChange(this, 'preview-gambar', 'gambar')">
               <div id="preview-gambar" style="display: none;" class="media-preview-badge">
@@ -250,7 +251,7 @@
                 <div class="media-box-label">
                   <i class="fa-solid fa-video" style="color: #ec4899;"></i> Lampirkan Video Kenangan
                 </div>
-                <div class="media-box-help">MP4, MOV, WebM (Maks 100MB)</div>
+                <div class="media-box-help">MP4, MOV</div>
               </div>
               <input type="file" id="video" name="video" class="media-input-custom" accept="video/mp4, video/quicktime, video/webm" onchange="handleFileChange(this, 'preview-video', 'video')">
               <div id="preview-video" style="display: none;" class="media-preview-badge">
@@ -269,178 +270,145 @@
             <i class="fa-solid fa-paper-plane"></i> Hantar Titipan Kenangan ✨
           </button>
 
-          <div style="text-align: center; margin-top: 10px; font-size: 0.72rem; color: #94a3b8;">
-            <i class="fa-solid fa-cloud-arrow-up"></i> Disimpan & disegerakkan ke Google Drive rasmi [dmojdn@gmail.com]
-          </div>
-
         </form>
 
       </div>
+    </div>
 
       <!-- ==========================================
            RIGHT COLUMN: PAPARAN UCAPAN & KENANGAN
            ========================================== -->
-      <div style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
 
-        <!-- Kad Atas: Paparan Ucapan (Testimonials Grid) -->
-        <div class="white-card" id="kenangan-section">
+        <!-- Kad Atas: Paparan Ucapan (Sebiji Seperti Gambar 2) -->
+        <div class="wavy-card-container" id="wrap-paparan-ucapan">
+          <!-- Bentuk Berombak Lembut di Atas Kotak Paparan Ucapan -->
+          <div class="box-wave-top-cap" aria-hidden="true">
+            <svg viewBox="0 0 700 24" preserveAspectRatio="none" class="box-wave-svg">
+              <path d="M0,10 C140,24 290,4 450,20 C550,26 640,8 700,14 L700,24 L0,24 Z" class="wave-cap-body-blue"></path>
+              <path d="M0,10 C140,24 290,4 450,20 C550,26 640,8 700,14" fill="none" class="wave-cap-stroke-pink"></path>
+            </svg>
+          </div>
+          <div class="white-card compact-card wavy-card-integrated" id="ucapan-section" style="background: linear-gradient(180deg, #f0f7ff 0%, #ffffff 100%); border: 1px solid #dbeafe; border-top: none;">
           
-          <div class="card-header-flex">
+          <div class="card-header-flex" style="margin-bottom: 0.75rem; padding-bottom: 0.5rem;">
             <div class="card-title-group">
               <div class="icon-circle-pink">
                 <i class="fa-solid fa-heart"></i>
               </div>
               <div class="card-title-text">
-                <h2>Paparan Ucapan Warga</h2>
+                <h2>Paparan Ucapan</h2>
                 <p>Setiap kata-kata menjadi kenangan indah buat selama-lamanya.</p>
               </div>
             </div>
-            <a href="#form-titipan" class="btn-link-action">
-              Titip Sekarang &rarr;
+            <a href="{{ url_for('public.titip_ucapan') }}" class="btn-link-action" id="btn-lihat-semua-ucapan">
+              Lihat Semua Ucapan &rarr;
             </a>
           </div>
 
-          <!-- Grid 4 Kad Ucapan -->
-          <div class="quotes-grid">
+          <!-- Grid 4 Kad Ucapan Sebaris (Persis Reka Bentuk Gambar 2) -->
+          <div class="quotes-grid-row4">
             
-            {% if recent_submissions and recent_submissions|length > 0 %}
-              {% for s in recent_submissions[:4] %}
-                <div class="quote-card">
+            {% if recent_text_submissions and recent_text_submissions|length > 0 %}
+              {% for s in recent_text_submissions[:4] %}
+                <div class="quote-card quote-card-row4">
+                  <span class="card-decor-icon decor-tr">
+                    <i class="fa-solid fa-heart" style="color: #f472b6; font-size: 0.8rem;"></i>
+                  </span>
+                  <span class="card-decor-icon decor-br">
+                    <i class="fa-solid fa-sparkles" style="color: #fbbf24; font-size: 0.75rem;"></i>
+                  </span>
                   <div>
                     <div class="quote-mark">“</div>
-                    <div class="quote-body">
-                      {% if s.ucapan %}
-                        {{ s.ucapan }}
-                      {% else %}
-                        <span style="color:#64748b; font-style:italic;">
-                          {% if s.image_filename and s.video_filename %}
-                            <i class="fa-solid fa-photo-film" style="color:#8b5cf6;"></i> Lampiran Gambar & Video Kenangan
-                          {% elif s.image_filename %}
-                            <i class="fa-regular fa-image" style="color:#8b5cf6;"></i> Lampiran Gambar Kenangan
-                          {% elif s.video_filename %}
-                            <i class="fa-solid fa-video" style="color:#ec4899;"></i> Lampiran Video Kenangan
-                          {% else %}
-                            Titipan Kenangan Buat YBrs. Ts. Nik Zalbiha
-                          {% endif %}
-                        </span>
-                      {% endif %}
-                    </div>
+                    <div class="quote-body">{{ s.ucapan }}</div>
                   </div>
                   <div class="quote-footer">
                     <div>
                       <div class="quote-author">{{ s.nama }}</div>
-                      <div class="quote-dept">{{ s.bahagian }}</div>
-                    </div>
-                    <div class="quote-time">
-                      {{ s.created_at.strftime('%d %b') if s.created_at else 'Baru sahaja' }}
+                      <div class="quote-dept">{{ s.bahagian if s.bahagian and s.bahagian != '-' else 'Warga JDN' }}</div>
+                      <div class="quote-time">{{ s.created_at | time_ago }}</div>
                     </div>
                   </div>
                 </div>
               {% endfor %}
             {% else %}
-              <!-- Contoh Kad Default Mengikut Reka Bentuk Rasmi -->
-              <div class="quote-card">
-                <div>
-                  <div class="quote-mark">“</div>
-                  <div class="quote-body">Terima kasih YBrs. Ts. Nik Zalbiha atas kepimpinan yang penuh hikmah dan ketelusan dalam memajukan JDN. Semoga fasa baharu ini dilimpahi kesihatan dan kebahagiaan selalu.</div>
+              <!-- Ruang Menanti Titipan Warga Rasmi Yang Pertama -->
+              <div class="quote-empty-state-box" style="grid-column: 1 / -1; width: 100%; text-align: center; padding: 2rem 1.5rem; background: rgba(255, 255, 255, 0.9); border-radius: 18px; border: 1.5px dashed #c4b5fd;">
+                <div style="width: 50px; height: 50px; margin: 0 auto 10px; border-radius: 50%; background: #ede9fe; color: #7c3aed; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                  <i class="fa-solid fa-feather-pointed"></i>
                 </div>
-                <div class="quote-footer">
-                  <div>
-                    <div class="quote-author">Nur Aisyah</div>
-                    <div class="quote-dept">Bahagian Pembangunan Aplikasi Strategik</div>
-                  </div>
-                  <div class="quote-time"><i class="fa-solid fa-heart" style="color: #f472b6;"></i></div>
-                </div>
-              </div>
-
-              <div class="quote-card">
-                <div>
-                  <div class="quote-mark">“</div>
-                  <div class="quote-body">Jasa dan bimbingan YBrs. Ts. sentiasa menjadi inspirasi buat kami warga digital. Selamat menikmati hari-hari indah bersama keluarga tercinta.</div>
-                </div>
-                <div class="quote-footer">
-                  <div>
-                    <div class="quote-author">Ahmad Razak</div>
-                    <div class="quote-dept">Bahagian Infrastruktur & Keselamatan Siber</div>
-                  </div>
-                  <div class="quote-time">5 jam yang lalu</div>
-                </div>
-              </div>
-
-              <div class="quote-card">
-                <div>
-                  <div class="quote-mark">“</div>
-                  <div class="quote-body">Terima kasih YBrs. Ts. kerana sentiasa percaya pada potensi warga kerja digital. Jejak kepimpinan Puan akan sentiasa terpahat di ingatan.</div>
-                </div>
-                <div class="quote-footer">
-                  <div>
-                    <div class="quote-author">Siti Norhana</div>
-                    <div class="quote-dept">Bahagian Data Raya & Kecerdasan Buatan</div>
-                  </div>
-                  <div class="quote-time">1 hari yang lalu</div>
-                </div>
-              </div>
-
-              <div class="quote-card">
-                <div>
-                  <div class="quote-mark">“</div>
-                  <div class="quote-body">Selamat bersara YBrs. Ts. Nik Zalbiha! Terima kasih atas legasi kecemerlangan dan integriti yang luar biasa sepanjang memimpin JDN.</div>
-                </div>
-                <div class="quote-footer">
-                  <div>
-                    <div class="quote-author">Faizal Hakim</div>
-                    <div class="quote-dept">Bahagian Transformasi Digital Sektor Awam</div>
-                  </div>
-                  <div class="quote-time"><i class="fa-solid fa-star" style="color: #fbbf24;"></i></div>
-                </div>
+                <h3 style="font-size: 1.05rem; font-weight: 700; color: #1e1b4b; margin-bottom: 6px;">Warkah Kenangan Bakal Bermula di Sini ✨</h3>
+                <p style="font-size: 0.85rem; color: #64748b; max-width: 480px; margin: 0 auto 12px; line-height: 1.5;">Jadilah warga pertama mengabadikan kata-kata penghargaan dan doa buat YBrs. Ts. Nik Zalbiha binti Nik Mat sempena persaraan beliau.</p>
+                <a href="#form-titipan" class="btn btn-hero-primary" style="padding: 8px 18px; font-size: 0.82rem; display: inline-flex;">
+                  <i class="fa-solid fa-pen-fancy"></i> Titip Ucapan Sekarang
+                </a>
               </div>
             {% endif %}
 
           </div>
 
         </div>
+      </div>
 
-        <!-- Kad Bawah: Kenangan Bersama KP (Galeri Thumbnails) -->
-        <div class="white-card" id="galeri-section">
+        <!-- Kad Bawah: Kenangan Bersama (1/2 Ruangan Bawah) -->
+        <div class="white-card compact-card" id="kenangan-section">
           
-          <div class="card-header-flex">
+          <div class="card-header-flex" style="margin-bottom: 0.75rem; padding-bottom: 0.5rem;">
             <div class="card-title-group">
               <div class="icon-circle-pink">
                 <i class="fa-solid fa-camera-retro"></i>
               </div>
               <div class="card-title-text">
-                <h2>Kenangan Bersama YBrs. Ts. Nik Zalbiha</h2>
+                <h2>Kenangan Bersama YBrs. Ts. Nik Zalbiha binti Nik Mat</h2>
                 <p>Detik-detik indah sepanjang perjalanan kepimpinan di Jabatan Digital Negara.</p>
               </div>
             </div>
-            <a href="#form-titipan" class="btn-link-action">
-              Sumbang Foto &rarr;
+            <a href="{{ url_for('public.kenangan') }}" class="btn-link-action" id="btn-lihat-galeri-penuh">
+              Lihat Galeri Penuh &rarr;
             </a>
           </div>
 
-          <!-- Thumbnails Row -->
+          <!-- Thumbnails Row (Semua ucapan bergambar dan bervideo terkini) -->
           <div class="gallery-grid">
-            <div class="gallery-thumb-wrap">
-              <img src="{{ url_for('static', filename='images/event_1.jpg') }}" alt="Mesyuarat & Majlis Bersama KP">
-            </div>
-            <div class="gallery-thumb-wrap">
-              <img src="{{ url_for('static', filename='images/event_2.jpg') }}" alt="Gambar Berkumpulan Warga JDN">
-            </div>
-            <div class="gallery-thumb-wrap">
-              <img src="{{ url_for('static', filename='images/kp_nik_zalbiha.png') }}" alt="Potret Rasmi YBrs. Ts. Nik Zalbiha" style="object-fit: contain; background: #e0e7ff;">
-            </div>
-            <div class="gallery-thumb-wrap">
-              <img src="{{ url_for('static', filename='images/event_1.jpg') }}" alt="Sesi Bersama Warga">
-            </div>
-            <div class="gallery-thumb-wrap">
-              <a href="#form-titipan" class="gallery-thumb-more" style="width:100%; height:100%;">
-                <i class="fa-regular fa-images"></i>
-                Lebih Banyak Kenangan...
-              </a>
-            </div>
+            {% set media_items = recent_media_submissions or [] %}
+            {% if media_items and media_items|length > 0 %}
+              {% for m in media_items[:4] %}
+                <div class="gallery-thumb-wrap" title="Kiriman daripada {{ m.nama }}{% if m.bahagian and m.bahagian != '-' %} ({{ m.bahagian }}){% endif %}">
+                  <a href="{{ url_for('public.kenangan') }}" style="display:block; width:100%; height:100%; position:relative;">
+                    {% if m.image_filename %}
+                      <img src="{{ url_for('public.serve_image', filename=m.image_filename) }}" alt="Foto daripada {{ m.nama }}">
+                      {% if m.video_filename %}
+                        <span class="video-overlay-badge"><i class="fa-solid fa-play"></i></span>
+                      {% endif %}
+                    {% elif m.video_filename %}
+                      <div class="gallery-video-placeholder">
+                        <video src="{{ url_for('public.serve_video', filename=m.video_filename) }}#t=0.5" preload="metadata" muted playsinline></video>
+                        <span class="video-overlay-badge"><i class="fa-solid fa-play"></i></span>
+                      </div>
+                    {% endif %}
+                  </a>
+                </div>
+              {% endfor %}
+              <div class="gallery-thumb-wrap">
+                <a href="{{ url_for('public.kenangan') }}" class="gallery-thumb-more" style="width:100%; height:100%;">
+                  <i class="fa-regular fa-images"></i>
+                  Lebih Banyak Kenangan...
+                </a>
+              </div>
+            {% else %}
+              <!-- Ruang Galeri Menanti Foto / Video Rasmi -->
+              <div class="gallery-empty-state-box" style="grid-column: 1 / -1; width: 100%; text-align: center; padding: 2rem 1.5rem; background: rgba(255, 255, 255, 0.9); border-radius: 18px; border: 1.5px dashed #fbcfe8;">
+                <div style="width: 50px; height: 50px; margin: 0 auto 10px; border-radius: 50%; background: #fdf2f8; color: #ec4899; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                  <i class="fa-solid fa-camera"></i>
+                </div>
+                <h3 style="font-size: 1.05rem; font-weight: 700; color: #1e1b4b; margin-bottom: 6px;">Galeri Kenangan Bakal Berseri ✨</h3>
+                <p style="font-size: 0.85rem; color: #64748b; max-width: 480px; margin: 0 auto 12px; line-height: 1.5;">Kongsikan detik indah, foto bersama atau rakaman video ucapan buat YBrs. Ts. Nik Zalbiha melalui borang titipan di sebelah.</p>
+                <a href="#form-titipan" class="btn btn-hero-secondary" style="padding: 8px 18px; font-size: 0.82rem; display: inline-flex;">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> Kongsi Foto / Video
+                </a>
+              </div>
+            {% endif %}
           </div>
-
-        </div>
 
       </div>
 
@@ -452,15 +420,6 @@
 
 {% block extra_js %}
 <script>
-  function toggleCustomBahagian(val) {
-    const customGroup = document.getElementById('custom-bahagian-group');
-    if (val && val.includes('Lain-lain')) {
-      customGroup.style.display = 'block';
-      document.getElementById('bahagian_custom').focus();
-    } else {
-      customGroup.style.display = 'none';
-    }
-  }
 
   function updateCharCount(textarea) {
     const count = textarea.value.length;

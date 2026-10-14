@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Titipan Kenangan Buat KP | Selamat Bersara YBrs. Ts. Nik Zalbiha binti Nik Mat{% endblock %}</title>
   
-  <!-- Google Fonts: Alex Brush (Calligraphy), Plus Jakarta Sans, Outfit -->
+  <!-- Google Fonts: Alex Brush (Calligraphy), Great Vibes, Playfair Display, Plus Jakarta Sans, Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Courgette&family=Alex+Brush&family=Great+Vibes&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=20261014_r4">
   {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -26,56 +26,50 @@
         
         <!-- Brand / Logo -->
         <a href="{{ url_for('public.index') }}" class="brand-link" id="nav-brand">
-          <div class="brand-heart-icon">
-            <i class="fa-solid fa-heart"></i>
-          </div>
+          <img src="{{ url_for('static', filename='images/bunga_rose_logo.png') }}" alt="Titipan Kenangan KP" class="brand-rose-icon">
           <div class="brand-text">
             <h1>Titipan Kenangan Buat KP</h1>
             <span>JASA &bull; INSPIRASI &bull; TERUS DI HATI</span>
           </div>
         </a>
 
-        <!-- Navigation Links -->
-        <ul class="nav-links">
-          <li>
-            <a href="{{ url_for('public.index') }}" class="nav-item-link active">
-              <i class="fa-solid fa-house"></i> Laman Utama
-            </a>
-          </li>
-          <li>
-            <a href="{{ url_for('public.index') }}#form-titipan" class="nav-item-link">Titip Ucapan</a>
-          </li>
-          <li>
-            <a href="{{ url_for('public.index') }}#kenangan-section" class="nav-item-link">Kenangan</a>
-          </li>
-          <li>
-            <a href="{{ url_for('public.index') }}#galeri-section" class="nav-item-link">Galeri</a>
-          </li>
-          <li>
-            <a href="{{ url_for('public.index') }}#video-section" class="nav-item-link">Video</a>
-          </li>
-          <li>
-            <a href="{{ url_for('public.index') }}#tentang-section" class="nav-item-link">Tentang</a>
-          </li>
-        </ul>
+        <!-- Butang Hamburger Mobile -->
+        <button class="nav-mobile-toggle" id="nav-mobile-toggle" type="button" aria-label="Buka Menu Navigasi" aria-expanded="false">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
 
-        <!-- Right Action Items -->
-        <div class="nav-actions">
-          <a href="{{ url_for('public.index') }}#countdown-wrapper" class="nav-countdown-pill" title="Detik Menjelang 23 Oktober 2026">
-            <span class="pulse-dot"></span> <span id="nav-countdown-text">23 Okt 2026</span>
-          </a>
+        <!-- Menu Navigasi & Tindakan (Desktop Horizontal & Mobile Drawer) -->
+        <div class="nav-menu-container" id="nav-menu-container">
+          <ul class="nav-links">
+            <li>
+              <a href="{{ url_for('public.index') }}" class="nav-item-link {% if active_page == 'home' %}active{% endif %}">
+                <i class="fa-solid fa-house"></i> <span>Laman Utama</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{ url_for('public.titip_ucapan') }}" class="nav-item-link {% if active_page == 'titip_ucapan' %}active{% endif %}">
+                <i class="fa-solid fa-envelope-open-text"></i> <span>Ucapan</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{ url_for('public.kenangan') }}" class="nav-item-link {% if active_page == 'kenangan' %}active{% endif %}">
+                <i class="fa-solid fa-images"></i> <span>Kenangan</span>
+              </a>
+            </li>
+          </ul>
 
-          <button type="button" class="nav-icon-btn" title="Carian" onclick="document.getElementById('ucapan')?.focus()">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-          
-          <div class="lang-selector">
-            <i class="fa-solid fa-globe"></i> Bahasa Melayu <i class="fa-solid fa-chevron-down" style="font-size: 0.65rem;"></i>
-          </div>
-
-          <a href="{{ url_for('admin.dashboard') }}" class="nav-icon-btn" title="Dashboard Pentadbir" id="btn-admin-portal">
-            <i class="fa-solid fa-shield-halved"></i>
-          </a>
+          {% if session.get('is_admin') %}
+            <div class="nav-actions">
+              <a href="{{ url_for('admin.dashboard') }}" class="nav-admin-link" style="background: linear-gradient(135deg, #1e1b4b, #312e81); color: #fde047; font-weight: 700; font-size: 0.85rem; padding: 7px 16px; border-radius: 9999px; border: 1.5px solid #ca8a04; display: inline-flex; align-items: center; gap: 7px; text-decoration: none; box-shadow: 0 4px 12px rgba(30, 27, 75, 0.25);" title="Buka Pusat Pentadbiran">
+                <i class="fa-solid fa-crown" style="color: #facc15;"></i> <span>Panel Pentadbir</span>
+              </a>
+              <a href="{{ url_for('admin.logout') }}" class="nav-icon-btn" title="Log Keluar" style="color: #94a3b8; font-size: 0.85rem;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#94a3b8'">
+                <i class="fa-solid fa-power-off"></i>
+              </a>
+            </div>
+          {% endif %}
         </div>
 
       </div>
@@ -109,41 +103,59 @@
     {% block content %}{% endblock %}
   </main>
 
-  <!-- Footer Banner (Curved Navy Commemorative) -->
+  <!-- Footer Banner (Memanjang, Berangkai Mudah Dibaca & Bersih) -->
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-content">
+      <div class="footer-wrapper">
         
-        <div class="footer-cursive">
-          Terima kasih, YBrs. Ts. Nik Zalbiha ... &hearts;
+        <!-- Bahagian Memanjang: Kata-kata Persaraan (Tulisan Berangkai Elegan & Jelas Dibaca) -->
+        <div class="footer-quote-wide">
+          <span class="footer-quote-text">
+            &ldquo;Persaraan bukan pengakhiran, tetapi permulaan kepada lebih banyak kisah indah ... <span class="footer-heart">&hearts;</span>&rdquo;
+          </span>
         </div>
 
-        <div class="footer-badges">
-          <div class="footer-badge-item">
-            <i class="fa-solid fa-users-gear"></i>
-            <div>
-              <strong>Kepimpinan</strong><br>
-              <span style="font-size:0.75rem; color:#94a3b8;">Membina Generasi</span>
-            </div>
-          </div>
-          <div class="footer-badge-item">
-            <i class="fa-solid fa-seedling"></i>
-            <div>
-              <strong>Jasa</strong><br>
-              <span style="font-size:0.75rem; color:#94a3b8;">Menyemai Harapan</span>
-            </div>
-          </div>
-          <div class="footer-badge-item">
-            <i class="fa-solid fa-heart"></i>
-            <div>
-              <strong>Inspirasi</strong><br>
-              <span style="font-size:0.75rem; color:#94a3b8;">Selamanya Dikenang</span>
-            </div>
-          </div>
-        </div>
+        <!-- Garisan Pembahagi Lembut -->
+        <div class="footer-divider-line"></div>
 
-        <div class="footer-cursive" style="font-size: 1.25rem; max-width: 380px; text-align: right;">
-          "Persaraan bukan pengakhiran, tetapi permulaan kepada lebih banyak kisah indah ... &hearts;"
+        <!-- Baris Bawah: Penghargaan & Nilai Teras -->
+        <div class="footer-bottom-grid">
+          
+          <div class="footer-salutation">
+            Terima kasih, <strong>YBrs. Ts. Nik Zalbiha binti Nik Mat</strong>
+          </div>
+
+          <div class="footer-badges">
+            <div class="footer-badge-item">
+              <i class="fa-solid fa-users-gear"></i>
+              <div>
+                <strong>Kepimpinan</strong><br>
+                <span class="footer-badge-sub">Membina Generasi</span>
+              </div>
+            </div>
+            <div class="footer-badge-item">
+              <i class="fa-solid fa-seedling"></i>
+              <div>
+                <strong>Jasa</strong><br>
+                <span class="footer-badge-sub">Menyemai Harapan</span>
+              </div>
+            </div>
+            <div class="footer-badge-item">
+              <i class="fa-solid fa-heart"></i>
+              <div>
+                <strong>Inspirasi</strong><br>
+                <span class="footer-badge-sub">Selamanya Dikenang</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-meta-text">
+            Jabatan Digital Negara &bull; 2026
+            {% if not session.get('is_admin') %}
+              &bull; <a href="{{ url_for('admin.login') }}" style="color: inherit; text-decoration: none; opacity: 0.5;" title="Akses Pentadbir"><i class="fa-solid fa-lock" style="font-size: 0.72rem;"></i> Pentadbir</a>
+            {% endif %}
+          </div>
+
         </div>
 
       </div>
@@ -152,9 +164,9 @@
 
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   <script>
-    // Pemasa Detik Persaraan (23 Oktober 2026)
+    // Pemasa Detik Persaraan (22 Oktober 2026, 16:30 PM)
     (function() {
-      const targetDate = new Date("2026-10-23T00:00:00+08:00").getTime();
+      const targetDate = new Date("2026-10-22T16:30:00+08:00").getTime();
       function updateCD() {
         const now = new Date().getTime();
         const diff = targetDate - now;
@@ -190,6 +202,588 @@
       setInterval(updateCD, 1000);
     })();
   </script>
+
+  <!-- ====================================================================
+       MODAL MUAT NAIK MEDIA PENGARAH (JABATAN DIGITAL NEGARA - HANYA PENTADBIR)
+       ==================================================================== -->
+  {% if session.get('is_admin') %}
+  <div id="modalUploadPengarah" class="pengarah-modal-backdrop" style="display: none;">
+    <div class="pengarah-modal-dialog">
+      <div class="pengarah-modal-content">
+        
+        <!-- Ornamen Sudut Songket Emas (Melayu Klasik) -->
+        <span class="modal-corner-motif tl">❖</span>
+        <span class="modal-corner-motif tr">❖</span>
+        <span class="modal-corner-motif bl">❖</span>
+        <span class="modal-corner-motif br">❖</span>
+
+        <!-- Modal Header -->
+        <div class="pengarah-modal-header">
+          <div class="pengarah-modal-title-cluster">
+            <div class="pengarah-modal-icon-badge">
+              <i class="fa-solid fa-camera-retro"></i>
+            </div>
+            <div>
+              <h3 class="pengarah-modal-title">Muat Naik Media Pengarah</h3>
+              <p class="pengarah-modal-subtitle">Foto & Video YBrs. Ts. Nik Zalbiha binti Nik Mat</p>
+            </div>
+          </div>
+          <button type="button" class="pengarah-modal-close" onclick="closeUploadPengarahModal()" aria-label="Tutup">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- Modal Body / Form -->
+        <form action="{{ url_for('public.upload_media_pengarah') }}" method="POST" enctype="multipart/form-data" id="formUploadPengarah" onsubmit="return handlePengarahUploadSubmit(event)">
+          
+          <div class="pengarah-modal-body">
+            <!-- Drag and Drop Dropzone -->
+            <div class="pengarah-dropzone" id="pengarahDropzone" onclick="document.getElementById('media_files_pengarah').click()">
+              <input type="file" id="media_files_pengarah" name="media_files" accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm" multiple style="display: none;" onchange="handlePengarahFilesSelected(this)">
+              
+              <div class="dropzone-content">
+                <div class="dropzone-icon-circle">
+                  <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+                <h4 class="dropzone-main-text">Klik atau seret fail ke sini</h4>
+                <p class="dropzone-sub-text">Boleh pilih lebih daripada satu fail serentak (Foto & Video)</p>
+                <div class="dropzone-badge-row">
+                  <span class="format-badge"><i class="fa-regular fa-image"></i> JPG, PNG, WebP</span>
+                  <span class="format-badge"><i class="fa-solid fa-video"></i> MP4, MOV, WebM</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Senarai Fail Terpilih -->
+            <div id="pengarahFilesPreviewList" class="selected-files-box" style="display: none;">
+              <div class="selected-files-top">
+                <span id="selectedFilesCountText" class="selected-count-badge">0 fail dipilih</span>
+                <button type="button" class="btn-clear-files" onclick="clearPengarahFilesSelection()">
+                  <i class="fa-solid fa-trash-can"></i> Kosongkan
+                </button>
+              </div>
+              <div id="selectedFilesItems" class="selected-files-list"></div>
+            </div>
+
+            <!-- Mesej Amaran Jika Tiada Fail Dipilih -->
+            <div id="alertPengarahNoFile" class="pengarah-alert-warning" style="display: none;">
+              <i class="fa-solid fa-circle-exclamation"></i> Sila pilih sekurang-kurangnya satu fail gambar atau video sebelum memuat naik.
+            </div>
+
+          </div>
+
+          <!-- Modal Footer -->
+          <div class="pengarah-modal-footer">
+            <button type="button" class="btn-pengarah-cancel" onclick="closeUploadPengarahModal()">
+              Batal
+            </button>
+            <button type="submit" class="btn-pengarah-submit" id="btnSubmitPengarahUpload">
+              <span id="btnPengarahNormalText">
+                <i class="fa-solid fa-paper-plane"></i> Muat Naik Sekarang
+              </span>
+              <span id="btnPengarahLoadingText" style="display: none;">
+                <i class="fa-solid fa-spinner fa-spin"></i> Sedang Memuat Naik...
+              </span>
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <style>
+    /* ====================================================================
+       MODAL UPLOAD MEDIA PENGARAH (TEMA MELAYU KLASIK + DIGITAL COMEL)
+       ==================================================================== */
+    .pengarah-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: rgba(15, 23, 42, 0.68);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      animation: modalFadeIn 0.25s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .pengarah-modal-dialog {
+      width: 100%;
+      max-width: 530px;
+      animation: modalScaleUp 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes modalScaleUp {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .pengarah-modal-content {
+      position: relative;
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25), 0 0 25px rgba(212, 175, 55, 0.2);
+      border: 2px solid transparent;
+      background-image: 
+        linear-gradient(#ffffff, #ffffff),
+        linear-gradient(135deg, #d4af37 0%, #ec4899 45%, #8b5cf6 80%, #06b6d4 100%);
+      background-origin: padding-box, border-box;
+      background-clip: padding-box, border-box;
+      overflow: hidden;
+    }
+
+    .modal-corner-motif {
+      position: absolute;
+      font-size: 0.8rem;
+      color: #d4af37;
+      text-shadow: 0 0 6px rgba(212, 175, 55, 0.6);
+      user-select: none;
+      pointer-events: none;
+      line-height: 1;
+      z-index: 3;
+    }
+    .modal-corner-motif.tl { top: 10px; left: 10px; }
+    .modal-corner-motif.tr { top: 10px; right: 10px; }
+    .modal-corner-motif.bl { bottom: 10px; left: 10px; }
+    .modal-corner-motif.br { bottom: 10px; right: 10px; }
+
+    .pengarah-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .pengarah-modal-title-cluster {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pengarah-modal-icon-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f43f5e, #ec4899);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+      flex-shrink: 0;
+    }
+
+    .pengarah-modal-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #1e1b4b;
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .pengarah-modal-subtitle {
+      font-size: 0.78rem;
+      color: #64748b;
+      margin: 2px 0 0;
+    }
+
+    .pengarah-modal-close {
+      background: #f1f5f9;
+      border: none;
+      color: #64748b;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+    }
+    .pengarah-modal-close:hover {
+      background: #fee2e2;
+      color: #ef4444;
+    }
+
+    .pengarah-modal-body {
+      padding: 1.25rem 1.5rem;
+    }
+
+    .nav-upload-pengarah-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      background: linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #8b5cf6 100%);
+      color: #ffffff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(236, 72, 153, 0.35);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+    .nav-upload-pengarah-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(236, 72, 153, 0.5);
+      color: #ffffff;
+    }
+
+    .pengarah-dropzone {
+      border: 2px dashed #cbd5e1;
+      border-radius: 18px;
+      padding: 1.75rem 1rem;
+      text-align: center;
+      background: #fafafa;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .pengarah-dropzone:hover,
+    .pengarah-dropzone.dragover {
+      border-color: #ec4899;
+      background: #fdf2f8;
+      transform: translateY(-2px);
+    }
+
+    .dropzone-icon-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: #ec4899;
+      font-size: 1.35rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      transition: all 0.25s ease;
+    }
+
+    .pengarah-dropzone:hover .dropzone-icon-circle {
+      background: #fce7f3;
+      color: #db2777;
+      transform: scale(1.08);
+    }
+
+    .dropzone-main-text {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 0 0 4px;
+    }
+
+    .dropzone-sub-text {
+      font-size: 0.76rem;
+      color: #64748b;
+      margin: 0 0 10px;
+    }
+
+    .dropzone-badge-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .format-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    .selected-files-box {
+      margin-top: 1rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 10px 12px;
+      max-height: 160px;
+      overflow-y: auto;
+    }
+
+    .selected-files-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+
+    .selected-count-badge {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .btn-clear-files {
+      background: none;
+      border: none;
+      color: #ef4444;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .btn-clear-files:hover {
+      background: #fee2e2;
+    }
+
+    .selected-files-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .selected-file-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      background: #ffffff;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid #f1f5f9;
+    }
+
+    .file-row-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .file-row-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 600;
+      color: #334155;
+      max-width: 240px;
+    }
+
+    .file-row-size {
+      color: #94a3b8;
+      font-size: 0.7rem;
+      flex-shrink: 0;
+    }
+
+    .pengarah-alert-warning {
+      margin-top: 0.75rem;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #b45309;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pengarah-modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 1rem 1.5rem 1.25rem;
+      border-top: 1px solid #f1f5f9;
+      background: #fafafa;
+    }
+
+    .btn-pengarah-cancel {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #475569;
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-pengarah-cancel:hover {
+      background: #f1f5f9;
+      color: #1e293b;
+    }
+
+    .btn-pengarah-submit {
+      background: linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #8b5cf6 100%);
+      border: none;
+      color: #ffffff;
+      padding: 9px 22px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(236, 72, 153, 0.4);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-pengarah-submit:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(236, 72, 153, 0.55);
+    }
+    .btn-pengarah-submit:disabled {
+      opacity: 0.75;
+      cursor: not-allowed;
+    }
+  </style>
+
+  {% if session.get('is_admin') %}
+  <script>
+    // Pengurusan Modal Muat Naik Media Pengarah (Hanya Pentadbir)
+    function openUploadPengarahModal() {
+      const modal = document.getElementById('modalUploadPengarah');
+      if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeUploadPengarahModal() {
+      const modal = document.getElementById('modalUploadPengarah');
+      if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    }
+
+    function clearPengarahFilesSelection() {
+      const fileInput = document.getElementById('media_files_pengarah');
+      if (fileInput) fileInput.value = '';
+      const preview = document.getElementById('pengarahFilesPreviewList');
+      if (preview) preview.style.display = 'none';
+      const list = document.getElementById('selectedFilesItems');
+      if (list) list.innerHTML = '';
+      const alertBox = document.getElementById('alertPengarahNoFile');
+      if (alertBox) alertBox.style.display = 'none';
+    }
+
+    function handlePengarahFilesSelected(input) {
+      const preview = document.getElementById('pengarahFilesPreviewList');
+      const countText = document.getElementById('selectedFilesCountText');
+      const itemsContainer = document.getElementById('selectedFilesItems');
+      const alertBox = document.getElementById('alertPengarahNoFile');
+      if (alertBox) alertBox.style.display = 'none';
+
+      if (!input.files || input.files.length === 0) {
+        if (preview) preview.style.display = 'none';
+        return;
+      }
+
+      const files = Array.from(input.files);
+      if (countText) countText.innerText = `${files.length} fail dipilih`;
+      if (itemsContainer) {
+        itemsContainer.innerHTML = '';
+        files.forEach(f => {
+          const isVideo = f.type.startsWith('video') || f.name.match(/\.(mp4|mov|webm)$/i);
+          const icon = isVideo ? '<i class="fa-solid fa-video" style="color: #ec4899;"></i>' : '<i class="fa-regular fa-image" style="color: #6366f1;"></i>';
+          const sizeStr = f.size > 1024 * 1024 ? `${(f.size / (1024 * 1024)).toFixed(1)} MB` : `${(f.size / 1024).toFixed(0)} KB`;
+          const div = document.createElement('div');
+          div.className = 'selected-file-row';
+          div.innerHTML = `
+            <div class="file-row-left">
+              ${icon}
+              <span class="file-row-name" title="${f.name}">${f.name}</span>
+            </div>
+            <span class="file-row-size">${sizeStr}</span>
+          `;
+          itemsContainer.appendChild(div);
+        });
+      }
+      if (preview) preview.style.display = 'block';
+    }
+
+    function handlePengarahUploadSubmit(e) {
+      const fileInput = document.getElementById('media_files_pengarah');
+      const alertBox = document.getElementById('alertPengarahNoFile');
+      if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+        if (alertBox) alertBox.style.display = 'flex';
+        return false;
+      }
+      const btn = document.getElementById('btnSubmitPengarahUpload');
+      const normalText = document.getElementById('btnPengarahNormalText');
+      const loadingText = document.getElementById('btnPengarahLoadingText');
+      if (btn) btn.disabled = true;
+      if (normalText) normalText.style.display = 'none';
+      if (loadingText) loadingText.style.display = 'inline-flex';
+      return true;
+    }
+
+    // Drag and drop event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropzone = document.getElementById('pengarahDropzone');
+      const fileInput = document.getElementById('media_files_pengarah');
+      if (dropzone && fileInput) {
+        ['dragenter', 'dragover'].forEach(eventName => {
+          dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.add('dragover');
+          }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+          dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.remove('dragover');
+          }, false);
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+          const dt = e.dataTransfer;
+          if (dt && dt.files && dt.files.length > 0) {
+            fileInput.files = dt.files;
+            handlePengarahFilesSelected(fileInput);
+          }
+        }, false);
+      }
+
+      // Tutup modal apabila klik di luar kandungan modal
+      window.addEventListener('click', function(e) {
+        const modal = document.getElementById('modalUploadPengarah');
+        if (e.target === modal) {
+          closeUploadPengarahModal();
+        }
+      });
+
+      // Tutup modal dengan kekunci ESC
+      window.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeUploadPengarahModal();
+        }
+      });
+    });
+  </script>
+  {% endif %}
   {% block extra_js %}{% endblock %}
 </body>
 </html>

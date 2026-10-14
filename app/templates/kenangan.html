@@ -1,0 +1,754 @@
+{% extends "base.html" %}
+
+{% block title %}Kenangan Bersama YBrs. Ts. Nik Zalbiha binti Nik Mat | Galeri Foto & Video{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* ====================================================================
+     HALAMAN KENANGAN: TEMA SERAGAM DENGAN HALAMAN UCAPAN
+     (COMEL + MELAYU KLASIK + DIGITAL)
+     ==================================================================== */
+  .page-kenangan-wrapper {
+    padding: 3rem 0 5rem;
+    background: radial-gradient(circle at 50% 10%, rgba(244, 114, 182, 0.08) 0%, rgba(224, 231, 255, 0.3) 40%, #f8fafc 100%);
+    min-height: 80vh;
+  }
+
+  /* Header Comel & Elegan (Sama seperti Halaman Ucapan) */
+  .cute-page-header {
+    text-align: center;
+    max-width: 820px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .cute-page-title {
+    font-size: clamp(2rem, 3.5vw, 2.85rem);
+    color: #1e1b4b;
+    font-weight: 800;
+    line-height: 1.22;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+
+  .cute-page-subtitle {
+    font-family: 'Courgette', 'Playfair Display', cursive, serif;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    color: #4b5563;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .cute-counter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 6px 18px;
+    border-radius: 9999px;
+    font-size: 0.88rem;
+    color: #475569;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  /* Butang Penapis Kategori Comel */
+  .cute-filter-bar {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .cute-filter-pill {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    color: #475569;
+    padding: 8px 22px;
+    border-radius: 9999px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .cute-filter-pill:hover {
+    border-color: #ec4899;
+    color: #9333ea;
+    transform: translateY(-2px);
+  }
+
+  .cute-filter-pill.active {
+    background: linear-gradient(135deg, #d4af37 0%, #ec4899 45%, #8b5cf6 100%);
+    border-color: transparent;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.35);
+  }
+
+  /* Grid Galeri Penuh */
+  .comel-media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  /* Kad Media: Tema Melayu Klasik + Digital + Comel */
+  .warkah-comel-card {
+    position: relative;
+    border-radius: 24px;
+    padding: 16px 16px 16px 16px;
+    background-color: #ffffff;
+    
+    /* Border Dwi-Lapisan: Melayu Klasik (Songket Gold) + Digital (Cyber Gradient) */
+    border: 2px solid transparent;
+    background-image: 
+      linear-gradient(#ffffff, #ffffff),
+      linear-gradient(135deg, #d4af37 0%, #ec4899 38%, #8b5cf6 70%, #06b6d4 100%);
+    background-origin: padding-box, border-box;
+    background-clip: padding-box, border-box;
+
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.06), 0 2px 8px rgba(212, 175, 55, 0.08);
+    transition: all 0.32s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+
+  .warkah-comel-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 
+      0 18px 38px rgba(124, 58, 237, 0.15), 
+      0 0 22px rgba(212, 175, 55, 0.28),
+      0 4px 12px rgba(236, 72, 153, 0.12);
+  }
+
+  /* Motif Sudut Songket Emas (Melayu Klasik) */
+  .corner-motif {
+    position: absolute;
+    font-size: 0.72rem;
+    color: #d4af37;
+    text-shadow: 0 0 6px rgba(212, 175, 55, 0.6);
+    user-select: none;
+    pointer-events: none;
+    line-height: 1;
+    z-index: 3;
+  }
+  .corner-motif.tl { top: 6px; left: 8px; }
+  .corner-motif.tr { top: 6px; right: 8px; }
+  .corner-motif.bl { bottom: 6px; left: 8px; }
+  .corner-motif.br { bottom: 6px; right: 8px; }
+
+  /* Bekas Media Melengkung Kemas */
+  .kenangan-media-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #f1f5f9;
+    margin-bottom: 12px;
+  }
+
+  .kenangan-media-wrapper img,
+  .kenangan-media-wrapper video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+  }
+
+  .warkah-comel-card:hover .kenangan-media-wrapper img,
+  .warkah-comel-card:hover .kenangan-media-wrapper video {
+    transform: scale(1.05);
+  }
+
+  .video-wrapper-bg {
+    background: #0f172a;
+  }
+
+  .video-center-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(236, 72, 153, 0.9);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.35), 0 0 15px rgba(236, 72, 153, 0.5);
+    transition: transform 0.25s ease, background 0.25s ease;
+  }
+
+  .warkah-comel-card:hover .video-center-play {
+    transform: translate(-50%, -50%) scale(1.15);
+    background: #db2777;
+  }
+
+  .media-type-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #ffffff;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    letter-spacing: 0.02em;
+    z-index: 2;
+  }
+  .tag-foto { background: rgba(79, 70, 229, 0.88); }
+  .tag-video { background: rgba(236, 72, 153, 0.88); }
+  .tag-rasmi { background: rgba(30, 41, 59, 0.88); }
+
+  /* Garisan Pemisah */
+  .warkah-card-divider {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, rgba(203, 213, 225, 0.7), transparent);
+    margin: 4px 0 10px 0;
+  }
+
+  /* Info Pengirim (Comel & Jelas) */
+  .warkah-footer-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0 2px;
+  }
+
+  .warkah-author-cluster {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .warkah-cute-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 0.92rem;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+    flex-shrink: 0;
+  }
+
+  .avatar-color-0 { background: linear-gradient(135deg, #ec4899, #db2777); }
+  .avatar-color-1 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+  .avatar-color-2 { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+  .avatar-color-3 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+  .avatar-color-4 { background: linear-gradient(135deg, #10b981, #059669); }
+  .avatar-color-gov { background: linear-gradient(135deg, #1e1b4b, #312e81); }
+
+  .warkah-author-text {
+    min-width: 0;
+  }
+
+  .warkah-author-name {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 2px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .warkah-author-dept {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 600;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .warkah-cute-meta {
+    text-align: right;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .warkah-time-text {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+
+  .cute-love-icon {
+    font-size: 0.88rem;
+    display: inline-block;
+    animation: cuteHeartPulse 2.4s infinite ease-in-out;
+  }
+
+  @keyframes cuteHeartPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.18); }
+  }
+
+  /* Modal Lightbox */
+  .kenangan-modal {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.88);
+    backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .kenangan-modal-content {
+    position: relative;
+    max-width: 900px;
+    width: 100%;
+    background: #0f172a;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .kenangan-modal-content img {
+    width: 100%;
+    max-height: 75vh;
+    object-fit: contain;
+    display: block;
+    background: #000;
+  }
+  .modal-caption-bar {
+    padding: 16px 22px;
+    background: #1e293b;
+  }
+  .kenangan-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 2rem;
+    color: #ffffff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+    z-index: 10;
+    transition: color 0.2s ease;
+  }
+  .kenangan-modal-close:hover {
+    color: #f43f5e;
+  }
+
+  @media (max-width: 768px) {
+    .comel-media-grid {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-kenangan-wrapper">
+  <div class="container">
+
+    <!-- Header Halaman Kenangan (Comel & Elegan) -->
+    <div class="cute-page-header">
+      <h1 class="cute-page-title">
+        Kenangan Bersama YBrs. Ts. Nik Zalbiha binti Nik Mat
+      </h1>
+
+      <p class="cute-page-subtitle">
+        Himpunan detik-detik terindah, foto peristiwa dan rakaman video ucapan dan kenangan bersama Yang Berusaha Ketua Pengarah.
+      </p>
+
+      <div class="cute-counter-tag">
+        <i class="fa-solid fa-camera" style="color: #ec4899;"></i>
+        <span>Jumlah Terkumpul: <strong style="color: #1e1b4b;">{{ all_media_submissions|length + 4 }} Detik Kenangan</strong></span>
+        <span>✨</span>
+      </div>
+    </div>
+
+    <!-- Tab Penapis Kategori Media -->
+    <div class="cute-filter-bar">
+      <button class="cute-filter-pill active" onclick="filterGallery('all', this)">
+        <i class="fa-solid fa-layer-group"></i> Semua Media ({{ all_media_submissions|length + 4 }})
+      </button>
+      <button class="cute-filter-pill" onclick="filterGallery('foto', this)">
+        <i class="fa-regular fa-image"></i> Foto Kenangan
+      </button>
+      <button class="cute-filter-pill" onclick="filterGallery('video', this)">
+        <i class="fa-solid fa-video"></i> Rakaman Video
+      </button>
+    </div>
+
+    <!-- Grid Galeri Lengkap (Full Width) -->
+    <div class="comel-media-grid" id="kenangan-grid-container">
+      
+      <!-- 1. Kiriman Media Warga (Disusun Paling Terkini) -->
+      {% if all_media_submissions and all_media_submissions|length > 0 %}
+        {% for m in all_media_submissions %}
+          
+          {# Jika ada fail Gambar #}
+          {% if m.image_filename %}
+            <div class="warkah-comel-card kenangan-card-item media-type-foto" data-type="foto" onclick="openPhotoModal('{{ url_for('public.serve_image', filename=m.image_filename) }}', '{{ 'Jabatan Digital Negara' if m.nama == 'Jabatan Digital Negara' else m.nama|e }}', '{{ 'Jabatan Digital Negara' if m.nama == 'Jabatan Digital Negara' else (m.bahagian|e if m.bahagian and m.bahagian != '-' else 'Warga JDN') }}')">
+              
+              <!-- Ornamen Sudut Songket Emas (Melayu Klasik) -->
+              <span class="corner-motif tl">❖</span>
+              <span class="corner-motif tr">❖</span>
+              <span class="corner-motif bl">❖</span>
+              <span class="corner-motif br">❖</span>
+
+              <div class="kenangan-media-wrapper">
+                <img src="{{ url_for('public.serve_image', filename=m.image_filename) }}" alt="Foto daripada {{ m.nama }}" loading="lazy">
+                <span class="media-type-tag tag-foto"><i class="fa-regular fa-image"></i> Foto</span>
+              </div>
+
+              <div class="warkah-card-divider"></div>
+
+              <div class="warkah-footer-info">
+                <div class="warkah-author-cluster">
+                  {% if m.nama == 'Jabatan Digital Negara' %}
+                    <div class="warkah-cute-avatar avatar-color-gov" style="background: linear-gradient(135deg, #1e1b4b, #3b82f6); box-shadow: 0 2px 8px rgba(30, 27, 75, 0.25);">
+                      🏛️
+                    </div>
+                    <div class="warkah-author-text">
+                      <h3 class="warkah-author-name" style="color: #1e1b4b; font-weight: 800;">Jabatan Digital Negara</h3>
+                      <span class="warkah-author-dept" style="color: #64748b; font-weight: 600;">
+                        <i class="fa-solid fa-building-columns"></i> Jabatan Digital Negara
+                      </span>
+                    </div>
+                  {% else %}
+                    <div class="warkah-cute-avatar avatar-color-{{ loop.index0 % 5 }}">
+                      {{ m.nama[:1] | upper }}
+                    </div>
+                    <div class="warkah-author-text">
+                      <h3 class="warkah-author-name">{{ m.nama }}</h3>
+                      <span class="warkah-author-dept">
+                        <i class="fa-solid fa-building-columns"></i> {{ m.bahagian if m.bahagian and m.bahagian != '-' else 'Warga JDN' }}
+                      </span>
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="warkah-cute-meta">
+                  <span class="warkah-time-text">{{ m.created_at | time_ago }}</span>
+                  <span class="cute-love-icon">
+                    {% if loop.index % 3 == 1 %}💖
+                    {% elif loop.index % 3 == 2 %}⭐
+                    {% else %}🌸{% endif %}
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          {% endif %}
+
+          {# Jika ada fail Video #}
+          {% if m.video_filename %}
+            <div class="warkah-comel-card kenangan-card-item media-type-video" data-type="video" onclick="openVideoModal('{{ url_for('public.serve_video', filename=m.video_filename) }}', '{{ 'Jabatan Digital Negara' if m.nama == 'Jabatan Digital Negara' else m.nama|e }}', '{{ 'Jabatan Digital Negara' if m.nama == 'Jabatan Digital Negara' else (m.bahagian|e if m.bahagian and m.bahagian != '-' else 'Warga JDN') }}', '{{ m.video_drive_link or '' }}')">
+              
+              <!-- Ornamen Sudut Songket Emas (Melayu Klasik) -->
+              <span class="corner-motif tl">❖</span>
+              <span class="corner-motif tr">❖</span>
+              <span class="corner-motif bl">❖</span>
+              <span class="corner-motif br">❖</span>
+
+              <div class="kenangan-media-wrapper video-wrapper-bg">
+                <video src="{{ url_for('public.serve_video', filename=m.video_filename) }}#t=0.5" preload="metadata" muted playsinline></video>
+                <div class="video-center-play">
+                  <i class="fa-solid fa-play"></i>
+                </div>
+                <span class="media-type-tag tag-video"><i class="fa-solid fa-video"></i> Video</span>
+              </div>
+
+              <div class="warkah-card-divider"></div>
+
+              <div class="warkah-footer-info">
+                <div class="warkah-author-cluster">
+                  {% if m.nama == 'Jabatan Digital Negara' %}
+                    <div class="warkah-cute-avatar avatar-color-gov" style="background: linear-gradient(135deg, #1e1b4b, #3b82f6); box-shadow: 0 2px 8px rgba(30, 27, 75, 0.25);">
+                      🏛️
+                    </div>
+                    <div class="warkah-author-text">
+                      <h3 class="warkah-author-name" style="color: #1e1b4b; font-weight: 800;">Jabatan Digital Negara</h3>
+                      <span class="warkah-author-dept" style="color: #64748b; font-weight: 600;">
+                        <i class="fa-solid fa-building-columns"></i> Jabatan Digital Negara
+                      </span>
+                    </div>
+                  {% else %}
+                    <div class="warkah-cute-avatar avatar-color-{{ loop.index0 % 5 }}">
+                      {{ m.nama[:1] | upper }}
+                    </div>
+                    <div class="warkah-author-text">
+                      <h3 class="warkah-author-name">{{ m.nama }}</h3>
+                      <span class="warkah-author-dept">
+                        <i class="fa-solid fa-building-columns"></i> {{ m.bahagian if m.bahagian and m.bahagian != '-' else 'Warga JDN' }}
+                      </span>
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="warkah-cute-meta">
+                  <span class="warkah-time-text">{{ m.created_at | time_ago }}</span>
+                  <span class="cute-love-icon">
+                    {% if loop.index % 3 == 1 %}💖
+                    {% elif loop.index % 3 == 2 %}⭐
+                    {% else %}🌸{% endif %}
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          {% endif %}
+
+        {% endfor %}
+      {% endif %}
+
+      <!-- 2. Arkib Foto Rasmi Majlis & Detik Bersama KP -->
+      <div class="warkah-comel-card kenangan-card-item media-type-foto" data-type="foto" onclick="openPhotoModal('{{ url_for('static', filename='images/kp_nik_zalbiha.png') }}', 'YBrs. Ts. Nik Zalbiha binti Nik Mat', 'Ketua Pengarah Jabatan Digital Negara')">
+        <span class="corner-motif tl">❖</span>
+        <span class="corner-motif tr">❖</span>
+        <span class="corner-motif bl">❖</span>
+        <span class="corner-motif br">❖</span>
+
+        <div class="kenangan-media-wrapper" style="background: #eef2ff;">
+          <img src="{{ url_for('static', filename='images/kp_nik_zalbiha.png') }}" alt="Potret Rasmi YBrs. Ts. Nik Zalbiha binti Nik Mat" style="object-fit: contain;">
+          <span class="media-type-tag tag-rasmi"><i class="fa-solid fa-award"></i> Potret Rasmi</span>
+        </div>
+
+        <div class="warkah-card-divider"></div>
+
+        <div class="warkah-footer-info">
+          <div class="warkah-author-cluster">
+            <div class="warkah-cute-avatar avatar-color-gov">
+              KP
+            </div>
+            <div class="warkah-author-text">
+              <h3 class="warkah-author-name">YBrs. Ts. Nik Zalbiha</h3>
+              <span class="warkah-author-dept">Ketua Pengarah JDN</span>
+            </div>
+          </div>
+          <div class="warkah-cute-meta">
+            <span class="warkah-time-text">Arkib Rasmi</span>
+            <span class="cute-love-icon">⭐</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="warkah-comel-card kenangan-card-item media-type-foto" data-type="foto" onclick="openPhotoModal('{{ url_for('static', filename='images/event_1.jpg') }}', 'Sesi Ramah Mesra Bersama Warga', 'Jabatan Digital Negara')">
+        <span class="corner-motif tl">❖</span>
+        <span class="corner-motif tr">❖</span>
+        <span class="corner-motif bl">❖</span>
+        <span class="corner-motif br">❖</span>
+
+        <div class="kenangan-media-wrapper">
+          <img src="{{ url_for('static', filename='images/event_1.jpg') }}" alt="Mesyuarat & Majlis Bersama KP">
+          <span class="media-type-tag tag-rasmi"><i class="fa-solid fa-users"></i> Peristiwa</span>
+        </div>
+
+        <div class="warkah-card-divider"></div>
+
+        <div class="warkah-footer-info">
+          <div class="warkah-author-cluster">
+            <div class="warkah-cute-avatar avatar-color-1">
+              J
+            </div>
+            <div class="warkah-author-text">
+              <h3 class="warkah-author-name">Sesi Ramah Mesra Warga</h3>
+              <span class="warkah-author-dept">Jabatan Digital Negara</span>
+            </div>
+          </div>
+          <div class="warkah-cute-meta">
+            <span class="warkah-time-text">Arkib Rasmi</span>
+            <span class="cute-love-icon">🌸</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="warkah-comel-card kenangan-card-item media-type-foto" data-type="foto" onclick="openPhotoModal('{{ url_for('static', filename='images/event_2.jpg') }}', 'Memori Majlis Transformasi Digital', 'Jabatan Digital Negara')">
+        <span class="corner-motif tl">❖</span>
+        <span class="corner-motif tr">❖</span>
+        <span class="corner-motif bl">❖</span>
+        <span class="corner-motif br">❖</span>
+
+        <div class="kenangan-media-wrapper">
+          <img src="{{ url_for('static', filename='images/event_2.jpg') }}" alt="Gambar Berkumpulan Warga JDN">
+          <span class="media-type-tag tag-rasmi"><i class="fa-solid fa-users"></i> Berkumpulan</span>
+        </div>
+
+        <div class="warkah-card-divider"></div>
+
+        <div class="warkah-footer-info">
+          <div class="warkah-author-cluster">
+            <div class="warkah-cute-avatar avatar-color-2">
+              J
+            </div>
+            <div class="warkah-author-text">
+              <h3 class="warkah-author-name">Transformasi Digital</h3>
+              <span class="warkah-author-dept">Jabatan Digital Negara</span>
+            </div>
+          </div>
+          <div class="warkah-cute-meta">
+            <span class="warkah-time-text">Arkib Rasmi</span>
+            <span class="cute-love-icon">💖</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="warkah-comel-card kenangan-card-item media-type-foto" data-type="foto" onclick="openPhotoModal('{{ url_for('static', filename='images/event_1.jpg') }}', 'Jejak Kepimpinan & Inspirasi', 'Jabatan Digital Negara')">
+        <span class="corner-motif tl">❖</span>
+        <span class="corner-motif tr">❖</span>
+        <span class="corner-motif bl">❖</span>
+        <span class="corner-motif br">❖</span>
+
+        <div class="kenangan-media-wrapper">
+          <img src="{{ url_for('static', filename='images/event_1.jpg') }}" alt="Amanat Ketua Pengarah JDN">
+          <span class="media-type-tag tag-rasmi"><i class="fa-solid fa-bookmark"></i> Amanat</span>
+        </div>
+
+        <div class="warkah-card-divider"></div>
+
+        <div class="warkah-footer-info">
+          <div class="warkah-author-cluster">
+            <div class="warkah-cute-avatar avatar-color-3">
+              J
+            </div>
+            <div class="warkah-author-text">
+              <h3 class="warkah-author-name">Jejak Kepimpinan</h3>
+              <span class="warkah-author-dept">Jabatan Digital Negara</span>
+            </div>
+          </div>
+          <div class="warkah-cute-meta">
+            <span class="warkah-time-text">Arkib Rasmi</span>
+            <span class="cute-love-icon">⭐</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ==========================================
+     MODAL PREVIEW FOTO (LIGHTBOX)
+     ========================================== -->
+<div id="photoModal" class="kenangan-modal" onclick="closePhotoModal(event)">
+  <div class="kenangan-modal-content" onclick="event.stopPropagation()">
+    <button class="kenangan-modal-close" onclick="closePhotoModal()">&times;</button>
+    <img id="modalPhotoImg" src="" alt="Pratonton Foto">
+    <div class="modal-caption-bar">
+      <h3 id="modalPhotoName" style="color: #ffffff; margin: 0; font-size: 1.15rem; font-weight: 700;"></h3>
+      <p id="modalPhotoDept" style="color: #cbd5e1; margin: 4px 0 0; font-size: 0.88rem;"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     MODAL PREVIEW VIDEO (PLAYER)
+     ========================================== -->
+<div id="videoModal" class="kenangan-modal" onclick="closeVideoModal(event)">
+  <div class="kenangan-modal-content" onclick="event.stopPropagation()">
+    <button class="kenangan-modal-close" onclick="closeVideoModal()">&times;</button>
+    <video id="modalVideoPlayer" controls playsinline style="width: 100%; max-height: 75vh; border-radius: 12px; background: #000;"></video>
+    <div class="modal-caption-bar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+      <div>
+        <h3 id="modalVideoName" style="color: #ffffff; margin: 0; font-size: 1.15rem; font-weight: 700;"></h3>
+        <p id="modalVideoDept" style="color: #cbd5e1; margin: 4px 0 0; font-size: 0.88rem;"></p>
+      </div>
+      <a id="modalVideoDriveBtn" href="#" target="_blank" rel="noopener noreferrer" style="background: rgba(255,255,255,0.2); color: #ffffff; font-size: 0.82rem; padding: 6px 14px; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.3);" title="Tonton di Google Drive sekiranya format peranti memerlukan">
+        <i class="fa-brands fa-google-drive"></i> Tonton di Google Drive
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function filterGallery(type, btn) {
+    document.querySelectorAll('.cute-filter-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const items = document.querySelectorAll('.kenangan-card-item');
+    items.forEach(item => {
+      if (type === 'all') {
+        item.style.display = 'flex';
+      } else if (item.getAttribute('data-type') === type) {
+        item.style.display = 'flex';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+
+  function openPhotoModal(imgSrc, name, dept) {
+    const modal = document.getElementById('photoModal');
+    document.getElementById('modalPhotoImg').src = imgSrc;
+    document.getElementById('modalPhotoName').innerText = name;
+    document.getElementById('modalPhotoDept').innerText = dept;
+    modal.style.display = 'flex';
+  }
+
+  function closePhotoModal() {
+    document.getElementById('photoModal').style.display = 'none';
+  }
+
+  function openVideoModal(videoSrc, name, dept, driveLink) {
+    const modal = document.getElementById('videoModal');
+    const player = document.getElementById('modalVideoPlayer');
+    player.src = videoSrc;
+    player.muted = false; // Audio aktif
+    document.getElementById('modalVideoName').innerText = name;
+    document.getElementById('modalVideoDept').innerText = dept;
+    const driveBtn = document.getElementById('modalVideoDriveBtn');
+    if (driveLink && driveLink.trim()) {
+      driveBtn.href = driveLink;
+      driveBtn.style.display = 'inline-flex';
+    } else {
+      driveBtn.style.display = 'none';
+    }
+    modal.style.display = 'flex';
+    player.play().catch(() => {});
+  }
+
+  function closeVideoModal() {
+    const modal = document.getElementById('videoModal');
+    const player = document.getElementById('modalVideoPlayer');
+    player.pause();
+    player.src = '';
+    modal.style.display = 'none';
+  }
+
+  // Tutup bila tekan Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closePhotoModal();
+      closeVideoModal();
+    }
+  });
+</script>
+{% endblock %}
