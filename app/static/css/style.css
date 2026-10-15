@@ -395,23 +395,8 @@ h1, h2, h3, h4, .font-heading {
   overflow: hidden;
 }
 
-.hero-floating-particles .particle {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: particleFloat 6s ease-in-out infinite alternate;
-}
-.p-1 { width: 7px; height: 7px; background: rgba(255, 255, 255, 0.85); box-shadow: 0 0 8px #fff; top: 20%; left: 25%; animation-delay: 0s; }
-.p-2 { width: 10px; height: 10px; background: rgba(244, 114, 182, 0.65); box-shadow: 0 0 12px #f472b6; top: 40%; right: 28%; animation-delay: 1.5s; }
-.p-3 { width: 5px; height: 5px; background: rgba(147, 197, 253, 0.9); box-shadow: 0 0 8px #93c5fd; top: 15%; right: 15%; animation-delay: 3s; }
-.p-4 { width: 8px; height: 8px; background: rgba(253, 224, 71, 0.75); box-shadow: 0 0 10px #fde047; top: 35%; left: 45%; animation-delay: 2s; }
-.p-5 { width: 6px; height: 6px; background: rgba(192, 132, 252, 0.8); box-shadow: 0 0 8px #c084fc; top: 55%; left: 18%; animation-delay: 4s; }
-.p-6 { width: 8px; height: 8px; background: rgba(255, 255, 255, 0.75); box-shadow: 0 0 8px #fff; top: 60%; right: 40%; animation-delay: 2.5s; }
-
-@keyframes particleFloat {
-  0% { transform: translateY(0px) scale(0.9); opacity: 0.4; }
-  50% { opacity: 0.9; }
-  100% { transform: translateY(-16px) scale(1.15); opacity: 0.6; }
+.hero-floating-particles {
+  display: none !important;
 }
 
 
@@ -2535,7 +2520,7 @@ textarea.form-control-custom {
 .anugerah-media-wrap {
   position: relative;
   width: 100%;
-  height: 260px;
+  height: 285px;
   overflow: hidden;
   background: #f1f5f9;
   cursor: pointer;
