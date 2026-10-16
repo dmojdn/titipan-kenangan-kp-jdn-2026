@@ -1,0 +1,176 @@
+{% extends "admin/buku_kenangan/layout_base.html" %}
+
+{% block title %}Kandungan Lengkap Kenangan | Buku Kenangan KP JDN{% endblock %}
+
+{% block toolbar_title %}Pratonton: Kandungan Lengkap 3 Bab ({{ total_pages }} Halaman A4){% endblock %}
+
+{% block export_pdf_btn %}
+<a href="{{ url_for('admin.penjana_buku_export_pdf', chapter='lengkap') }}" class="btn-action">
+  <i class="fa-solid fa-file-pdf"></i> Eksport PDF Canva Lengkap
+</a>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  .ucapan-grid { display: flex; flex-direction: column; gap: 4.5mm; height: 100%; justify-content: flex-start; }
+  .warkah-box { background: #ffffff; border: 1px solid var(--border-classic); border-radius: 4px; padding: 3.5mm 5mm; position: relative; box-shadow: 0 1px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; }
+  .warkah-box.card-short { flex: 0 1 auto; padding: 3.2mm 4.5mm; }
+  .warkah-box.card-medium { flex: 0 1 auto; padding: 4mm 5.5mm; }
+  .warkah-box.card-long { flex: 1 1 auto; padding: 5mm 6.5mm; }
+  .warkah-box.card-very-long { flex: 1 1 auto; padding: 6mm 8mm; }
+  .warkah-quote-icon { font-family: 'Playfair Display', serif; font-size: 18pt; color: var(--gold-primary); line-height: 0.7; margin-bottom: 1.5mm; opacity: 0.85; user-select: none; }
+  .warkah-text { font-size: 9pt; line-height: 1.55; color: var(--text-main); margin: 0 0 2.5mm 0; white-space: pre-line; word-break: break-word; font-weight: 500; }
+  .warkah-author-row { display: flex; justify-content: space-between; align-items: flex-end; border-top: 0.8px solid var(--border-subtle); padding-top: 2mm; margin-top: auto; }
+  .warkah-author-name { font-size: 8.5pt; font-weight: 700; color: var(--text-main); margin: 0; }
+  .warkah-author-dept { font-size: 7.2pt; color: var(--gold-deep); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin: 0.5mm 0 0; }
+  .warkah-motif-corner { position: absolute; top: 2mm; right: 2.5mm; font-size: 6pt; color: var(--gold-soft); }
+
+  .gambar-editorial-grid { display: grid; grid-template-columns: repeat(2, 1fr); grid-gap: 5mm; height: 100%; align-content: start; }
+  .photo-frame-card { background: #ffffff; border: 1px solid var(--border-classic); border-radius: 4px; padding: 3mm; display: flex; flex-direction: column; box-shadow: 0 1px 4px rgba(0,0,0,0.02); }
+  .photo-img-container { width: 100%; height: 52mm; background: var(--bg-cream); border-radius: 2px; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; border: 0.5px solid var(--border-subtle); }
+  .photo-img-container img { width: 100%; height: 100%; object-fit: contain; background: #faf6ee; }
+  .photo-caption-block { padding: 2.2mm 1mm 1mm 1mm; display: flex; flex-direction: column; gap: 0.5mm; }
+  .photo-author-title { font-size: 8.2pt; font-weight: 700; color: var(--text-main); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .photo-author-dept { font-size: 7pt; color: var(--gold-deep); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .video-card-grid { display: grid; grid-template-columns: repeat(2, 1fr); grid-gap: 6mm; height: 100%; align-content: start; }
+  .video-entry-card { background: #ffffff; border: 1px solid var(--border-classic); border-radius: 4px; padding: 3.5mm; display: flex; flex-direction: column; box-shadow: 0 1px 4px rgba(0,0,0,0.02); }
+  .video-thumb-container { width: 100%; height: 48mm; background: #0f172a; border-radius: 2px; overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; border: 0.5px solid var(--border-subtle); }
+  .video-thumb-container img { width: 100%; height: 100%; object-fit: cover; }
+  .video-placeholder-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3mm; color: #ffffff; }
+  .play-badge-circle { width: 13mm; height: 13mm; border-radius: 50%; background: rgba(197, 160, 89, 0.9); color: #1e1b4b; display: flex; align-items: center; justify-content: center; font-size: 13pt; }
+  .video-info-qr-row { display: flex; justify-content: space-between; align-items: center; padding-top: 3.5mm; margin-top: auto; border-top: 0.8px solid var(--border-subtle); gap: 3mm; }
+  .video-sender-details { flex: 1 1 auto; display: flex; flex-direction: column; gap: 1mm; }
+  .video-sender-name { font-size: 8.5pt; font-weight: 700; color: var(--text-main); margin: 0; }
+  .video-sender-dept { font-size: 7pt; color: var(--gold-deep); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin: 0; }
+  .video-scan-callout { font-size: 6.8pt; color: var(--text-sub); font-style: italic; margin-top: 1mm; }
+  .video-qr-box { flex-shrink: 0; width: 22mm; height: 22mm; background: #ffffff; border: 1px solid var(--border-classic); border-radius: 2px; padding: 1mm; display: flex; align-items: center; justify-content: center; }
+  .video-qr-box img { width: 100%; height: 100%; }
+</style>
+{% endblock %}
+
+{% block sheets_content %}
+  {% set current_page_num = namespace(val=1) %}
+
+  <!-- ==================== BAHAGIAN 1: TITIPAN UCAPAN ==================== -->
+  {% for page in pages_ucapan %}
+    <div class="a4-sheet">
+      <div class="sheet-inner-border"></div>
+      <span class="sheet-corner-motif tl">❖</span><span class="sheet-corner-motif tr">❖</span><span class="sheet-corner-motif bl">❖</span><span class="sheet-corner-motif br">❖</span>
+      
+      <div class="sheet-header">
+        <h2 class="sheet-chapter-title"><span style="font-size: 9pt; opacity: 0.7;">❖</span> Bab 1: Titipan Ucapan & Sanjungan Budi</h2>
+      </div>
+
+      <div class="sheet-content">
+        <div class="ucapan-grid">
+          {% for item in page %}
+            <div class="warkah-box card-{{ item.card_type }}">
+              <span class="warkah-motif-corner">❖</span>
+              <div>
+                <div class="warkah-quote-icon">“</div>
+                <div class="warkah-text">{{ item.text }}</div>
+              </div>
+              <div class="warkah-author-row">
+                <div>
+                  <h4 class="warkah-author-name">{{ item.submission.nama }}</h4>
+                  <p class="warkah-author-dept">{{ item.submission.bahagian if item.submission.bahagian and item.submission.bahagian != '-' else 'Jabatan Digital Negara' }}{% if item.submission.jawatan %} &bull; {{ item.submission.jawatan }}{% endif %}</p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="sheet-footer">
+        <span class="sheet-footer-brand">Buku Kenangan Persaraan YBrs. Ts. Nik Zalbiha binti Nik Mat</span>
+        <span class="sheet-footer-page">Halaman {{ current_page_num.val }} / {{ total_pages }}</span>
+      </div>
+    </div>
+    {% set current_page_num.val = current_page_num.val + 1 %}
+  {% endfor %}
+
+  <!-- ==================== BAHAGIAN 2: GALERI GAMBAR ==================== -->
+  {% for page in pages_gambar %}
+    <div class="a4-sheet">
+      <div class="sheet-inner-border"></div>
+      <span class="sheet-corner-motif tl">❖</span><span class="sheet-corner-motif tr">❖</span><span class="sheet-corner-motif bl">❖</span><span class="sheet-corner-motif br">❖</span>
+      
+      <div class="sheet-header">
+        <h2 class="sheet-chapter-title"><span style="font-size: 9pt; opacity: 0.7;">❖</span> Bab 2: Galeri Foto Kenangan Bersama KP</h2>
+        <span class="sheet-header-sub">Koleksi Peristiwa Bersejarah JDN</span>
+      </div>
+
+      <div class="sheet-content">
+        <div class="gambar-editorial-grid">
+          {% for item in page %}
+            <div class="photo-frame-card">
+              <div class="photo-img-container">
+                <img src="{{ item.img_src or url_for('public.serve_image', filename=item.filename) }}" alt="{{ item.caption_name }}">
+              </div>
+              <div class="photo-caption-block">
+                <h4 class="photo-author-title">{{ item.caption_name }}</h4>
+                <p class="photo-author-dept">{{ item.caption_dept }}</p>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="sheet-footer">
+        <span class="sheet-footer-brand">Buku Kenangan Persaraan YBrs. Ts. Nik Zalbiha binti Nik Mat</span>
+        <span class="sheet-footer-page">Halaman {{ current_page_num.val }} / {{ total_pages }}</span>
+      </div>
+    </div>
+    {% set current_page_num.val = current_page_num.val + 1 %}
+  {% endfor %}
+
+  <!-- ==================== BAHAGIAN 3: GALERI VIDEO ==================== -->
+  {% for page in pages_video %}
+    <div class="a4-sheet">
+      <div class="sheet-inner-border"></div>
+      <span class="sheet-corner-motif tl">❖</span><span class="sheet-corner-motif tr">❖</span><span class="sheet-corner-motif bl">❖</span><span class="sheet-corner-motif br">❖</span>
+      
+      <div class="sheet-header">
+        <h2 class="sheet-chapter-title"><span style="font-size: 9pt; opacity: 0.7;">❖</span> Bab 3: Galeri Video Ucapan & Memori KP</h2>
+      </div>
+
+      <div class="sheet-content">
+        <div class="video-card-grid">
+          {% for item in page %}
+            <div class="video-entry-card">
+              <div class="video-thumb-container">
+                {% if item.thumb_path %}
+                  <img src="{{ item.thumb_src or url_for('public.serve_image', filename=item.submission.image_filename) }}" alt="{{ item.caption_name }}">
+                {% else %}
+                  <div class="video-placeholder-box">
+                    <div class="play-badge-circle"><i class="fa-solid fa-play" style="margin-left: 2px;"></i></div>
+                    <span style="font-size: 7.5pt; letter-spacing: 0.05em; text-transform: uppercase;">Rakaman Video Ucapan</span>
+                  </div>
+                {% endif %}
+              </div>
+              <div class="video-info-qr-row">
+                <div class="video-sender-details">
+                  <h4 class="video-sender-name">{{ item.caption_name }}</h4>
+                  <p class="video-sender-dept">{{ item.caption_dept }}</p>
+                  <span class="video-scan-callout"><i class="fa-solid fa-qrcode" style="color: var(--gold-deep);"></i> Imbas untuk menonton</span>
+                </div>
+                <div class="video-qr-box">
+                  {% if item.qr_filename %}
+                    <img src="{{ item.qr_src or url_for('public.serve_qrcode', filename=item.qr_filename) }}" alt="QR Code Google Drive">
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="sheet-footer">
+        <span class="sheet-footer-brand">Buku Kenangan Persaraan YBrs. Ts. Nik Zalbiha binti Nik Mat</span>
+        <span class="sheet-footer-page">Halaman {{ current_page_num.val }} / {{ total_pages }}</span>
+      </div>
+    </div>
+    {% set current_page_num.val = current_page_num.val + 1 %}
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends "admin/buku_kenangan/layout_base.html" %}
+
+{% block title %}Bab Galeri Gambar | Buku Kenangan KP JDN{% endblock %}
+
+{% block toolbar_title %}Pratonton: Bab Galeri Gambar ({{ total_pages }} Halaman A4){% endblock %}
+
+{% block export_pdf_btn %}
+<a href="{{ url_for('admin.penjana_buku_export_pdf', chapter='gambar') }}" class="btn-action">
+  <i class="fa-solid fa-file-pdf"></i> Eksport PDF Canva
+</a>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* Grid Galeri Gambar Editorial */
+  .gambar-editorial-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 5mm;
+    height: 100%;
+    align-content: start;
+  }
+
+  .photo-frame-card {
+    background: #ffffff;
+    border: 1px solid var(--border-classic);
+    border-radius: 4px;
+    padding: 3mm;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+    break-inside: avoid;
+  }
+
+  .photo-img-container {
+    width: 100%;
+    height: 52mm;
+    background: var(--bg-cream);
+    border-radius: 2px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 0.5px solid var(--border-subtle);
+  }
+
+  .photo-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #faf6ee;
+  }
+
+  .photo-caption-block {
+    padding: 2.2mm 1mm 1mm 1mm;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5mm;
+  }
+
+  .photo-author-title {
+    font-size: 8.2pt;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .photo-author-dept {
+    font-size: 7pt;
+    color: var(--gold-deep);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
+{% endblock %}
+
+{% block sheets_content %}
+  {% if pages and pages|length > 0 %}
+    {% for page in pages %}
+      <div class="a4-sheet">
+        <div class="sheet-inner-border"></div>
+        <span class="sheet-corner-motif tl">❖</span>
+        <span class="sheet-corner-motif tr">❖</span>
+        <span class="sheet-corner-motif bl">❖</span>
+        <span class="sheet-corner-motif br">❖</span>
+
+        <!-- Header Lembaran -->
+        <div class="sheet-header">
+          <h2 class="sheet-chapter-title">
+            <span style="font-size: 9pt; opacity: 0.7;">❖</span> Galeri Foto Kenangan Bersama KP
+          </h2>
+          <span class="sheet-header-sub">Koleksi Peristiwa Bersejarah JDN</span>
+        </div>
+
+        <!-- Kandungan Utama: Grid 4-6 Foto Editorial -->
+        <div class="sheet-content">
+          <div class="gambar-editorial-grid">
+            {% for item in page %}
+              <div class="photo-frame-card">
+                <div class="photo-img-container">
+                  <img src="{{ item.img_src or url_for('public.serve_image', filename=item.filename) }}" alt="{{ item.caption_name }}">
+                </div>
+                <div class="photo-caption-block">
+                  <h4 class="photo-author-title">{{ item.caption_name }}</h4>
+                  <p class="photo-author-dept">{{ item.caption_dept }}</p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Footer Lembaran -->
+        <div class="sheet-footer">
+          <span class="sheet-footer-brand">
+            Buku Kenangan Persaraan YBrs. Ts. Nik Zalbiha binti Nik Mat
+          </span>
+          <span class="sheet-footer-page">
+            Halaman {{ loop.index }} / {{ total_pages }}
+          </span>
+        </div>
+
+      </div>
+    {% endfor %}
+  {% else %}
+    <div style="background: #ffffff; padding: 48px; border-radius: 16px; text-align: center; max-width: 500px; margin: 40px auto; color: #64748b;">
+      <i class="fa-regular fa-image" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 12px; display: block;"></i>
+      <h3 style="color: #1e1b4b; margin: 0 0 8px;">Tiada Gambar Ditemui</h3>
+      <p style="font-size: 0.9rem; margin: 0;">Sila semak penapis sumber data atau tunggu kiriman foto baharu.</p>
+    </div>
+  {% endif %}
+{% endblock %}

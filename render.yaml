@@ -23,4 +23,6 @@ services:
         sync: false
       - key: GOOGLE_TOKEN_JSON
         sync: false
+      - key: DATABASE_URL
+        sync: false
 

@@ -1,242 +1,686 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard Pentadbir | Titipan Kenangan Buat KP{% endblock %}
+{% block title %}Pusat Pentadbiran Titipan Kenangan KP JDN{% endblock %}
 
 {% block content %}
-<div class="container" style="max-width: 1220px; margin-top: 2rem; margin-bottom: 4rem;">
+<div class="container" style="max-width: 1240px; margin: 2rem auto 4.5rem; padding: 0 1rem;">
 
-  <!-- Admin Header Bar -->
-  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.75rem;">
-    <div>
-      <h2 style="font-size: 1.75rem; color: #1e1b4b; font-weight: 800;">Dashboard Pentadbir</h2>
-      <p style="color: #64748b; font-size: 0.88rem;">
-        Pengurusan kiriman ucapan warga, semakan media, dan status sandaran awan Google Drive
-      </p>
-    </div>
-    
-    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-      <a href="{{ url_for('admin.drive_setup') }}" class="btn btn-hero-secondary" style="font-size:0.85rem; padding: 8px 16px;">
-        <i class="fa-brands fa-google-drive" style="color: #4f46e5;"></i> Status 6 Folder Drive
-      </a>
-
-      <form action="{{ url_for('auth_drive.sync_now') }}" method="POST" style="display: inline;">
-        <button type="submit" class="btn btn-hero-primary" style="font-size:0.85rem; padding: 8px 16px;" id="btn-sync-all">
-          <i class="fa-solid fa-arrows-rotate"></i> Sync ke Drive Sekarang
-        </button>
-      </form>
-
-      <a href="{{ url_for('admin.logout') }}" class="btn" style="background:#fee2e2; color:#ef4444; font-size:0.85rem; padding: 8px 16px;">
-        <i class="fa-solid fa-right-from-bracket"></i> Log Keluar
-      </a>
-    </div>
-  </div>
-
-  <!-- Google Drive Status Alert Banner -->
-  <div class="white-card" style="padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; border-left: 5px solid #8b5cf6;">
-    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <div style="width: 40px; height: 40px; border-radius: 50%; background: #ede9fe; color: #7c3aed; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
-          <i class="fa-brands fa-google-drive"></i>
-        </div>
-        <div>
-          <div style="font-size: 0.92rem; font-weight: 700; color: #1e1b4b;">
-            Akaun Storan Google Drive: <span style="color: #6d28d9;">dmojdn@gmail.com</span>
-          </div>
-          <div style="font-size: 0.78rem; color: #64748b;">
-            Root Folder ID: <code style="background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">1HIEuEkoEoiHHcEuqh-zj7AE-aFzepXUH</code> &bull; 
-            {% if is_drive_connected %}
-              <span style="color: #059669; font-weight: 700;"><i class="fa-solid fa-circle-check"></i> DISAMBUNGKAN</span>
-            {% else %}
-              <span style="color: #d97706; font-weight: 700;"><i class="fa-solid fa-triangle-exclamation"></i> BELUM DISAMBUNGKAN</span>
-            {% endif %}
-          </div>
-        </div>
-      </div>
+  <!-- Header Utama Pentadbir -->
+  <div style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); border-radius: 20px; padding: 2rem 2.5rem; color: #ffffff; margin-bottom: 2rem; box-shadow: 0 10px 25px rgba(30, 27, 75, 0.2);">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem;">
       <div>
-        <a href="{{ url_for('admin.drive_setup') }}" class="btn-link-action">
-          Uruskan Sambungan &rarr;
+        <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 700; color: #fde047; background: rgba(253, 224, 71, 0.15); border: 1px solid rgba(253, 224, 71, 0.3); padding: 5px 14px; border-radius: 9999px; margin-bottom: 0.75rem;">
+          <i class="fa-solid fa-crown" style="color: #facc15;"></i> Pusat Kawalan Pentadbir Sehenti
+        </div>
+        <h1 style="font-size: 1.95rem; font-weight: 800; color: #ffffff; margin: 0 0 6px;">
+          Pusat Pentadbiran Titipan Kenangan KP JDN
+        </h1>
+        <p style="color: #cbd5e1; font-size: 0.95rem; margin: 0; max-width: 700px;">
+          Uruskan penjanaan Buku Kenangan Digital (Canva A4), semakan QR video Google Drive, sandaran arkib, dan kiriman warga di satu tempat.
+        </p>
+      </div>
+
+      <!-- Butang Tindakan Pantas di Header -->
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+        <button type="button" class="btn" onclick="openUploadPengarahModal()" style="background: #c5a059; color: #1e1b4b; font-weight: 800; font-size: 0.86rem; padding: 10px 18px; border-radius: 12px; box-shadow: 0 4px 14px rgba(197, 160, 89, 0.4);">
+          <i class="fa-solid fa-camera-retro"></i> Muat Naik Media Pengarah
+        </button>
+
+        <form action="{{ url_for('admin.backup_now') }}" method="POST" style="margin: 0;">
+          <button type="submit" class="btn" style="background: rgba(255,255,255,0.15); color: #ffffff; font-weight: 600; font-size: 0.86rem; padding: 10px 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.25);" title="Segerakkan sandaran penuh ke Google Drive">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Backup Sekarang
+          </button>
+        </form>
+
+        <a href="{{ url_for('public.index') }}" class="btn" style="background: rgba(255,255,255,0.1); color: #ffffff; font-weight: 600; font-size: 0.86rem; padding: 10px 16px; border-radius: 12px;" title="Lihat Paparan Awam">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Lihat Laman
+        </a>
+
+        <a href="{{ url_for('admin.logout') }}" class="btn" style="background: rgba(239, 68, 68, 0.2); color: #fca5a5; font-weight: 600; font-size: 0.86rem; padding: 10px 16px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.4);" title="Log Keluar">
+          <i class="fa-solid fa-power-off"></i> Keluar
         </a>
       </div>
     </div>
+
+    <!-- Ringkasan Statistik Pentadbir -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.12);">
+      <div style="background: rgba(255,255,255,0.06); padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+        <span style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Data Rasmi Warga</span>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #34d399;">{{ counts.official }} rekod</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.06); padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+        <span style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Data Ujian (Dummy)</span>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #fbbf24;">{{ counts.test }} rekod</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.06); padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+        <span style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Jumlah Video & QR</span>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #38bdf8;">{{ summary.total }} video</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.06); padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+        <span style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Status Google Drive</span>
+        <div style="font-size: 1.1rem; font-weight: 700; color: {% if drive_connected %}#4ade80{% else %}#f87171{% endif %}; margin-top: 4px;">
+          <i class="fa-solid fa-circle-{% if drive_connected %}check{% else %}xmark{% endif %}"></i> {% if drive_connected %}Tersambung{% else %}Belum Sambung{% endif %}
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- KPI Cards -->
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 1.75rem;">
+  <!-- Tab Navigasi Sehenti (Bertukar Serta-merta) -->
+  <div style="display: flex; gap: 8px; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; overflow-x: auto; padding-bottom: 4px;">
+    <button type="button" class="admin-tab-btn" id="tab-btn-buku" onclick="switchAdminTab('buku')" style="padding: 12px 22px; font-weight: 700; font-size: 0.92rem; border: none; background: transparent; cursor: pointer; border-radius: 10px 10px 0 0; display: inline-flex; align-items: center; gap: 8px;">
+      <i class="fa-solid fa-book-bookmark"></i> <span>1. Penjana Buku Kenangan (A4 Canva)</span>
+    </button>
+    <button type="button" class="admin-tab-btn" id="tab-btn-audit" onclick="switchAdminTab('audit')" style="padding: 12px 22px; font-weight: 700; font-size: 0.92rem; border: none; background: transparent; cursor: pointer; border-radius: 10px 10px 0 0; display: inline-flex; align-items: center; gap: 8px;">
+      <i class="fa-solid fa-qrcode"></i> <span>2. Audit & Semakan QR Video</span>
+    </button>
+    <button type="button" class="admin-tab-btn" id="tab-btn-kiriman" onclick="switchAdminTab('kiriman')" style="padding: 12px 22px; font-weight: 700; font-size: 0.92rem; border: none; background: transparent; cursor: pointer; border-radius: 10px 10px 0 0; display: inline-flex; align-items: center; gap: 8px;">
+      <i class="fa-solid fa-comments"></i> <span>3. Pengurusan Kiriman Warga ({{ total_count }})</span>
+    </button>
+    <button type="button" class="admin-tab-btn" id="tab-btn-drive" onclick="switchAdminTab('drive')" style="padding: 12px 22px; font-weight: 700; font-size: 0.92rem; border: none; background: transparent; cursor: pointer; border-radius: 10px 10px 0 0; display: inline-flex; align-items: center; gap: 8px;">
+      <i class="fa-solid fa-hard-drive"></i> <span>4. Sandaran Google Drive</span>
+    </button>
+  </div>
+
+  <!-- ========================================================
+       TAB 1: PENJANA BUKU KENANGAN A4 (CANVA-READY)
+       ======================================================== -->
+  <div id="tab-content-buku" class="admin-tab-panel">
     
-    <div class="white-card" style="padding: 1.25rem; display: flex; align-items: center; gap: 16px;">
-      <div style="width: 50px; height: 50px; border-radius: 14px; background: #ede9fe; color: #7c3aed; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-        <i class="fa-solid fa-book-open"></i>
-      </div>
+    <!-- Bar Pilihan Sumber Data (Pengasingan Data Selamat) -->
+    <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 14px 20px; box-shadow: 0 4px 14px rgba(0,0,0,0.03); margin-bottom: 1.75rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
       <div>
-        <div style="font-size: 1.85rem; font-weight: 800; color: #1e1b4b; line-height: 1;">{{ total_count }}</div>
-        <div style="font-size: 0.78rem; color: #64748b; font-weight: 600; text-transform: uppercase;">Jumlah Titipan</div>
+        <span style="font-size: 0.78rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 4px;">
+          <i class="fa-solid fa-database"></i> Sumber Data Untuk Halaman Buku Kenangan:
+        </span>
+        <span style="font-size: 0.88rem; color: #475569;">
+          Pilih sama ada mahu melihat/menjana PDF menggunakan <strong>Data Rasmi Warga</strong> atau <strong>Data Ujian (Dummy)</strong>.
+        </span>
       </div>
-    </div>
 
-    <div class="white-card" style="padding: 1.25rem; display: flex; align-items: center; gap: 16px;">
-      <div style="width: 50px; height: 50px; border-radius: 14px; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-        <i class="fa-regular fa-image"></i>
-      </div>
-      <div>
-        <div style="font-size: 1.85rem; font-weight: 800; color: #1e1b4b; line-height: 1;">{{ images_count }}</div>
-        <div style="font-size: 0.78rem; color: #64748b; font-weight: 600; text-transform: uppercase;">Gambar Diterima</div>
-      </div>
-    </div>
-
-    <div class="white-card" style="padding: 1.25rem; display: flex; align-items: center; gap: 16px;">
-      <div style="width: 50px; height: 50px; border-radius: 14px; background: #fdf2f8; color: #db2777; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-        <i class="fa-solid fa-video"></i>
-      </div>
-      <div>
-        <div style="font-size: 1.85rem; font-weight: 800; color: #1e1b4b; line-height: 1;">{{ videos_count }}</div>
-        <div style="font-size: 0.78rem; color: #64748b; font-weight: 600; text-transform: uppercase;">Video Diterima</div>
-      </div>
-    </div>
-
-    <div class="white-card" style="padding: 1.25rem; display: flex; align-items: center; gap: 16px;">
-      <div style="width: 50px; height: 50px; border-radius: 14px; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-        <i class="fa-solid fa-cloud-arrow-up"></i>
-      </div>
-      <div>
-        <div style="font-size: 1.85rem; font-weight: 800; color: #1e1b4b; line-height: 1;">{{ pending_sync_count }}</div>
-        <div style="font-size: 0.78rem; color: #64748b; font-weight: 600; text-transform: uppercase;">Menunggu Sync</div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Filters & Actions -->
-  <div class="white-card" style="padding: 1rem 1.5rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-      <a href="{{ url_for('admin.dashboard', filter='all') }}" class="btn-link-action {% if current_filter == 'all' %}active{% endif %}">
-        Semua ({{ total_count }})
-      </a>
-      <a href="{{ url_for('admin.dashboard', filter='image') }}" class="btn-link-action {% if current_filter == 'image' %}active{% endif %}">
-        <i class="fa-regular fa-image"></i> Bergambar ({{ images_count }})
-      </a>
-      <a href="{{ url_for('admin.dashboard', filter='video') }}" class="btn-link-action {% if current_filter == 'video' %}active{% endif %}">
-        <i class="fa-solid fa-video"></i> Bervideo ({{ videos_count }})
-      </a>
-      <a href="{{ url_for('admin.dashboard', filter='pending_sync') }}" class="btn-link-action {% if current_filter == 'pending_sync' %}active{% endif %}">
-        <i class="fa-solid fa-hourglass-half"></i> Belum Sync ({{ pending_sync_count }})
-      </a>
-    </div>
-
-    <div style="display: flex; gap: 10px; align-items: center;">
-      <form method="GET" action="{{ url_for('admin.dashboard') }}">
-        <input type="hidden" name="filter" value="{{ current_filter }}">
-        <select name="bahagian" class="form-control-custom" style="padding: 6px 12px; font-size: 0.82rem;" onchange="this.form.submit()">
-          <option value="">-- Semua Bahagian --</option>
-          {% for b in bahagian_list %}
-            <option value="{{ b }}" {% if bahagian_filter == b %}selected{% endif %}>{{ b }}</option>
-          {% endfor %}
-        </select>
+      <form action="{{ url_for('admin.dashboard') }}" method="GET" style="display: flex; gap: 10px; align-items: center; margin: 0; background: #f8fafc; padding: 6px 14px; border-radius: 12px; border: 1px solid #cbd5e1;">
+        <input type="hidden" name="tab" value="buku">
+        <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.88rem; cursor: pointer; font-weight: {% if current_source == 'official' %}800{% else %}500{% endif %}; color: {% if current_source == 'official' %}#047857{% else %}#475569{% endif %};">
+          <input type="radio" name="source" value="official" {% if current_source == 'official' %}checked{% endif %} onchange="this.form.submit()">
+          <i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Data Rasmi ({{ counts.official }})
+        </label>
+        <span style="color: #cbd5e1;">|</span>
+        <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.88rem; cursor: pointer; font-weight: {% if current_source == 'test' %}800{% else %}500{% endif %}; color: {% if current_source == 'test' %}#b45309{% else %}#475569{% endif %};">
+          <input type="radio" name="source" value="test" {% if current_source == 'test' %}checked{% endif %} onchange="this.form.submit()">
+          <i class="fa-solid fa-flask" style="color: #f59e0b;"></i> Data Ujian / Dummy ({{ counts.test }})
+        </label>
       </form>
-
-      <a href="{{ url_for('admin.export_json') }}" class="btn-link-action" target="_blank" title="Eksport data dalam format JSON">
-        <i class="fa-solid fa-file-code"></i> Eksport JSON
-      </a>
     </div>
+
+    <!-- Status Pengasingan -->
+    {% if current_source == 'test' %}
+      <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 12px 18px; margin-bottom: 2rem; display: flex; align-items: center; gap: 12px; font-size: 0.88rem; color: #92400e;">
+        <i class="fa-solid fa-flask" style="font-size: 1.35rem; color: #f59e0b;"></i>
+        <div>
+          <strong>Mod Pratonton Ujian Aktif (Dummy Data):</strong> Anda sedang mempratonton susun atur menggunakan <strong>{{ counts.test }} rekod dummy sedia ada</strong>. Data ini diasingkan secara selamat daripada website awam.
+        </div>
+      </div>
+    {% else %}
+      <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 12px 18px; margin-bottom: 2rem; display: flex; align-items: center; gap: 12px; font-size: 0.88rem; color: #166534;">
+        <i class="fa-solid fa-circle-check" style="font-size: 1.35rem; color: #10b981;"></i>
+        <div>
+          <strong>Mod Data Rasmi Aktif:</strong> Menggunakan ucapan dan kenangan sebenar warga JDN (Pada masa ini: <strong>{{ counts.official }} rekod</strong>). Halaman buku akan berkembang secara automatik mengikut kiriman yang masuk hari ini.
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Grid 3 Bab Kandungan A4 -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+
+      <!-- BAB 1: TITIPAN UCAPAN -->
+      <div class="white-card" style="padding: 1.75rem; display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid #c5a059;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: #faf6ee; color: #c5a059; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; border: 1px solid #eadcc3;">
+              <i class="fa-solid fa-scroll"></i>
+            </div>
+            <span style="font-size: 0.75rem; font-weight: 700; color: #9a7b38; background: #faf6ee; padding: 3px 10px; border-radius: 6px; border: 1px solid #eadcc3;">
+              BAB 1 &bull; A4 PORTRAIT
+            </span>
+          </div>
+
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: #1e1b4b; margin: 0 0 6px;">Titipan Ucapan & Warkah</h3>
+          <p style="color: #64748b; font-size: 0.86rem; line-height: 1.5; margin: 0 0 1rem;">
+            Penyusunan automatik berasaskan berat teks (pendek 6-8, sederhana 4-6, panjang 2-3 warkah/halaman) tanpa memotong perkataan.
+          </p>
+
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; margin-bottom: 1.25rem; font-size: 0.82rem; color: #334155;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+              <span>Jumlah Warkah Teks:</span>
+              <strong>{{ ucapan_items_count }} kiriman</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>Anggaran Halaman A4:</span>
+              <strong style="color: #c5a059;">{{ ucapan_pages_count }} Halaman Dinamik</strong>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <a href="{{ url_for('admin.penjana_buku_preview', chapter='ucapan', source=current_source) }}" target="_blank" class="btn" style="flex: 1; text-align: center; background: #f1f5f9; color: #1e293b; font-weight: 600; font-size: 0.85rem; padding: 10px; border-radius: 10px;">
+            <i class="fa-regular fa-eye"></i> Pratonton A4
+          </a>
+          <a href="{{ url_for('admin.penjana_buku_export_pdf', chapter='ucapan', source=current_source) }}" class="btn" style="flex: 1; text-align: center; background: #1e1b4b; color: #ffffff; font-weight: 700; font-size: 0.85rem; padding: 10px; border-radius: 10px;">
+            <i class="fa-solid fa-download"></i> PDF Canva
+          </a>
+        </div>
+      </div>
+
+      <!-- BAB 2: GALERI GAMBAR -->
+      <div class="white-card" style="padding: 1.75rem; display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid #6366f1;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: #e0e7ff; color: #6366f1; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+              <i class="fa-regular fa-image"></i>
+            </div>
+            <span style="font-size: 0.75rem; font-weight: 700; color: #4338ca; background: #e0e7ff; padding: 3px 10px; border-radius: 6px;">
+              BAB 2 &bull; A4 PORTRAIT
+            </span>
+          </div>
+
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: #1e1b4b; margin: 0 0 6px;">Galeri Foto Kenangan</h3>
+          <p style="color: #64748b; font-size: 0.86rem; line-height: 1.5; margin: 0 0 1rem;">
+            Susun atur editorial majalah. Nisbah aspek (Landscape & Portrait) terpelihara 100% tanpa sebarang pemotongan wajah.
+          </p>
+
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; margin-bottom: 1.25rem; font-size: 0.82rem; color: #334155;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+              <span>Jumlah Foto Terkumpul:</span>
+              <strong>{{ gambar_items_count }} foto</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>Anggaran Halaman A4:</span>
+              <strong style="color: #6366f1;">{{ gambar_pages_count }} Halaman Dinamik</strong>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <a href="{{ url_for('admin.penjana_buku_preview', chapter='gambar', source=current_source) }}" target="_blank" class="btn" style="flex: 1; text-align: center; background: #f1f5f9; color: #1e293b; font-weight: 600; font-size: 0.85rem; padding: 10px; border-radius: 10px;">
+            <i class="fa-regular fa-eye"></i> Pratonton A4
+          </a>
+          <a href="{{ url_for('admin.penjana_buku_export_pdf', chapter='gambar', source=current_source) }}" class="btn" style="flex: 1; text-align: center; background: #1e1b4b; color: #ffffff; font-weight: 700; font-size: 0.85rem; padding: 10px; border-radius: 10px;">
+            <i class="fa-solid fa-download"></i> PDF Canva
+          </a>
+        </div>
+      </div>
+
+      <!-- BAB 3: GALERI VIDEO & QR -->
+      <div class="white-card" style="padding: 1.75rem; display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid #ec4899;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: #fce7f3; color: #ec4899; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+              <i class="fa-solid fa-video"></i>
+            </div>
+            <span style="font-size: 0.75rem; font-weight: 700; color: #be185d; background: #fce7f3; padding: 3px 10px; border-radius: 6px;">
+              BAB 3 &bull; A4 PORTRAIT
+            </span>
+          </div>
+
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: #1e1b4b; margin: 0 0 6px;">Galeri Video & Kod QR</h3>
+          <p style="color: #64748b; font-size: 0.86rem; line-height: 1.5; margin: 0 0 1rem;">
+            Thumbnail video + Kod QR Google Drive Viewer resolusi tinggi (450px) untuk imbasan pantas pembaca buku kenangan.
+          </p>
+
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; margin-bottom: 1.25rem; font-size: 0.82rem; color: #334155;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+              <span>Jumlah Video Terkumpul:</span>
+              <strong>{{ video_items_count }} video</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>Anggaran Halaman A4:</span>
+              <strong style="color: #ec4899;">{{ video_pages_count }} Halaman Dinamik</strong>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <a href="{{ url_for('admin.penjana_buku_preview', chapter='video', source=current_source) }}" target="_blank" class="btn" style="flex: 1; text-align: center; background: #f1f5f9; color: #1e293b; font-weight: 600; font-size: 0.85rem; padding: 10px; border-radius: 10px;">
+            <i class="fa-regular fa-eye"></i> Pratonton A4
+          </a>
+          <a href="{{ url_for('admin.penjana_buku_export_pdf', chapter='video', source=current_source) }}" class="btn" style="flex: 1; text-align: center; background: #1e1b4b; color: #ffffff; font-weight: 700; font-size: 0.85rem; padding: 10px; border-radius: 10px;">
+            <i class="fa-solid fa-download"></i> PDF Canva
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Kad Hero Eksport Gabungan Lengkap -->
+    <div class="white-card" style="padding: 2rem; background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); color: #ffffff; border-radius: 18px; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+      <div>
+        <span style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: #c5a059;">
+          Eksport Induk Canva
+        </span>
+        <h2 style="font-size: 1.55rem; font-weight: 800; margin: 4px 0 6px; color: #ffffff;">
+          Kandungan Kenangan Lengkap (Semua Bab)
+        </h2>
+        <p style="color: #cbd5e1; font-size: 0.9rem; margin: 0; max-width: 600px;">
+          Gabungkan kesemua Bab Titipan Ucapan, Galeri Foto dan Galeri Video ke dalam satu fail PDF A4 tunggal (<code>04_Kandungan_Kenangan_Lengkap.pdf</code>) untuk diimport terus ke Canva.
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="{{ url_for('admin.penjana_buku_preview', chapter='lengkap', source=current_source) }}" target="_blank" class="btn" style="background: rgba(255,255,255,0.15); color: #ffffff; padding: 12px 18px; font-weight: 600; border-radius: 12px; border: 1px solid rgba(255,255,255,0.3);">
+          <i class="fa-regular fa-eye"></i> Pratonton Penuh
+        </a>
+        <a href="{{ url_for('admin.penjana_buku_export_pdf', chapter='lengkap', source=current_source) }}" class="btn" style="background: #c5a059; color: #1e1b4b; padding: 12px 22px; font-weight: 800; border-radius: 12px; box-shadow: 0 4px 15px rgba(197, 160, 89, 0.4);">
+          <i class="fa-solid fa-file-pdf"></i> Muat Turun PDF Lengkap
+        </a>
+        <form action="{{ url_for('admin.penjana_buku_sync_drive', chapter='lengkap') }}" method="POST" style="margin: 0;">
+          <input type="hidden" name="source" value="{{ current_source }}">
+          <button type="submit" class="btn" style="background: #10b981; color: #ffffff; padding: 12px 18px; font-weight: 700; border-radius: 12px;" title="Muat naik salinan PDF ke folder Drive 06 PDF BUKU KENANGAN">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Drive
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Panduan Canva -->
+    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.5rem 2rem;">
+      <h3 style="font-size: 1.05rem; color: #1e1b4b; margin: 0 0 1rem; display: flex; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-lightbulb" style="color: #f59e0b;"></i> Cara Menggabungkan Halaman dengan Canva Anda:
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; font-size: 0.88rem; color: #475569;">
+        <div style="background: #ffffff; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0;">
+          <strong style="color: #1e1b4b; display: block; margin-bottom: 4px;">1. Muat Turun PDF A4</strong>
+          Tekan butang <em>PDF Canva</em> di atas. Fail PDF dijana mengikut format A4 Portrait sebenar (210mm × 297mm).
+        </div>
+        <div style="background: #ffffff; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0;">
+          <strong style="color: #1e1b4b; display: block; margin-bottom: 4px;">2. Import ke Canva</strong>
+          Di Canva, klik <em>Create a Design &rarr; Import File</em> dan muat naik PDF tersebut.
+        </div>
+        <div style="background: #ffffff; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0;">
+          <strong style="color: #1e1b4b; display: block; margin-bottom: 4px;">3. Gabungkan Cover Sendiri</strong>
+          Selitkan Cover Hadapan, Kata Aluan, Penghargaan, dan Cover Belakang yang anda buat di Canva pada bahagian depan dan belakang kandungan ini.
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- Submissions Table -->
-  <div class="white-card" style="padding: 0; overflow: hidden;">
-    <div style="overflow-x: auto;">
-      <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem;">
-        <thead>
-          <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0; color: #475569; font-weight: 700;">
-            <th style="padding: 14px 18px; width: 60px;">ID</th>
-            <th style="padding: 14px 18px; width: 220px;">Maklumat Pengirim</th>
-            <th style="padding: 14px 18px;">Titipan Ucapan</th>
-            <th style="padding: 14px 18px; width: 170px;">Media & Google Drive</th>
-            <th style="padding: 14px 18px; width: 130px;">Tarikh</th>
-            <th style="padding: 14px 18px; width: 110px; text-align: center;">Tindakan</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for s in submissions %}
-            <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
-              <td style="padding: 14px 18px;">
-                <span style="font-weight: 700; color: #6366f1;">#{{ s.id }}</span>
-              </td>
-              <td style="padding: 14px 18px;">
-                <div style="font-weight: 700; color: #1e1b4b;">{{ s.nama }}</div>
-                <div style="font-size: 0.75rem; color: #8b5cf6;">{{ s.bahagian }}</div>
-                {% if s.jawatan %}
-                  <div style="font-size: 0.72rem; color: #64748b;">{{ s.jawatan }}</div>
-                {% endif %}
-              </td>
-              <td style="padding: 14px 18px;">
-                <p style="font-size: 0.85rem; color: #334155; max-width: 450px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-                  {% if s.ucapan %}
-                    "{{ s.ucapan }}"
-                  {% else %}
-                    <span style="color:#64748b; font-style:italic;">(Tiada teks - Lampiran media sahaja)</span>
-                  {% endif %}
-                </p>
-              </td>
-              <td style="padding: 14px 18px;">
-                <div style="display: flex; flex-direction: column; gap: 4px;">
-                  {% if s.image_filename %}
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                      <i class="fa-regular fa-image" style="color: #6366f1;"></i>
-                      {% if s.image_sync_status == 'synced' %}
-                        <a href="{{ s.image_drive_link or '#' }}" target="_blank" class="badge-status badge-synced" title="Buka di Google Drive">
-                          <i class="fa-solid fa-cloud-check"></i> Drive
-                        </a>
-                      {% else %}
-                        <span class="badge-status badge-pending">Tempatan</span>
-                      {% endif %}
-                    </div>
-                  {% endif %}
+  <!-- ========================================================
+       TAB 2: AUDIT & SEMAKAN QR VIDEO GOOGLE DRIVE
+       ======================================================== -->
+  <div id="tab-content-audit" class="admin-tab-panel" style="display: none;">
 
-                  {% if s.video_filename %}
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                      <i class="fa-solid fa-video" style="color: #ec4899;"></i>
-                      {% if s.video_sync_status == 'synced' %}
-                        <a href="{{ s.video_drive_link or '#' }}" target="_blank" class="badge-status badge-synced" title="Buka di Google Drive">
-                          <i class="fa-solid fa-cloud-check"></i> Drive
-                        </a>
-                      {% else %}
-                        <span class="badge-status badge-pending">Tempatan</span>
-                      {% endif %}
-                    </div>
-                  {% endif %}
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+      <div>
+        <h2 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin: 0 0 4px;">
+          Semakan & Audit QR Video Google Drive
+        </h2>
+        <p style="color: #64748b; font-size: 0.9rem; margin: 0;">
+          Sahkan kebenaran <em>Anyone with the link (Viewer)</em> dan integriti fail imej QR Code untuk Buku Kenangan Digital.
+        </p>
+      </div>
 
-                  {% if not s.image_filename and not s.video_filename %}
-                    <span style="font-size: 0.72rem; color: #94a3b8;">Teks Sahaja</span>
-                  {% endif %}
-                </div>
-              </td>
-              <td style="padding: 14px 18px;">
-                <span style="font-size: 0.78rem; color: #64748b;">
-                  {{ s.created_at.strftime('%d/%m/%Y %H:%M') if s.created_at else '-' }}
-                </span>
-              </td>
-              <td style="padding: 14px 18px; text-align: center;">
-                <div style="display: flex; gap: 6px; justify-content: center;">
-                  <a href="{{ url_for('admin.detail', submission_id=s.id) }}" class="btn-link-action" title="Lihat Butiran Penuh">
-                    <i class="fa-solid fa-eye"></i>
-                  </a>
-                  <form action="{{ url_for('admin.padam_kiriman', submission_id=s.id) }}" method="POST" onsubmit="return confirm('Adakah anda pasti ingin memadamkan kiriman ini?');" style="display: inline;">
-                    <button type="submit" style="background:#fee2e2; border:none; color:#ef4444; width:30px; height:30px; border-radius:50%; cursor:pointer;" title="Padam Kiriman">
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
-                  </form>
-                </div>
-              </td>
-            </tr>
-          {% else %}
-            <tr>
-              <td colspan="6" style="text-align: center; padding: 3rem; color: #64748b;">
-                Tiada kiriman ditemui untuk kriteria tapisan ini.
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <!-- Butang Tindakan Audit -->
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+        <form action="{{ url_for('admin.semak_semua_qr_video') }}" method="POST" style="margin: 0;">
+          <button type="submit" class="btn" style="background: #4f46e5; color: #fff; font-weight: 700; font-size: 0.85rem; padding: 10px 16px; border-radius: 10px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);">
+            <i class="fa-solid fa-magnifying-glass"></i> Semak Semua QR Video
+          </button>
+        </form>
+
+        <form action="{{ url_for('admin.fix_all_video') }}" method="POST" style="margin: 0;" onsubmit="return confirm('Tetapkan permission Anyone with link (Viewer) dan jana semula semua QR Code?');">
+          <button type="submit" class="btn" style="background: #10b981; color: #fff; font-weight: 700; font-size: 0.85rem; padding: 10px 16px; border-radius: 10px;">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Baiki & Jana Semua QR
+          </button>
+        </form>
+
+        <div style="display: inline-flex; border: 1px solid #cbd5e1; border-radius: 10px; overflow: hidden; background: #fff;">
+          <a href="{{ url_for('admin.download_audit_report', format='json') }}" class="btn" style="padding: 10px 12px; font-size: 0.82rem; color: #334155; border-right: 1px solid #cbd5e1;" title="Muat turun JSON">
+            <i class="fa-solid fa-file-code"></i> JSON
+          </a>
+          <a href="{{ url_for('admin.download_audit_report', format='md') }}" class="btn" style="padding: 10px 12px; font-size: 0.82rem; color: #334155;" title="Muat turun Markdown">
+            <i class="fa-solid fa-file-lines"></i> MD
+          </a>
+        </div>
+      </div>
     </div>
+
+    <!-- Kad Statistik Audit -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+      <div class="white-card" style="padding: 1.25rem; border-left: 5px solid #6366f1;">
+        <span style="font-size: 0.78rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Jumlah Video</span>
+        <div style="font-size: 1.8rem; font-weight: 800; color: #1e1b4b; margin-top: 4px;">{{ summary.total }}</div>
+        <span style="font-size: 0.75rem; color: #94a3b8;">Rekod kiriman video</span>
+      </div>
+
+      <div class="white-card" style="padding: 1.25rem; border-left: 5px solid #10b981;">
+        <span style="font-size: 0.78rem; font-weight: 700; color: #047857; text-transform: uppercase;">Berjaya (Sedia)</span>
+        <div style="font-size: 1.8rem; font-weight: 800; color: #065f46; margin-top: 4px;">{{ summary.berjaya }}</div>
+        <span style="font-size: 0.75rem; color: #10b981;">Akses awam & QR disahkan</span>
+      </div>
+
+      <div class="white-card" style="padding: 1.25rem; border-left: 5px solid #f59e0b;">
+        <span style="font-size: 0.78rem; font-weight: 700; color: #b45309; text-transform: uppercase;">Perlu Tindakan</span>
+        <div style="font-size: 1.8rem; font-weight: 800; color: #92400e; margin-top: 4px;">{{ summary.perlu_tindakan }}</div>
+        <span style="font-size: 0.75rem; color: #f59e0b;">Perlu penetapan permission / QR</span>
+      </div>
+
+      <div class="white-card" style="padding: 1.25rem; border-left: 5px solid #ef4444;">
+        <span style="font-size: 0.78rem; font-weight: 700; color: #b91c1c; text-transform: uppercase;">Gagal / Ralat</span>
+        <div style="font-size: 1.8rem; font-weight: 800; color: #991b1b; margin-top: 4px;">{{ summary.gagal }}</div>
+        <span style="font-size: 0.75rem; color: #ef4444;">Fail tiada di Drive</span>
+      </div>
+    </div>
+
+    <!-- Jadual Senarai Video & QR Code -->
+    <div class="white-card" style="padding: 0; overflow: hidden; border-radius: 14px; box-shadow: 0 4px 14px rgba(0,0,0,0.03);">
+      <div style="padding: 16px 20px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-weight: 700; color: #1e1b4b; font-size: 0.95rem;">
+        <i class="fa-solid fa-list-check"></i> Keputusan Terperinci Semakan Video
+      </div>
+
+      {% if results and results|length > 0 %}
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+            <thead>
+              <tr style="background: #f1f5f9; color: #475569; border-bottom: 1px solid #cbd5e1;">
+                <th style="padding: 12px 16px;">ID</th>
+                <th style="padding: 12px 16px;">Pengirim & Bahagian</th>
+                <th style="padding: 12px 16px;">Google Drive File ID</th>
+                <th style="padding: 12px 16px;">Akses Viewer</th>
+                <th style="padding: 12px 16px;">QR Code</th>
+                <th style="padding: 12px 16px;">Status</th>
+                <th style="padding: 12px 16px; text-align: right;">Tindakan</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in results %}
+                <tr style="border-bottom: 1px solid #f1f5f9;">
+                  <td style="padding: 12px 16px; font-weight: 700; color: #64748b;">#{{ item.submission_id }}</td>
+                  <td style="padding: 12px 16px;">
+                    <div style="font-weight: 700; color: #1e1b4b;">{{ item.nama }}</div>
+                    <div style="font-size: 0.78rem; color: #64748b;">{{ item.bahagian }}</div>
+                  </td>
+                  <td style="padding: 12px 16px; font-family: monospace; font-size: 0.8rem; color: #334155;">
+                    {% if item.drive_file_id %}
+                      <a href="{{ item.view_url }}" target="_blank" style="color: #4f46e5; text-decoration: underline;" title="Buka di Drive">
+                        {{ item.drive_file_id[:16] }}...
+                      </a>
+                    {% else %}
+                      <span style="color: #ef4444;">Tiada ID</span>
+                    {% endif %}
+                  </td>
+                  <td style="padding: 12px 16px;">
+                    {% if item.viewer_access == 'Sah (Anyone)' %}
+                      <span style="display: inline-flex; align-items: center; gap: 4px; color: #047857; font-weight: 600;">
+                        <i class="fa-solid fa-circle-check"></i> Sah (Viewer)
+                      </span>
+                    {% else %}
+                      <span style="color: #b45309; font-weight: 600;">{{ item.viewer_access }}</span>
+                    {% endif %}
+                  </td>
+                  <td style="padding: 12px 16px;">
+                    {% if item.qr_code_status == 'Ada (Valid)' %}
+                      <span style="color: #047857; font-weight: 600;"><i class="fa-solid fa-qrcode"></i> Sedia</span>
+                    {% else %}
+                      <span style="color: #ef4444; font-weight: 600;">Tiada QR</span>
+                    {% endif %}
+                  </td>
+                  <td style="padding: 12px 16px;">
+                    {% if item.keputusan == 'BERJAYA' %}
+                      <span style="background: #dcfce7; color: #166534; font-weight: 700; font-size: 0.75rem; padding: 3px 8px; border-radius: 6px;">
+                        BERJAYA
+                      </span>
+                    {% elif item.keputusan == 'PERLU TINDAKAN' %}
+                      <span style="background: #fef3c7; color: #92400e; font-weight: 700; font-size: 0.75rem; padding: 3px 8px; border-radius: 6px;">
+                        PERLU TINDAKAN
+                      </span>
+                    {% else %}
+                      <span style="background: #fee2e2; color: #991b1b; font-weight: 700; font-size: 0.75rem; padding: 3px 8px; border-radius: 6px;">
+                        GAGAL
+                      </span>
+                    {% endif %}
+                  </td>
+                  <td style="padding: 12px 16px; text-align: right;">
+                    {% if item.drive_file_id %}
+                      <form action="{{ url_for('admin.fix_single_video', submission_id=item.submission_id) }}" method="POST" style="margin: 0; display: inline-block;">
+                        <button type="submit" class="btn" style="background: #f1f5f9; color: #334155; font-size: 0.78rem; padding: 6px 12px; border-radius: 8px;" title="Baiki Viewer & Jana QR">
+                          <i class="fa-solid fa-arrows-rotate"></i> Baiki
+                        </button>
+                      </form>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div style="padding: 3rem; text-align: center; color: #64748b;">
+          <i class="fa-solid fa-video-slash" style="font-size: 2.5rem; color: #cbd5e1; margin-bottom: 10px; display: block;"></i>
+          Belum ada rekod video yang diterima.
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <!-- ========================================================
+       TAB 3: PENGURUSAN KIRIMAN WARGA (SEMUA TEKS / FOTO / VIDEO)
+       ======================================================== -->
+  <div id="tab-content-kiriman" class="admin-tab-panel" style="display: none;">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <h2 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin: 0 0 4px;">
+          Senarai Kiriman Warga ({{ total_count }})
+        </h2>
+        <p style="color: #64748b; font-size: 0.9rem; margin: 0;">
+          Semak semua teks ucapan, gambar kenangan dan video yang telah dihantar oleh warga JDN.
+        </p>
+      </div>
+
+      <button type="button" class="btn" onclick="openUploadPengarahModal()" style="background: #c5a059; color: #1e1b4b; font-weight: 700; font-size: 0.85rem; padding: 9px 16px; border-radius: 10px;">
+        <i class="fa-solid fa-plus"></i> Tambah Media Pengarah
+      </button>
+    </div>
+
+    <div class="white-card" style="padding: 0; overflow: hidden; border-radius: 14px; box-shadow: 0 4px 14px rgba(0,0,0,0.03);">
+      {% if all_submissions and all_submissions|length > 0 %}
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+            <thead>
+              <tr style="background: #f1f5f9; color: #475569; border-bottom: 1px solid #cbd5e1;">
+                <th style="padding: 12px 16px;">ID</th>
+                <th style="padding: 12px 16px;">Pengirim</th>
+                <th style="padding: 12px 16px;">Bahagian</th>
+                <th style="padding: 12px 16px;">Teks Ucapan</th>
+                <th style="padding: 12px 16px;">Media</th>
+                <th style="padding: 12px 16px;">Jenis Data</th>
+                <th style="padding: 12px 16px; text-align: right;">Tindakan</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for sub in all_submissions %}
+                <tr style="border-bottom: 1px solid #f1f5f9;">
+                  <td style="padding: 12px 16px; font-weight: 700; color: #64748b;">#{{ sub.id }}</td>
+                  <td style="padding: 12px 16px; font-weight: 700; color: #1e1b4b;">{{ sub.nama }}</td>
+                  <td style="padding: 12px 16px; color: #475569;">{{ sub.bahagian or '-' }}</td>
+                  <td style="padding: 12px 16px; max-width: 320px;">
+                    {% if sub.ucapan %}
+                      <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #334155;" title="{{ sub.ucapan }}">
+                        {{ sub.ucapan[:100] }}{% if sub.ucapan|length > 100 %}...{% endif %}
+                      </div>
+                    {% else %}
+                      <span style="color: #94a3b8; font-style: italic;">Tiada teks ucapan</span>
+                    {% endif %}
+                  </td>
+                  <td style="padding: 12px 16px;">
+                    <div style="display: flex; gap: 6px;">
+                      {% if sub.image_filename %}
+                        <span style="background: #e0e7ff; color: #4338ca; font-size: 0.75rem; padding: 2px 7px; border-radius: 6px;" title="Ada gambar">
+                          <i class="fa-regular fa-image"></i> Foto
+                        </span>
+                      {% endif %}
+                      {% if sub.video_filename %}
+                        <span style="background: #fce7f3; color: #be185d; font-size: 0.75rem; padding: 2px 7px; border-radius: 6px;" title="Ada video">
+                          <i class="fa-solid fa-video"></i> Video
+                        </span>
+                      {% endif %}
+                    </div>
+                  </td>
+                  <td style="padding: 12px 16px;">
+                    {% if sub.data_type == 'official' %}
+                      <span style="background: #dcfce7; color: #166534; font-weight: 700; font-size: 0.72rem; padding: 3px 8px; border-radius: 9999px;">
+                        <i class="fa-solid fa-circle-check"></i> Rasmi
+                      </span>
+                    {% else %}
+                      <span style="background: #fef3c7; color: #92400e; font-weight: 700; font-size: 0.72rem; padding: 3px 8px; border-radius: 9999px;">
+                        <i class="fa-solid fa-flask"></i> Dummy/Ujian
+                      </span>
+                    {% endif %}
+                  </td>
+                  <td style="padding: 12px 16px; text-align: right;">
+                    <form action="{{ url_for('admin.padam_kiriman', submission_id=sub.id) }}" method="POST" style="margin: 0; display: inline-block;" onsubmit="return confirm('Adakah anda pasti mahu memadamkan kiriman ini?');">
+                      <button type="submit" class="btn" style="background: #fee2e2; color: #991b1b; font-size: 0.78rem; padding: 5px 10px; border-radius: 8px;" title="Padam kiriman ini">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div style="padding: 3rem; text-align: center; color: #64748b;">
+          <i class="fa-solid fa-inbox" style="font-size: 2.5rem; color: #cbd5e1; margin-bottom: 10px; display: block;"></i>
+          Belum ada sebarang kiriman daripada warga.
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <!-- ========================================================
+       TAB 4: SANDARAN GOOGLE DRIVE
+       ======================================================== -->
+  <div id="tab-content-drive" class="admin-tab-panel" style="display: none;">
+
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <h2 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin: 0 0 4px;">
+          Pusat Sandaran Arkib Google Drive
+        </h2>
+        <p style="color: #64748b; font-size: 0.9rem; margin: 0;">
+          Semua teks ucapan, pangkalan data SQLite snapshot, fail gambar dan video disegerakkan ke akaun Google Drive rasmi.
+        </p>
+      </div>
+
+      <form action="{{ url_for('admin.backup_now') }}" method="POST" style="margin: 0;">
+        <button type="submit" class="btn" style="background: #10b981; color: #ffffff; font-weight: 700; font-size: 0.88rem; padding: 11px 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);">
+          <i class="fa-solid fa-cloud-arrow-up"></i> Jalankan Sandaran Penuh Sekarang
+        </button>
+      </form>
+    </div>
+
+    <!-- Status Google Drive -->
+    <div class="white-card" style="padding: 1.75rem; margin-bottom: 1.75rem;">
+      <h3 style="font-size: 1.1rem; color: #1e1b4b; margin: 0 0 1rem;">
+        <i class="fa-brands fa-google-drive" style="color: #4285f4;"></i> Maklumat Sambungan Google Drive
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; font-size: 0.88rem;">
+        <div style="background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0;">
+          <span style="color: #64748b; display: block; font-size: 0.78rem; text-transform: uppercase; font-weight: 600;">Akaun Google Terhubung</span>
+          <strong style="color: #1e1b4b; font-size: 0.95rem;">{{ connected_email or 'khairul.jdn@gmail.com' }}</strong>
+        </div>
+        <div style="background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0;">
+          <span style="color: #64748b; display: block; font-size: 0.78rem; text-transform: uppercase; font-weight: 600;">Status Akses Folder Utama</span>
+          <strong style="color: #166534; font-size: 0.95rem;"><i class="fa-solid fa-circle-check"></i> Akses Sah & Sedia</strong>
+        </div>
+        <div style="background: #f8fafc; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0;">
+          <span style="color: #64748b; display: block; font-size: 0.78rem; text-transform: uppercase; font-weight: 600;">Folder Root ID</span>
+          <code style="color: #334155; font-size: 0.82rem;">1wPq_0k_lOeb8K911_K4eBwzO7Zp2F19X</code>
+        </div>
+      </div>
+    </div>
+
+    <!-- Struktur 6 Folder Google Drive -->
+    <div class="white-card" style="padding: 1.75rem;">
+      <h3 style="font-size: 1.1rem; color: #1e1b4b; margin: 0 0 1rem;">
+        <i class="fa-solid fa-folder-tree" style="color: #f59e0b;"></i> Struktur 6 Folder Arkib Rasmi di Google Drive:
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+        <div style="border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px;">
+          <strong style="color: #1e1b4b; display: block; font-size: 0.88rem;"><i class="fa-solid fa-folder" style="color: #f59e0b;"></i> 01 TEKS UCAPAN</strong>
+          <span style="font-size: 0.78rem; color: #64748b;">Salinan .JSON, .CSV & .XLSX</span>
+        </div>
+        <div style="border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px;">
+          <strong style="color: #1e1b4b; display: block; font-size: 0.88rem;"><i class="fa-solid fa-folder" style="color: #f59e0b;"></i> 02 GAMBAR KENANGAN</strong>
+          <span style="font-size: 0.78rem; color: #64748b;">Semua foto resolusi penuh</span>
+        </div>
+        <div style="border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px;">
+          <strong style="color: #1e1b4b; display: block; font-size: 0.88rem;"><i class="fa-solid fa-folder" style="color: #f59e0b;"></i> 03 VIDEO KENANGAN</strong>
+          <span style="font-size: 0.78rem; color: #64748b;">Fail rakaman video & audio</span>
+        </div>
+        <div style="border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px;">
+          <strong style="color: #1e1b4b; display: block; font-size: 0.88rem;"><i class="fa-solid fa-folder" style="color: #f59e0b;"></i> 04 DATABASE BACKUP</strong>
+          <span style="font-size: 0.78rem; color: #64748b;">Snapshot live SQLite database</span>
+        </div>
+        <div style="border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px;">
+          <strong style="color: #1e1b4b; display: block; font-size: 0.88rem;"><i class="fa-solid fa-folder" style="color: #f59e0b;"></i> 05 MANIFEST & LAPORAN</strong>
+          <span style="font-size: 0.78rem; color: #64748b;">Laporan integriti & audit SHA256</span>
+        </div>
+        <div style="border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px;">
+          <strong style="color: #1e1b4b; display: block; font-size: 0.88rem;"><i class="fa-solid fa-folder" style="color: #f59e0b;"></i> 06 PDF BUKU KENANGAN</strong>
+          <span style="font-size: 0.78rem; color: #64748b;">Salinan PDF A4 sedia Canva</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 </div>
+
+<!-- JavaScript Penukaran Tab Pantas (Tanpa Reload) -->
+<script>
+  function switchAdminTab(tabName) {
+    // Sembunyikan semua panel
+    const panels = document.querySelectorAll('.admin-tab-panel');
+    panels.forEach(p => p.style.display = 'none');
+
+    // Reset gaya semua butang tab
+    const btns = document.querySelectorAll('.admin-tab-btn');
+    btns.forEach(b => {
+      b.style.color = '#64748b';
+      b.style.background = 'transparent';
+      b.style.borderBottom = 'none';
+      b.style.boxShadow = 'none';
+    });
+
+    // Paparkan panel yang dipilih
+    const targetPanel = document.getElementById('tab-content-' + tabName);
+    if (targetPanel) {
+      targetPanel.style.display = 'block';
+    }
+
+    // Aktifkan butang yang dipilih
+    const targetBtn = document.getElementById('tab-btn-' + tabName);
+    if (targetBtn) {
+      targetBtn.style.color = '#1e1b4b';
+      targetBtn.style.background = '#ffffff';
+      targetBtn.style.borderBottom = '3px solid #c5a059';
+      targetBtn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)';
+    }
+
+    // Kemaskini URL tanpa reload
+    const url = new URL(window.location);
+    url.searchParams.set('tab', tabName);
+    window.history.replaceState({}, '', url);
+  }
+
+  // Set tab permulaan mengikut URL parameter
+  document.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialTab = urlParams.get('tab') || '{{ active_tab|default("buku") }}';
+    switchAdminTab(initialTab);
+  });
+</script>
 {% endblock %}

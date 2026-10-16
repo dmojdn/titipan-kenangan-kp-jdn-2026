@@ -1,11 +1,9 @@
 import os
-from app import create_app, seed_data
+from app import create_app
 
 app = create_app()
 
 if __name__ == "__main__":
-    # Semai data ujian automatik jika database masih kosong
-    seed_data(app)
     
     port = int(os.getenv("PORT", 5000))
     print(f"=== TITIPAN KENANGAN KP JDN ===")

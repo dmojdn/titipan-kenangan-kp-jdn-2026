@@ -230,20 +230,95 @@ class BackupService:
         target_dir = Path(target_dir)
         target_dir.mkdir(parents=True, exist_ok=True)
 
-        src_db_path = Config.INSTANCE_DIR / "titipan_kenangan.db"
-        if not src_db_path.exists():
-            raise FileNotFoundError(f"Database asal tidak ditemui di: {src_db_path}")
-
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         dest_db_path = target_dir / f"titipan_kenangan_snapshot_{timestamp}.db"
 
-        # Kunci konsisten SQLite backup
-        src_conn = sqlite3.connect(str(src_db_path))
-        dest_conn = sqlite3.connect(str(dest_db_path))
-        with dest_conn:
-            src_conn.backup(dest_conn)
-        dest_conn.close()
-        src_conn.close()
+        is_sqlite = Config.SQLALCHEMY_DATABASE_URI.startswith("sqlite")
+        src_db_path = Config.INSTANCE_DIR / "titipan_kenangan.db"
+
+        if is_sqlite and src_db_path.exists():
+            # Kunci konsisten SQLite backup
+            src_conn = sqlite3.connect(str(src_db_path))
+            dest_conn = sqlite3.connect(str(dest_db_path))
+            with dest_conn:
+                src_conn.backup(dest_conn)
+            dest_conn.close()
+            src_conn.close()
+        else:
+            # Bina snapshot SQLite mudah alih terus daripada pangkalan data aktif (PostgreSQL / Neon)
+            dest_conn = sqlite3.connect(str(dest_db_path))
+            c = dest_conn.cursor()
+            c.execute("""
+                CREATE TABLE IF NOT EXISTS submissions (
+                    id INTEGER PRIMARY KEY,
+                    nama VARCHAR(150) NOT NULL,
+                    bahagian VARCHAR(150) NOT NULL,
+                    jawatan VARCHAR(150),
+                    ucapan TEXT,
+                    created_at TIMESTAMP,
+                    status VARCHAR(20),
+                    data_type VARCHAR(20),
+                    image_filename VARCHAR(255),
+                    image_local_path VARCHAR(255),
+                    image_drive_file_id VARCHAR(100),
+                    image_drive_link VARCHAR(500),
+                    image_sync_status VARCHAR(30),
+                    video_filename VARCHAR(255),
+                    video_local_path VARCHAR(255),
+                    video_drive_file_id VARCHAR(100),
+                    video_drive_link VARCHAR(500),
+                    video_sync_status VARCHAR(30),
+                    ip_address VARCHAR(50)
+                )
+            """)
+            c.execute("""
+                CREATE TABLE IF NOT EXISTS drive_folder_cache (
+                    id INTEGER PRIMARY KEY,
+                    folder_name VARCHAR(100) UNIQUE NOT NULL,
+                    folder_id VARCHAR(100) NOT NULL,
+                    updated_at TIMESTAMP
+                )
+            """)
+            c.execute("""
+                CREATE TABLE IF NOT EXISTS system_logs (
+                    id INTEGER PRIMARY KEY,
+                    action VARCHAR(100) NOT NULL,
+                    status VARCHAR(20),
+                    details TEXT,
+                    drive_file_id VARCHAR(100),
+                    created_at TIMESTAMP
+                )
+            """)
+            
+            subs = Submission.query.order_by(Submission.id.asc()).all()
+            for s in subs:
+                c.execute("""
+                    INSERT INTO submissions VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    s.id, s.nama, s.bahagian, s.jawatan, s.ucapan,
+                    s.created_at.strftime("%Y-%m-%d %H:%M:%S") if s.created_at else None,
+                    s.status, s.data_type, s.image_filename, s.image_local_path,
+                    s.image_drive_file_id, s.image_drive_link, s.image_sync_status,
+                    s.video_filename, s.video_local_path, s.video_drive_file_id,
+                    s.video_drive_link, s.video_sync_status, s.ip_address
+                ))
+                
+            caches = DriveFolderCache.query.all()
+            for df in caches:
+                c.execute("INSERT INTO drive_folder_cache VALUES (?, ?, ?, ?)", (
+                    df.id, df.folder_name, df.folder_id,
+                    df.updated_at.strftime("%Y-%m-%d %H:%M:%S") if df.updated_at else None
+                ))
+                
+            logs = SystemLog.query.order_by(SystemLog.id.desc()).limit(100).all()
+            for sl in logs:
+                c.execute("INSERT INTO system_logs VALUES (?, ?, ?, ?, ?, ?)", (
+                    sl.id, sl.action, sl.status, sl.details, sl.drive_file_id,
+                    sl.created_at.strftime("%Y-%m-%d %H:%M:%S") if sl.created_at else None
+                ))
+                
+            dest_conn.commit()
+            dest_conn.close()
 
         # Juga cipta salinan statik tetap 'titipan_kenangan_snapshot.db'
         static_snapshot_path = target_dir / "titipan_kenangan_snapshot.db"

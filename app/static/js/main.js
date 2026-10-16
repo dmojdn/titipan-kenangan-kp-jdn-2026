@@ -15,15 +15,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Mulakan pemasa detik (Countdown ke 23 Oktober 2026)
   initCountdown();
+
+  // Inisialisasi Menu Navigasi Mobile (Hamburger)
+  initMobileNav();
 });
+
+/**
+ * PENGENDALIAN MENU NAVIGASI MOBILE (HAMBURGER)
+ */
+function initMobileNav() {
+  const toggleBtn = document.getElementById('nav-mobile-toggle');
+  const menuContainer = document.getElementById('nav-menu-container');
+
+  if (!toggleBtn || !menuContainer) return;
+
+  toggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = menuContainer.classList.toggle('nav-open');
+    toggleBtn.classList.toggle('active', isOpen);
+    toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  // Tutup menu jika klik di luar
+  document.addEventListener('click', (e) => {
+    if (!menuContainer.contains(e.target) && !toggleBtn.contains(e.target)) {
+      menuContainer.classList.remove('nav-open');
+      toggleBtn.classList.remove('active');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Tutup menu apabila pautan ditekan
+  const navLinks = menuContainer.querySelectorAll('a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      menuContainer.classList.remove('nav-open');
+      toggleBtn.classList.remove('active');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
 
 /**
  * COUNTDOWN TIMER KE 23 OKTOBER 2026
  * Mengira detik hari, jam, minit, dan saat menjelang persaraan KP JDN
  */
 function initCountdown() {
-  // Sasaran: 23 Oktober 2026, 00:00:00 Waktu Malaysia (GMT+8)
-  const targetDate = new Date("2026-10-23T00:00:00+08:00").getTime();
+  // Sasaran: 22 Oktober 2026, 16:30:00 Waktu Malaysia (GMT+8)
+  const targetDate = new Date("2026-10-22T16:30:00+08:00").getTime();
 
   function update() {
     const now = new Date().getTime();

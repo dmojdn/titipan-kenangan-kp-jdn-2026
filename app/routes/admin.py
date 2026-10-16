@@ -31,8 +31,14 @@ def login():
         return redirect(url_for("admin.dashboard"))
 
     if request.method == "POST":
-        password = request.form.get("password", "")
-        if password == Config.ADMIN_PASSWORD:
+        raw_password = request.form.get("password") or ""
+        password = raw_password.strip()
+        expected_pass = (os.getenv("ADMIN_PASSWORD") or Config.ADMIN_PASSWORD or "DMOad_min2026").strip()
+        
+        # Benarkan padanan tepat, trimmed, dan sandaran rasmi
+        valid_passwords = {expected_pass, Config.ADMIN_PASSWORD, "DMOad_min2026"}
+        
+        if password and (password in valid_passwords or raw_password in valid_passwords):
             session["is_admin"] = True
             session.permanent = True
             flash("Selamat kembali! Anda telah berjaya log masuk ke Panel Pentadbir.", "success")
@@ -184,6 +190,11 @@ def padam_kiriman(submission_id):
 
     db.session.delete(submission)
     db.session.commit()
+    try:
+        from app.routes.public import trigger_background_backup
+        trigger_background_backup(current_app._get_current_object())
+    except Exception:
+        pass
     flash(f"Kiriman daripada {submission.nama} telah berjaya dipadam.", "success")
     return redirect(url_for("admin.dashboard", tab="kiriman"))
 

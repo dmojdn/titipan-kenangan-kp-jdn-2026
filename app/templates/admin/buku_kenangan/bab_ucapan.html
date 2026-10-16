@@ -1,0 +1,180 @@
+{% extends "admin/buku_kenangan/layout_base.html" %}
+
+{% block title %}Bab Titipan Ucapan | Buku Kenangan KP JDN{% endblock %}
+
+{% block toolbar_title %}Pratonton: Bab Titipan Ucapan ({{ total_pages }} Halaman A4){% endblock %}
+
+{% block export_pdf_btn %}
+<a href="{{ url_for('admin.penjana_buku_export_pdf', chapter='ucapan') }}" class="btn-action">
+  <i class="fa-solid fa-file-pdf"></i> Eksport PDF Canva
+</a>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* Susun atur kad ucapan fleksibel */
+  .ucapan-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4.5mm;
+    height: 100%;
+    justify-content: flex-start;
+  }
+
+  .warkah-box {
+    background: #ffffff;
+    border: 1px solid var(--border-classic);
+    border-radius: 4px;
+    padding: 3.5mm 5mm 3.5mm 5mm;
+    position: relative;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Saiz kad mengikut berat warkah */
+  .warkah-box.card-short {
+    flex: 0 1 auto;
+    padding: 3.2mm 4.5mm;
+  }
+  .warkah-box.card-medium {
+    flex: 0 1 auto;
+    padding: 4mm 5.5mm;
+  }
+  .warkah-box.card-long {
+    flex: 1 1 auto;
+    padding: 5mm 6.5mm;
+  }
+  .warkah-box.card-very-long {
+    flex: 1 1 auto;
+    padding: 6mm 8mm;
+  }
+
+  .warkah-quote-icon {
+    font-family: 'Playfair Display', serif;
+    font-size: 18pt;
+    color: var(--gold-primary);
+    line-height: 0.7;
+    margin-bottom: 1.5mm;
+    opacity: 0.85;
+    user-select: none;
+  }
+
+  .warkah-text {
+    font-size: 9pt;
+    line-height: 1.55;
+    color: var(--text-main);
+    margin: 0 0 2.5mm 0;
+    white-space: pre-line;
+    word-break: break-word;
+    font-weight: 500;
+  }
+
+  .warkah-box.card-very-long .warkah-text {
+    font-size: 10pt;
+    line-height: 1.68;
+  }
+
+  .warkah-author-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-top: 0.8px solid var(--border-subtle);
+    padding-top: 2mm;
+    margin-top: auto;
+  }
+
+  .warkah-author-name {
+    font-size: 8.5pt;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+  }
+
+  .warkah-author-dept {
+    font-size: 7.2pt;
+    color: var(--gold-deep);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin: 0.5mm 0 0;
+  }
+
+  .warkah-motif-corner {
+    position: absolute;
+    top: 2mm;
+    right: 2.5mm;
+    font-size: 6pt;
+    color: var(--gold-soft);
+  }
+</style>
+{% endblock %}
+
+{% block sheets_content %}
+  {% if pages and pages|length > 0 %}
+    {% for page in pages %}
+      <div class="a4-sheet">
+        <div class="sheet-inner-border"></div>
+        <span class="sheet-corner-motif tl">❖</span>
+        <span class="sheet-corner-motif tr">❖</span>
+        <span class="sheet-corner-motif bl">❖</span>
+        <span class="sheet-corner-motif br">❖</span>
+
+        <!-- Header Lembaran -->
+        <div class="sheet-header">
+          <h2 class="sheet-chapter-title">
+            <span style="font-size: 9pt; opacity: 0.7;">❖</span> Titipan Ucapan & Sanjungan Budi
+          </h2>
+        </div>
+
+        <!-- Kandungan Utama: Senarai Warkah Halaman Ini -->
+        <div class="sheet-content">
+          <div class="ucapan-grid">
+            {% for item in page %}
+              <div class="warkah-box card-{{ item.card_type }}">
+                <span class="warkah-motif-corner">❖</span>
+                
+                <div>
+                  <div class="warkah-quote-icon">“</div>
+                  <div class="warkah-text">{{ item.text }}</div>
+                </div>
+
+                <div class="warkah-author-row">
+                  <div>
+                    <h4 class="warkah-author-name">{{ item.submission.nama }}</h4>
+                    <p class="warkah-author-dept">
+                      {{ item.submission.bahagian if item.submission.bahagian and item.submission.bahagian != '-' else 'Jabatan Digital Negara' }}
+                      {% if item.submission.jawatan %} &bull; {{ item.submission.jawatan }}{% endif %}
+                    </p>
+                  </div>
+                  <div style="font-size: 7pt; color: #a8a29e; font-style: italic;">
+                    {{ item.submission.created_at.strftime("%d/%m/%Y") if item.submission.created_at else '' }}
+                  </div>
+                </div>
+
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Footer Lembaran -->
+        <div class="sheet-footer">
+          <span class="sheet-footer-brand">
+            Buku Kenangan Persaraan YBrs. Ts. Nik Zalbiha binti Nik Mat
+          </span>
+          <span class="sheet-footer-page">
+            Halaman {{ loop.index }} / {{ total_pages }}
+          </span>
+        </div>
+
+      </div>
+    {% endfor %}
+  {% else %}
+    <div style="background: #ffffff; padding: 48px; border-radius: 16px; text-align: center; max-width: 500px; margin: 40px auto; color: #64748b;">
+      <i class="fa-solid fa-scroll" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 12px; display: block;"></i>
+      <h3 style="color: #1e1b4b; margin: 0 0 8px;">Tiada Teks Ucapan Ditemui</h3>
+      <p style="font-size: 0.9rem; margin: 0;">Sila semak penapis sumber data atau tunggu kiriman baharu warga JDN.</p>
+    </div>
+  {% endif %}
+{% endblock %}

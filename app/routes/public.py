@@ -127,7 +127,23 @@ def kenangan():
 
 @public_bp.route("/uploads/images/<filename>")
 def serve_image(filename):
-    return send_from_directory(current_app.config["UPLOAD_IMAGES_FOLDER"], filename)
+    file_path = current_app.config["UPLOAD_IMAGES_FOLDER"] / filename
+    if not file_path.exists():
+        sub = Submission.query.filter_by(image_filename=filename).first()
+        if sub and sub.image_drive_file_id:
+            try:
+                from googleapiclient.http import MediaIoBaseDownload
+                service = drive_service.get_service()
+                if service:
+                    req = service.files().get_media(fileId=sub.image_drive_file_id)
+                    with open(file_path, "wb") as f:
+                        downloader = MediaIoBaseDownload(f, req)
+                        downloader.next_chunk()
+            except Exception as e:
+                current_app.logger.warning(f"Gagal muat turun gambar dari Drive: {e}")
+    if file_path.exists():
+        return send_from_directory(current_app.config["UPLOAD_IMAGES_FOLDER"], filename)
+    return "", 404
 
 @public_bp.route("/uploads/videos/<filename>")
 def serve_video(filename):
@@ -266,6 +282,12 @@ def hantar_ucapan():
 
         db.session.commit()
 
+        # Segerakkan arkib penuh secara automatik di latar belakang (Background Backup Sync)
+        try:
+            trigger_background_backup(current_app._get_current_object())
+        except Exception:
+            pass
+
     return redirect(url_for("public.kejayaan", submission_id=submission.id))
 
 @public_bp.route("/upload-media-pengarah", methods=["POST"])
@@ -383,6 +405,11 @@ def upload_media_pengarah():
                 current_app.logger.error(f"Gagal memuat naik ke Drive: {e}")
 
     if uploaded_count > 0:
+        # Segerakkan arkib penuh secara automatik di latar belakang
+        try:
+            trigger_background_backup(current_app._get_current_object())
+        except Exception:
+            pass
         flash(f"Alhamdulillah! Sebanyak {uploaded_count} fail foto/video pengarah telah berjaya dimuat naik atas nama Jabatan Digital Negara.", "success")
     else:
         flash("Format fail tidak disokong. Sila pilih gambar (JPG, PNG, WebP) atau video (MP4, MOV, WebM).", "warning")
@@ -397,3 +424,15 @@ def kejayaan(submission_id):
 def datetime_prefix():
     from datetime import datetime
     return datetime.now().strftime("%Y%m%d_%H%M%S")
+
+def trigger_background_backup(app_instance):
+    import threading
+    def _run_bg():
+        with app_instance.app_context():
+            try:
+                from app.services.backup_service import backup_service
+                backup_service.run_full_backup_pipeline()
+            except Exception as e:
+                app_instance.logger.warning(f"Background backup sync error: {e}")
+    threading.Thread(target=_run_bg, daemon=True).start()
+

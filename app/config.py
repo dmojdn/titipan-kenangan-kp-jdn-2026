@@ -11,11 +11,23 @@ class Config:
     DEBUG = os.getenv("FLASK_DEBUG", "True").lower() in ("true", "1", "t")
 
     # Kata laluan ringkas Dashboard Pentadbir
-    ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123")
+    ADMIN_PASSWORD = (os.getenv("ADMIN_PASSWORD") or "DMOad_min2026").strip()
 
-    # Pangkalan Data SQLite
+    # Pangkalan Data (Menyokong Neon PostgreSQL & SQLite Tempatan)
     INSTANCE_DIR = BASE_DIR / "instance"
-    SQLALCHEMY_DATABASE_URI = f"sqlite:///{INSTANCE_DIR / 'titipan_kenangan.db'}"
+    raw_db_url = os.getenv("DATABASE_URL", "").strip()
+    if raw_db_url:
+        if raw_db_url.startswith("postgres://"):
+            raw_db_url = raw_db_url.replace("postgres://", "postgresql://", 1)
+        SQLALCHEMY_DATABASE_URI = raw_db_url
+        SQLALCHEMY_ENGINE_OPTIONS = {
+            "pool_pre_ping": True,
+            "pool_recycle": 300,
+            "pool_timeout": 30
+        }
+    else:
+        SQLALCHEMY_DATABASE_URI = f"sqlite:///{INSTANCE_DIR / 'titipan_kenangan.db'}"
+        SQLALCHEMY_ENGINE_OPTIONS = {}
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Direktori Muat Naik Tempatan
