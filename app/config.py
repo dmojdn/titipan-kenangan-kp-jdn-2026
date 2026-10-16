@@ -9,6 +9,7 @@ load_dotenv(BASE_DIR / ".env")
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "titipan_kenangan_kp_jdn_secret_2026")
     DEBUG = os.getenv("FLASK_DEBUG", "True").lower() in ("true", "1", "t")
+    SEND_FILE_MAX_AGE_DEFAULT = 604800  # Cache fail statik 7 hari bagi jimat bandwidth
 
     # Kata laluan ringkas Dashboard Pentadbir
     ADMIN_PASSWORD = (os.getenv("ADMIN_PASSWORD") or "DMOad_min2026").strip()

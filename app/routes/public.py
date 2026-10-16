@@ -142,17 +142,17 @@ def serve_image(filename):
             except Exception as e:
                 current_app.logger.warning(f"Gagal muat turun gambar dari Drive: {e}")
     if file_path.exists():
-        return send_from_directory(current_app.config["UPLOAD_IMAGES_FOLDER"], filename)
+        return send_from_directory(current_app.config["UPLOAD_IMAGES_FOLDER"], filename, max_age=604800)
     return "", 404
 
 @public_bp.route("/uploads/videos/<filename>")
 def serve_video(filename):
-    return send_from_directory(current_app.config["UPLOAD_VIDEOS_FOLDER"], filename)
+    return send_from_directory(current_app.config["UPLOAD_VIDEOS_FOLDER"], filename, max_age=604800)
 
 @public_bp.route("/uploads/qrcodes/<filename>")
 def serve_qrcode(filename):
     qr_dir = Path(current_app.config["UPLOAD_FOLDER"]) / "qrcodes"
-    return send_from_directory(qr_dir, filename)
+    return send_from_directory(qr_dir, filename, max_age=604800)
 
 @public_bp.route("/hantar", methods=["POST"])
 def hantar_ucapan():

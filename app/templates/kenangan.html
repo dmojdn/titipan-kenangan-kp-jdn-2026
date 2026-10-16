@@ -386,7 +386,7 @@
 
       <div class="cute-counter-tag">
         <i class="fa-solid fa-camera" style="color: #ec4899;"></i>
-        <span>Jumlah Terkumpul: <strong style="color: #1e1b4b;">{{ all_media_submissions|length + 4 }} Detik Kenangan</strong></span>
+        <span>Jumlah Terkumpul: <strong style="color: #1e1b4b;">{{ all_media_submissions|length }} Detik Kenangan</strong></span>
         <span>✨</span>
       </div>
     </div>
@@ -394,7 +394,7 @@
     <!-- Tab Penapis Kategori Media -->
     <div class="cute-filter-bar">
       <button class="cute-filter-pill active" onclick="filterGallery('all', this)">
-        <i class="fa-solid fa-layer-group"></i> Semua Media ({{ all_media_submissions|length + 4 }})
+        <i class="fa-solid fa-layer-group"></i> Semua Media ({{ all_media_submissions|length }})
       </button>
       <button class="cute-filter-pill" onclick="filterGallery('foto', this)">
         <i class="fa-regular fa-image"></i> Foto Kenangan
@@ -477,7 +477,7 @@
               <span class="corner-motif br">❖</span>
 
               <div class="kenangan-media-wrapper video-wrapper-bg">
-                <video src="{{ url_for('public.serve_video', filename=m.video_filename) }}#t=0.5" preload="metadata" muted playsinline></video>
+                <video src="{{ url_for('public.serve_video', filename=m.video_filename) }}#t=0.5" preload="none" muted playsinline></video>
                 <div class="video-center-play">
                   <i class="fa-solid fa-play"></i>
                 </div>
@@ -555,7 +555,11 @@
             <span class="warkah-time-text">Arkib Rasmi</span>
             <span class="cute-love-icon">⭐</span>
           </div>
-        </div>
+      <!-- Empty notice jika penapis tiada rekod (contohnya video belum dimuat naik) -->
+      <div id="gallery-filter-empty" style="display: none; grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem; background: #ffffff; border-radius: 20px; border: 1.5px dashed #cbd5e1; box-shadow: 0 4px 16px rgba(0,0,0,0.03);">
+        <div style="font-size: 2.5rem; margin-bottom: 8px;">🎬</div>
+        <h3 style="color: #334155; font-size: 1.15rem; font-weight: 700; margin-bottom: 6px;">Belum Ada Rakaman Video Dimuat Naik</h3>
+        <p style="color: #64748b; font-size: 0.88rem; max-width: 480px; margin: 0 auto;">Warga JDN boleh memuat naik video ucapan persaraan melalui borang titipan di Laman Utama.</p>
       </div>
 
     </div>
@@ -607,15 +611,23 @@
     btn.classList.add('active');
 
     const items = document.querySelectorAll('.kenangan-card-item');
+    let visibleCount = 0;
     items.forEach(item => {
       if (type === 'all') {
         item.style.display = 'flex';
+        visibleCount++;
       } else if (item.getAttribute('data-type') === type) {
         item.style.display = 'flex';
+        visibleCount++;
       } else {
         item.style.display = 'none';
       }
     });
+
+    const emptyNotice = document.getElementById('gallery-filter-empty');
+    if (emptyNotice) {
+      emptyNotice.style.display = (visibleCount === 0) ? 'block' : 'none';
+    }
   }
 
   function openPhotoModal(imgSrc, name, dept) {
